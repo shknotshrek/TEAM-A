@@ -1,5 +1,6 @@
 let images = {};
 let currentKey = "screen1";
+let textMap = {};
 
   // 스토리 분기 표시
 
@@ -188,6 +189,28 @@ let currentKey = "screen1";
 function setup() {
   createCanvas(1512, 982); // 혹은 windowWidth, windowHeight로 바꿔도 돼
   imageMode(CENTER);
+
+    // 화면에 띄울 글 목록
+
+    textMap = {
+      "screen1": {
+        content: "REFURBISH",
+        x: width / 2,
+        y: 500,
+        size: 28,
+        color: [255, 255, 255],
+        align: "center"
+      },
+      "screen2" : {
+        content: "이곳은 오래된 마을 입구입니다.",
+        x: width / 2,
+        y: 100,
+        size: 28,
+        color: [255, 255, 255],
+        align: "center"
+      }
+  
+    };
 }
 
 function draw() {
@@ -208,6 +231,24 @@ function draw() {
     image(img, width / 2, height / 2, newW, newH);
   }
 
+  // 화면에 글자 표시
+
+  // 화면에 글자 표시
+  if (textMap[currentKey]) {
+    let t = textMap[currentKey];
+
+    fill(...(t.color || [255]));
+    textSize(t.size || 32);
+    if (t.align === "left") {
+      textAlign(LEFT, CENTER);
+    } else {
+      textAlign(CENTER, CENTER);
+    }
+
+    text(t.content, t.x, t.y);
+  }
+
+
   // 선택지 아이콘 표시
   if (choices[currentKey]) {
     for (let c of choices[currentKey]) {
@@ -215,15 +256,26 @@ function draw() {
 
       // 마우스 오버 시 텍스트 박스 표시
       if (mouseX >= c.x - c.w / 2 && mouseX <= c.x + c.w / 2 &&
-          mouseY >= c.y - c.h / 2 && mouseY <= c.y + c.h / 2) {
+      mouseY >= c.y - c.h / 2 && mouseY <= c.y + c.h / 2) {
 
-        fill(255);
-        rect(mouseX, mouseY - 40, textWidth(c.label) + 20, 35, 5);
+        let paddingX = 10;
+        let paddingY = 8;
+        let labelWidth = textWidth(c.label);
+        let boxW = labelWidth + paddingX * 1.5;
+        let boxH = 30 + paddingY;
 
-        fill(0);
-        textSize(30);
-        text(c.label, mouseX + 10, mouseY - 13);
-      }
+  // 텍스트 박스 (배경)
+  fill(255);
+  rectMode(CENTER);
+  rect(mouseX, mouseY - 60, boxW, boxH, 5);
+
+  // 텍스트
+  fill(0);
+  textSize(24);
+  textAlign(CENTER, CENTER);
+  text(c.label, mouseX, mouseY - 60);
+}
+
     }
   }
 
