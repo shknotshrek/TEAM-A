@@ -65,14 +65,52 @@ let currentKey = "screen1";
   };
   
 
-let fileNames = [
-  "screen1.png",
-  "screen7-1.png",
-  "screen7-1-2.png",
-  "screen7-1-2-1.png",
-  "screen7-1-2-2.png"
-  // ... 필요한 파일 추가
-];
+  let fileNames = [
+    "screen1.png",
+    "screen2.png",
+    "screen3.png",
+    "screen4.png",
+    "screen5.png",
+    "screen6.png",
+    "screen7.png",
+  
+    "screen7-1.png",
+    "screen7-1-1.png",
+    "screen7-1-1-1.png",
+    "screen7-1-1-2.png",
+    "screen7-1-2.png",
+    "screen7-1-2-1.png",
+    "screen7-1-2-2.png",
+  
+    "screen7-2.png",
+    "screen7-2-1.png",
+    "screen7-2-1-1.png",
+    "screen7-2-1-2.png",
+    "screen7-2-2.png",
+    "screen7-2-2-1.png",
+    "screen7-2-2-2.png",
+  
+    "screen7-3.png",
+    "screen7-3-1.png",
+    "screen7-3-1-1.png",
+    "screen7-3-1-2.png",
+    "screen7-3-2.png",
+    "screen7-3-2-1.png",
+    "screen7-3-2-2.png",
+  
+    "screen8.png",
+    "screen9.png",
+    "screen9-1.png",
+    "screen10.png",
+    "screen11.png",
+    "screen12.png",
+    "screen13.png",
+    "screen13-1.png",
+    "screen14.png",
+    "screen15.png",
+    "screen16.png"
+  ];
+  
 
 function preload() {
   for (let name of fileNames) {
