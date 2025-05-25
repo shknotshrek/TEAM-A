@@ -1,12 +1,14 @@
 let images = {};
 let currentKey = "screen1";
 
+  // 스토리 분기 표시
 
   let storyMap = {
 
     "screen1": "screen2",
     "screen2": "screen3",
-    "screen3": "screen4",
+    "screen3": "screen3-1", // 여기 전환이 안됨 why
+    "screen3-1": "screen4",
     "screen4": "screen5",
     "screen5": "screen6",
     "screen6": "screen7",
@@ -65,6 +67,8 @@ let currentKey = "screen1";
   };
   
 
+  // 이미지 파일 로드
+
   let fileNames = [
     "screen1.png",
     "screen2.png",
@@ -110,41 +114,125 @@ let currentKey = "screen1";
     "screen15.png",
     "screen16.png"
   ];
+
+  // 아이콘 로드
+
+  let choices = {
+    "screen7": [
+      {
+        x: 280, y: 760,
+        w: 225, h: 225,
+        img: null,
+        imgPath: "visual assets/screen7icon1.png",
+        next: "screen7-1",
+        label: "개방감이 있는 카페"
+      },
+      {
+        x: 756, y: 760,
+        w: 225, h: 225,
+        img: null,
+        imgPath: "visual assets/screen7icon2.png",
+        next: "screen7-2",
+        label: "인문학 독립서점"
+      },
+      {
+        x: 1232, y: 760,
+        w: 225, h: 225,
+        img: null,
+        imgPath: "visual assets/screen7icon3.png",
+        next: "screen7-3",
+        label: "트렌디한 의류 브랜드 매장"
+      }
+    ],
+  
+    "screen7-1": [
+      {
+        x: 356, y: 760,
+        w: 225, h: 225,
+        img: null,
+        imgPath: "visual assets/screen7-1icon1.png",
+        next: "screen7-1-1",
+        label: "낮에는 카페, 밤에는 칵테일 바로 혼합 운영"
+      },
+      {
+        x: 1156, y: 760,
+        w: 225, h: 225,
+        img: null,
+        imgPath: "visual assets/screen7-1icon2.png",
+        next: "screen7-1-2",
+        label: "카페에 책 보급을 통해 북카페로 운영"
+      }
+    ]
+  
+    // 아이콘 아직덜됨 진행중
+  };
+  
   
 
-function preload() {
-  for (let name of fileNames) {
-    let key = name.replace(".png", "");
-    images[key] = loadImage("visual assets/" + name);
+  function preload() {
+    // 1단계: 배경 이미지 로딩
+    for (let name of fileNames) {
+      let key = name.replace(".png", "");
+      images[key] = loadImage("visual assets/" + name);
+    }
+  
+    // 2단계: 선택지 아이콘 이미지 로딩
+    for (let key in choices) {
+      for (let choice of choices[key]) {
+        choice.img = loadImage(choice.imgPath);
+      }
+    }
   }
-}
+  
 
 function setup() {
   createCanvas(1512, 982); // 혹은 windowWidth, windowHeight로 바꿔도 돼
   imageMode(CENTER);
-  noLoop();
 }
 
 function draw() {
   background(0);
 
   let img = images[currentKey];
-  if (!img) return;
-
-  let canvasRatio = width / height;
-  let imgRatio = img.width / img.height;
-
-  let newW, newH;
-  if (imgRatio < canvasRatio) {
-    newW = width;
-    newH = width / imgRatio;
-  } else {
-    newH = height;
-    newW = height * imgRatio;
+  if (img) {
+    let canvasRatio = width / height;
+    let imgRatio = img.width / img.height;
+    let newW, newH;
+    if (imgRatio < canvasRatio) {
+      newW = width;
+      newH = width / imgRatio;
+    } else {
+      newH = height;
+      newW = height * imgRatio;
+    }
+    image(img, width / 2, height / 2, newW, newH);
   }
 
-  image(img, width / 2, height / 2, newW, newH);
+  // 선택지 아이콘 표시
+  if (choices[currentKey]) {
+    for (let c of choices[currentKey]) {
+      image(c.img, c.x, c.y, c.w, c.h);
+
+      // 마우스 오버 시 텍스트 박스 표시
+      if (mouseX >= c.x - c.w / 2 && mouseX <= c.x + c.w / 2 &&
+          mouseY >= c.y - c.h / 2 && mouseY <= c.y + c.h / 2) {
+
+        fill(255);
+        rect(mouseX, mouseY - 40, textWidth(c.label) + 20, 35, 5);
+
+        fill(0);
+        textSize(30);
+        text(c.label, mouseX + 10, mouseY - 13);
+      }
+    }
+  }
+
+  textSize(30);
+  text(`x-coordinate: ${mouseX}`, 100, 318);
+  text(`y-coordinate: ${mouseY}`, 100, 390);
 }
+
+
 
 function keyPressed() {
   if (key === ' ') {
@@ -157,6 +245,27 @@ function keyPressed() {
 }
 
 function mousePressed() {
+
+  if (choices[currentKey]) {
+    for (let c of choices[currentKey]) {
+      if (mouseX >= c.x - c.w / 2 && mouseX <= c.x + c.w / 2 &&
+          mouseY >= c.y - c.h / 2 && mouseY <= c.y + c.h / 2) {
+        currentKey = c.next;
+        redraw();
+        return;
+      }
+    }
+  }
+
+  if (currentKey === "screen1") {
+    if (mouseX >= 560 && mouseX <= 930 &&
+        mouseY >= 776 && mouseY <= 881) {
+      currentKey = "screen2";
+      redraw();
+      return;
+    }
+  }
+
   let next = storyMap[currentKey];
 
   if (typeof next === 'object') {
@@ -169,4 +278,5 @@ function mousePressed() {
     }
     redraw();
   }
+
 }
