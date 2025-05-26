@@ -446,19 +446,7 @@ function draw() {
 
 
   // 선택지 아이콘 표시
-  // if (choices[currentKey]) {
-  //   for (let c of choices[currentKey]) {
-  //     image(c.img, c.x, c.y, c.w, c.h);
-
-  //     // 마우스 오버 시 텍스트 박스 표시
-  //     if (mouseX >= c.x - c.w / 2 && mouseX <= c.x + c.w / 2 &&
-  //     mouseY >= c.y - c.h / 2 && mouseY <= c.y + c.h / 2) {
-
-  //       let paddingX = 10;
-  //       let paddingY = 8;
-  //       let labelWidth = textWidth(c.label);
-  //       let boxW = labelWidth + paddingX * 1.5;
-  //       let boxH = 30 + paddingY;
+  
   if (choices[currentKey]) {
     for (let c of choices[currentKey]) {
       let isHovered = (
