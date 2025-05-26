@@ -127,6 +127,8 @@ let textMap = {};
         w: 225, h: 225,
         img: null,
         imgPath: "visual assets/screen7icon1.png",
+        hoverImg: null,
+        hoverImgPath: "visual assets/screen7icon1MO.png",
         next: "screen7-1",
         label: "개방감이 있는 카페"
       },
@@ -135,6 +137,8 @@ let textMap = {};
         w: 225, h: 225,
         img: null,
         imgPath: "visual assets/screen7icon2.png",
+        hoverImg: null,
+        hoverImgPath: "visual assets/screen7icon2MO.png",
         next: "screen7-2",
         label: "인문학 독립서점"
       },
@@ -143,6 +147,8 @@ let textMap = {};
         w: 225, h: 225,
         img: null,
         imgPath: "visual assets/screen7icon3.png",
+        hoverImg: null,
+        hoverImgPath: "visual assets/screen7icon3MO.png",
         next: "screen7-3",
         label: "트렌디한 의류 브랜드 매장"
       }
@@ -154,6 +160,8 @@ let textMap = {};
         w: 225, h: 225,
         img: null,
         imgPath: "visual assets/screen7-1icon1.png",
+        hoverImg: null,
+        hoverImgPath: "visual assets/screen7-1icon1MO.png",
         next: "screen7-1-1",
         label: "낮에는 카페, 밤에는 칵테일 바로 혼합 운영"
       },
@@ -162,6 +170,8 @@ let textMap = {};
         w: 225, h: 225,
         img: null,
         imgPath: "visual assets/screen7-1icon2.png",
+        hoverImg: null,
+        hoverImgPath: "visual assets/screen7-1icon2MO.png",
         next: "screen7-1-2",
         label: "카페에 책 보급을 통해 북카페로 운영"
       }
@@ -173,6 +183,8 @@ let textMap = {};
         w: 225, h: 225,
         img: null,
         imgPath: "visual assets/screen7-1-1icon1.png",
+        hoverImg: null,
+        hoverImgPath: "visual assets/screen7-1-1icon1MO.png",
         next: "screen7-1-1-1",
         label: "매주 주말 라이브 재즈 공연 호스팅"
       },
@@ -181,6 +193,8 @@ let textMap = {};
         w: 225, h: 225,
         img: null,
         imgPath: "visual assets/screen7-1-1icon2.png",
+        hoverImg: null,
+        hoverImgPath: "visual assets/screen7-1-1icon2MO.png",
         next: "screen7-1-1-2",
         label: "하이엔드 스피커 구비하여 뮤직바로 운영"
       }
@@ -192,6 +206,8 @@ let textMap = {};
         w: 225, h: 225,
         img: null,
         imgPath: "visual assets/screen7-1-2icon1.png",
+        hoverImg: null,
+        hoverImgPath: "visual assets/screen7-1-2icon1MO.png",
         next: "screen7-1-2-1",
         label: "회화, 디자인, 사진 관련 희귀 예술 서적 구비 (음료 구매 시 무료 열람 가능)"
       },
@@ -200,6 +216,8 @@ let textMap = {};
         w: 225, h: 225,
         img: null,
         imgPath: "visual assets/screen7-1-2icon2.png",
+        hoverImg: null,
+        hoverImgPath: "visual assets/screen7-1-2icon2MO.png",
         next: "screen7-1-2-2",
         label: "인기 만화 시리즈 대여섯 편 전권 구비 (음료 구매 시 무료 열람 가능)"
       }
@@ -211,6 +229,8 @@ let textMap = {};
         w: 225, h: 225,
         img: null,
         imgPath: "visual assets/screen7-2icon1.png",
+        hoverImg: null,
+        hoverImgPath: "visual assets/screen7-2icon1MO.png",
         next: "screen7-2-1",
         label: "매주 주말 작가 초청 북토크 운영"
       },
@@ -219,6 +239,8 @@ let textMap = {};
         w: 225, h: 225,
         img: null,
         imgPath: "visual assets/screen7-2icon2.png",
+        hoverImg: null,
+        hoverImgPath: "visual assets/screen7-2icon2MO.png",
         next: "screen7-2-2",
         label: "문구 편집샵으로 동시 운영"
       }
@@ -230,6 +252,8 @@ let textMap = {};
         w: 225, h: 225,
         img: null,
         imgPath: "visual assets/screen7-2-1icon1.png",
+        hoverImg: null,
+        hoverImgPath: "visual assets/screen7-2-1icon1MO.png",
         next: "screen7-2-1-1",
         label: "강연 후 한 달 동안 작가 추천 노트가 담긴 서적 10선 DP, 할인된 가격에 판매"
       },
@@ -238,6 +262,8 @@ let textMap = {};
         w: 225, h: 225,
         img: null,
         imgPath: "visual assets/screen7-2-1icon2.png",
+        hoverImg: null,
+        hoverImgPath: "visual assets/screen7-2-1icon2MO.png",
         next: "screen7-2-1-2",
         label: "신청자를 받아 작가와 함께하는 문예창작 원데이 클래스 운영, 추후 서점에 결과물 전시"
       }
@@ -249,6 +275,8 @@ let textMap = {};
         w: 225, h: 225,
         img: null,
         imgPath: "visual assets/screen7-2-2icon1.png",
+        hoverImg: null,
+        hoverImgPath: "visual assets/screen7-2-2icon1MO.png",
         next: "screen7-2-2-1",
         label: "도서 구매 시, 인근 가죽 공장과 협업하여 책 사이즈에 맞는 가죽 북커버 제작 클래스 참여 가능"
       },
@@ -257,6 +285,8 @@ let textMap = {};
         w: 225, h: 225,
         img: null,
         imgPath: "visual assets/screen7-2-2icon2.png",
+        hoverImg: null,
+        hoverImgPath: "visual assets/screen7-2-2icon2MO.png",
         next: "screen7-2-2-2",
         label: "매달 책과 어울리는 문구 큐레이션 묶음을 새로 런칭 후 판매"
       }
@@ -268,6 +298,8 @@ let textMap = {};
         w: 225, h: 225,
         img: null,
         imgPath: "visual assets/screen7-3icon1.png",
+        hoverImg: null,
+        hoverImgPath: "visual assets/screen7-3icon1MO.png",
         next: "screen7-3-1",
         label: "인근 봉제공장과 협동하여 의류 구매자 대상으로 빈티지 작업복 리폼 클래스 운영"
       },
@@ -276,6 +308,8 @@ let textMap = {};
         w: 225, h: 225,
         img: null,
         imgPath: "visual assets/screen7-3icon2.png",
+        hoverImg: null,
+        hoverImgPath: "visual assets/screen7-3icon2MO.png",
         next: "screen7-3-2",
         label: "맞춤형 테일러링 서비스 기반 수제 의류 판매"
       }
@@ -287,6 +321,8 @@ let textMap = {};
         w: 225, h: 225,
         img: null,
         imgPath: "visual assets/screen7-3-1icon1.png",
+        hoverImg: null,
+        hoverImgPath: "visual assets/screen7-3-1icon1MO.png",
         next: "screen7-3-1-1",
         label: "베스트 작업복 리폼작 선정 후 작가 이름 병기하여 정식 라인업 출시"
       },
@@ -295,6 +331,8 @@ let textMap = {};
         w: 225, h: 225,
         img: null,
         imgPath: "visual assets/screen7-3-1icon2.png",
+        hoverImg: null,
+        hoverImgPath: "visual assets/screen7-3-1icon2MO.png",
         next: "screen7-3-1-2",
         label: "매달 작업복 리폼작을 활용하여 모델 런웨이 개최"
       }
@@ -306,6 +344,8 @@ let textMap = {};
         w: 225, h: 225,
         img: null,
         imgPath: "visual assets/screen7-3-2icon1.png",
+        hoverImg: null,
+        hoverImgPath: "visual assets/screen7-3-2icon1MO.png",
         next: "screen7-3-2-1",
         label: "서울 주요 대학가에 이동식 테일러링 부스 설치하여 매장 홍보"
       },
@@ -314,6 +354,8 @@ let textMap = {};
         w: 225, h: 225,
         img: null,
         imgPath: "visual assets/screen7-3-2icon2.png",
+        hoverImg: null,
+        hoverImgPath: "visual assets/screen7-3-2icon2MO.png",
         next: "screen7-3-2-2",
         label: "라디오에서 '사연 기반 테일러링' 응모를 받아 추첨을 통해 10명에게 무료로 의류 제작"
       }
@@ -334,16 +376,11 @@ let textMap = {};
     // 2단계: 선택지 아이콘 이미지 로딩 (로딩 안 된 이미지 체크)
     for (let key in choices) {
       for (let choice of choices[key]) {
-        loadImage(choice.imgPath,
-          img => {
-            choice.img = img;
-            console.log(`✅ 아이콘 로드됨: ${choice.imgPath}`);
-          },
-          () => console.error(`❌ 아이콘 로드 실패: ${choice.imgPath}`)
-        );
+        choice.img = loadImage(choice.imgPath);
+        choice.hoverImg = loadImage(choice.hoverImgPath);
       }
     }
-    }
+  }
   
 
 function setup() {
@@ -409,19 +446,37 @@ function draw() {
 
 
   // 선택지 아이콘 표시
+  // if (choices[currentKey]) {
+  //   for (let c of choices[currentKey]) {
+  //     image(c.img, c.x, c.y, c.w, c.h);
+
+  //     // 마우스 오버 시 텍스트 박스 표시
+  //     if (mouseX >= c.x - c.w / 2 && mouseX <= c.x + c.w / 2 &&
+  //     mouseY >= c.y - c.h / 2 && mouseY <= c.y + c.h / 2) {
+
+  //       let paddingX = 10;
+  //       let paddingY = 8;
+  //       let labelWidth = textWidth(c.label);
+  //       let boxW = labelWidth + paddingX * 1.5;
+  //       let boxH = 30 + paddingY;
   if (choices[currentKey]) {
     for (let c of choices[currentKey]) {
-      image(c.img, c.x, c.y, c.w, c.h);
-
-      // 마우스 오버 시 텍스트 박스 표시
-      if (mouseX >= c.x - c.w / 2 && mouseX <= c.x + c.w / 2 &&
-      mouseY >= c.y - c.h / 2 && mouseY <= c.y + c.h / 2) {
-
+      let isHovered = (
+        mouseX >= c.x - c.w / 2 && mouseX <= c.x + c.w / 2 &&
+        mouseY >= c.y - c.h / 2 && mouseY <= c.y + c.h / 2
+      );
+  
+      let iconToShow = isHovered ? c.hoverImg : c.img;
+      image(iconToShow, c.x, c.y, c.w, c.h);
+  
+      // 🔍 마우스오버 시 텍스트 박스도 같이 표시
+      if (isHovered) {
         let paddingX = 10;
         let paddingY = 8;
         let labelWidth = textWidth(c.label);
-        let boxW = labelWidth + paddingX * 1.5;
-        let boxH = 30 + paddingY;
+        let boxW = labelWidth + paddingX * 2;
+        let boxH = 24 + paddingY;
+
 
   // 텍스트 박스 (배경)
   fill(255);
