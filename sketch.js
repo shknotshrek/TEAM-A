@@ -155,7 +155,6 @@ let musicStarted = false;
     "screen11.png",
     "screen12.png",
     "screen13.png",
-    "screen13.png",
     "screen14.png",
     "screen14-1.png",
     "screen15.png",
@@ -428,12 +427,12 @@ let musicStarted = false;
     // 벽화 파트
 
     wallTextureImage = loadImage('wall.png');
-    musicAssets.basic = loadSound('Dream2.mp3');
-    musicAssets.spray = loadSound('Dream1.mp3');
+    musicAssets.basic = loadSound('audio assets/Dream2.mp3');
+    musicAssets.spray = loadSound('audio assets/Dream1.mp3');
     // 사운드 로드 예시 (실제 사운드 파일이 있다면 사용)
     // soundFormats('mp3', 'ogg');
     // sounds = [loadSound('brush1.mp3'), loadSound('spray.mp3'), loadSound('paint.mp3'), loadSound('marker.mp3')];
-  }
+  };
   
 
 function setup() {
@@ -841,9 +840,13 @@ function setup() {
 function draw() {
 
   if (currentKey === "screen13") {
-    drawMural(); // 벽화 그리기 모드로 진입!
+    showBrushUI(true);  // 벽화 모드일 때만 버튼 보이기
+    drawMural();
     return;
+  } else {
+    showBrushUI(false); // 그 외 화면에서는 버튼 숨기기
   }
+
 
   background(0);
 
@@ -1142,6 +1145,21 @@ function updateButtonPositions() {
   if (completeButton) {
     completeButton.position(muralCanvas.width + buttonMargin, startY);
   }
+}
+
+function showBrushUI(show) {
+  for (let btn of brushButtons) {
+    if (show) btn.show();
+    else btn.hide();
+  }
+
+  for (let btn of colorButtons) {
+    if (show) btn.show();
+    else btn.hide();
+  }
+
+  if (resetButton) (show ? resetButton.show() : resetButton.hide());
+  if (completeButton) (show ? completeButton.show() : completeButton.hide());
 }
 
 
