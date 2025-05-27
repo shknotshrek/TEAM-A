@@ -2,6 +2,40 @@ let images = {};
 let currentKey = "screen1";
 let textMap = {};
 
+// 벽화 파트 변수
+
+let muralCanvas;
+let wallTextureImage;
+let initialMuralImage;
+
+let brushes = [];
+let selectedBrush;
+const BRUSH_COUNT = 4;
+let brushButtons = [];
+let resetButton;
+let completeButton;
+
+const muralCanvasWidth = 1200;
+const muralCanvasHeight = 982;
+const sidebarWidth = 1512 - muralCanvasWidth; // 312
+const buttonHeight = 40;
+const buttonMargin = 10;
+
+let showComparison = false;
+let currentStage = 1;
+
+let colorButtons = [];
+let brushColors;
+
+let brushSize = 1.0; // 0.5~6.0 사이 값, 1.0이 기본
+let sliderX, sliderY, sliderW, sliderH, handleX;
+let draggingHandle = false;
+let currentColor; // <- 추가: 현재 선택된 색상
+
+let musicAssets = {};
+let currentMusic = null;
+let musicStarted = false;
+
   // 스토리 분기 표시
 
   let storyMap = {
@@ -390,12 +424,157 @@ let textMap = {};
         choice.hoverImg = loadImage(choice.hoverImgPath);
       }
     }
+
+    // 벽화 파트
+
+    wallTextureImage = loadImage('wall.png');
+    musicAssets.basic = loadSound('Dream2.mp3');
+    musicAssets.spray = loadSound('Dream1.mp3');
+    // 사운드 로드 예시 (실제 사운드 파일이 있다면 사용)
+    // soundFormats('mp3', 'ogg');
+    // sounds = [loadSound('brush1.mp3'), loadSound('spray.mp3'), loadSound('paint.mp3'), loadSound('marker.mp3')];
   }
   
 
 function setup() {
   createCanvas(1512, 982); // 혹은 windowWidth, windowHeight로 바꿔도 돼
   imageMode(CENTER);
+
+  muralCanvas = createGraphics(muralCanvasWidth, muralCanvasHeight);
+
+  // 색상 배열은 setup에서 p5 color()로 초기화
+  brushColors = [
+    color('#f05454'), color('#f5c951'), color('#a4cf38'), color('#1d6332'),
+    color('#86ebd5'), color('#86d0eb'), color('#6481ed'), color('#9f64ed')
+  ];
+
+  currentColor = brushColors[0]; // 기본값으로 첫 번째 색상
+
+  // 슬라이더 위치 및 크기 설정
+  sliderW = sidebarWidth - 2 * buttonMargin;
+  sliderH = 8;
+  sliderX = muralCanvas.width + buttonMargin;
+  sliderY = 320; // 색상 버튼 아래 충분히 떨어지게, draw에서 동적으로 조정
+  handleX = sliderX + sliderW / 2;
+
+  initializeMuralCanvas();
+
+  brushes = [
+    {
+      name: '기본 붓',
+      music: 'basic',
+      color: color(255, 100, 100, 200),
+      draw: function(x, y, pX, pY, speed) {
+        // 기본 붓: 둥근 붓 느낌, 끝이 둥글고 soft
+        muralCanvas.strokeWeight(8 * brushSize);
+        muralCanvas.stroke(currentColor);
+        muralCanvas.line(x, y, pX, pY);
+        // 끝에 둥근 붓 느낌
+        muralCanvas.noStroke();
+        muralCanvas.fill(currentColor);
+        muralCanvas.ellipse(x, y, 8 * brushSize, 8 * brushSize);
+        muralCanvas.ellipse(pX, pY, 8 * brushSize, 8 * brushSize);
+      }
+    },
+    {
+      name: '스프레이',
+      music: 'spray',
+      color: color(100, 255, 100, 150),
+      draw: function(x, y, pX, pY, speed) {
+        let spraySize = 20 * brushSize; // 분사 범위만 brushSize에 비례
+        muralCanvas.noStroke();
+        let dotCount = floor(map(brushSize, 0.5, 6.0, 6, 24));
+        for (let i = 0; i < dotCount; i++) {
+          let offsetX = random(-spraySize, spraySize);
+          let offsetY = random(-spraySize, spraySize);
+          let d = dist(0, 0, offsetX, offsetY);
+          if (d < spraySize) {
+            muralCanvas.fill(red(currentColor), green(currentColor), blue(currentColor), random(50, 120));
+            muralCanvas.ellipse(x + offsetX, y + offsetY, random(2, 5), random(2, 5)); // brushSize와 무관하게 고정
+          }
+        }
+      }
+    },
+    {
+      name: '물감붓',
+      color: color(100, 100, 255, 180),
+      draw: function(x, y, pX, pY, speed) {
+        // 물감붓: brushSize가 작을 때도 자연스러운 번짐 효과
+        muralCanvas.noStroke();
+        let r = red(currentColor);
+        let g = green(currentColor);
+        let b = blue(currentColor);
+
+        let len = dist(x, y, pX, pY);
+        // brushSize가 작을수록 steps를 더 늘림
+        let steps = max(3, floor(len / Math.max(1.2, brushSize * 1.5)));
+        for (let i = 0; i <= steps; i++) {
+          let t = i / steps;
+          let ix = lerp(x, pX, t);
+          let iy = lerp(y, pY, t);
+          let angle = atan2(y - pY, x - pX) + random(-0.5, 0.5);
+
+          // 중심부 진한 타원
+          let w1 = Math.max(8, brushSize * random(10, 18));
+          let h1 = Math.max(5, brushSize * random(6, 14));
+          muralCanvas.push();
+          muralCanvas.translate(ix, iy);
+          muralCanvas.rotate(angle);
+          muralCanvas.fill(r, g, b, 40 * random(0.8, 1.2));
+          muralCanvas.ellipse(0, 0, w1, h1);
+          muralCanvas.pop();
+
+          // 바깥쪽 연한 번짐(brushSize가 작아도 일정 크기 이상)
+          if (random() < 0.5) {
+            let w2 = Math.max(18, brushSize * random(22, 38));
+            let h2 = Math.max(10, brushSize * random(14, 28));
+            muralCanvas.push();
+            muralCanvas.translate(ix + random(-8, 8), iy + random(-8, 8));
+            muralCanvas.rotate(angle + random(-0.3, 0.3));
+            // brushSize가 작을수록 알파값을 더 높임
+            let alpha = lerp(18, 10, constrain(brushSize / 2, 0, 1));
+            muralCanvas.fill(r, g, b, alpha * random(0.7, 1.2));
+            muralCanvas.ellipse(0, 0, w2, h2);
+            muralCanvas.pop();
+          }
+        }
+      }
+    },
+    {
+      name: '마커펜',
+      color: color(255, 255, 100, 100),
+      draw: function(x, y, pX, pY, speed) {
+        // 마커펜: 선분 전체에 네모 단면 반복, 잉크 번짐 효과
+        let thick = 16 * brushSize;
+        let len = dist(x, y, pX, pY);
+        let steps = max(1, floor(len / (thick * 0.7)));
+        muralCanvas.noStroke();
+        muralCanvas.fill(currentColor);
+        muralCanvas.rectMode(CENTER);
+        for (let i = 0; i <= steps; i++) {
+          let t = i / steps;
+          let ix = lerp(x, pX, t);
+          let iy = lerp(y, pY, t);
+          muralCanvas.rect(ix, iy, thick, thick * 0.7, 2);
+          // 잉크 번짐 효과
+          muralCanvas.fill(red(currentColor), green(currentColor), blue(currentColor), 40);
+          muralCanvas.rect(ix, iy, thick * 1.4, thick * 1.1, 4);
+          muralCanvas.fill(currentColor);
+        }
+        muralCanvas.rectMode(CORNER);
+      }
+    }
+  ];
+
+  createBrushButtons();
+  createControlButtons();
+  createColorButtons(getNextY());
+
+  selectedBrush = brushes[0];
+  initialMuralImage = muralCanvas.get();
+
+  console.log("Setup 완료");
+
 
     // 화면에 띄울 글 목록
 
@@ -660,6 +839,12 @@ function setup() {
 }
 
 function draw() {
+
+  if (currentKey === "screen13") {
+    drawMural(); // 벽화 그리기 모드로 진입!
+    return;
+  }
+
   background(0);
 
   let img = images[currentKey];
@@ -749,6 +934,23 @@ function keyPressed() {
 
 function mousePressed() {
 
+  if (currentKey === "screen13") {
+    if (mouseX > 0 && mouseX < muralCanvas.width && mouseY > 0 && mouseY < muralCanvas.height) {
+      selectedBrush.draw(mouseX, mouseY, mouseX, mouseY, 0);
+      // 음악 재생
+      if (!musicStarted && selectedBrush.music && musicAssets[selectedBrush.music]) {
+        currentMusic = musicAssets[selectedBrush.music];
+        currentMusic.loop();
+        musicStarted = true;
+      }
+    }
+    // 슬라이더 핸들 클릭 감지
+    let d = dist(mouseX, mouseY, handleX, sliderY + sliderH / 2);
+    if (d < 18) {
+      draggingHandle = true;
+    }
+  }
+
   if (choices[currentKey]) {
     for (let c of choices[currentKey]) {
       if (mouseX >= c.x - c.w / 2 && mouseX <= c.x + c.w / 2 &&
@@ -782,4 +984,230 @@ function mousePressed() {
     redraw();
   }
 
+}
+
+function mouseDragged(){
+  if (currentKey === "screen13") {
+    if (mouseX > 0 && mouseX < muralCanvas.width && mouseY > 0 && mouseY < muralCanvas.height) {
+      let speed = dist(mouseX, mouseY, pmouseX, pmouseY);
+      drawLineSmooth(selectedBrush, pmouseX, pmouseY, mouseX, mouseY, speed);
+    }
+    if (draggingHandle) {
+      // 슬라이더 내에서만 이동
+      let mx = constrain(mouseX, sliderX, sliderX + sliderW);
+      brushSize = map(mx, sliderX, sliderX + sliderW, 0.5, 6.0); // 최대값 6.0으로 증가
+    }
+  }
+}
+
+function mouseReleased(){
+  if (currentKey === "screen13") {
+    draggingHandle = false;
+  }
+}
+
+function initializeMuralCanvas() {
+  if (wallTextureImage) {
+    muralCanvas.image(wallTextureImage, 0, 0, muralCanvas.width, muralCanvas.height);
+  } else {
+    muralCanvas.background(220);
+  }
+  showComparison = false;
+  currentStage = 1;
+  initialMuralImage = muralCanvas.get();
+}
+
+function drawLineSmooth(brush, x1, y1, x2, y2, speed) {
+  // 점 간 간격을 더 촘촘하게 하여 자연스러운 선이 되도록 개선
+  const distance = dist(x1, y1, x2, y2);
+  const steps = max(2, floor(distance / 0.8)); // 더 촘촘하게
+  for (let i = 1; i <= steps; i++) { // i=1부터 시작
+    let t = i / steps;
+    let x = lerp(x1, x2, t);
+    let y = lerp(y1, y2, t);
+    let prevT = (i - 1) / steps;
+    let px = lerp(x1, x2, prevT);
+    let py = lerp(y1, y2, prevT);
+    brush.draw(x, y, px, py, speed);
+  }
+}
+
+
+function createBrushButtons() {
+  for (let btn of brushButtons) {
+    btn.remove();
+  }
+  brushButtons = [];
+
+  let startY = buttonMargin;
+  for (let i = 0; i < BRUSH_COUNT; i++) {
+    let btn = createButton(brushes[i].name);
+    btn.position(muralCanvas.width + buttonMargin, startY);
+    btn.size(sidebarWidth - 2 * buttonMargin, buttonHeight);
+    btn.mousePressed(() => {
+      // 음악 정지
+      if (currentMusic && currentMusic.isPlaying()) {
+        currentMusic.stop();
+      }
+      musicStarted = false;
+      selectedBrush = brushes[i];
+      console.log(`선택된 브러시: ${selectedBrush.name}`);
+    });
+    brushButtons.push(btn);
+    startY += buttonHeight + buttonMargin;
+  }
+}
+
+function createControlButtons() {
+  let startY = buttonMargin + (buttonHeight + buttonMargin) * BRUSH_COUNT;
+
+  resetButton = createButton('다시 그리기 (Reset)');
+  resetButton.position(muralCanvas.width + buttonMargin, startY);
+  resetButton.size(sidebarWidth - 2 * buttonMargin, buttonHeight);
+  resetButton.mousePressed(() => {
+    // 음악 정지
+    if (currentMusic && currentMusic.isPlaying()) {
+      currentMusic.stop();
+    }
+    musicStarted = false;
+    initializeMuralCanvas();
+  });
+
+  completeButton = createButton('벽화 완성!');
+  completeButton.position(muralCanvas.width + buttonMargin, startY + buttonHeight + buttonMargin);
+  completeButton.size(sidebarWidth - 2 * buttonMargin, buttonHeight);
+  completeButton.mousePressed(() => {
+    // 음악 정지
+    if (currentMusic && currentMusic.isPlaying()) {
+      currentMusic.stop();
+    }
+    musicStarted = false;
+    showComparison = true;
+    currentStage = 2;
+  });
+}
+
+function createColorButtons(startY) {
+  // 기존 색상 버튼 제거
+  for (let btn of colorButtons) {
+    btn.remove();
+  }
+  colorButtons = [];
+
+  const btnSize = 28;
+  const gap = 10;
+  const colorsPerRow = 4;
+  for (let i = 0; i < brushColors.length; i++) {
+    let row = floor(i / colorsPerRow);
+    let col = i % colorsPerRow;
+    let btn = createButton('');
+    btn.position(
+      muralCanvas.width + buttonMargin + col * (btnSize + gap),
+      startY + row * (btnSize + gap)
+    );
+    btn.size(btnSize, btnSize);
+    btn.style('border-radius', '50%');
+    btn.style('background-color', `rgb(${red(brushColors[i])},${green(brushColors[i])},${blue(brushColors[i])})`);
+    btn.style('border', '2px solid #fff');
+    btn.mousePressed(() => {
+      currentColor = brushColors[i];
+    });
+    colorButtons.push(btn);
+  }
+}
+
+function getNextY() {
+  let maxY = 0;
+  for (let btn of [...brushButtons, resetButton, completeButton]) {
+    if (btn) {
+      let y = btn.position().y;
+      if (y > maxY) maxY = y;
+    }
+  }
+  return maxY + buttonHeight + buttonMargin;
+}
+
+function updateButtonPositions() {
+  let startY = buttonMargin;
+  for (let btn of brushButtons) {
+    if (btn) {
+      btn.position(muralCanvas.width + buttonMargin, startY);
+      startY += buttonHeight + buttonMargin;
+    }
+  }
+  if (resetButton) {
+    resetButton.position(muralCanvas.width + buttonMargin, startY);
+    startY += buttonHeight + buttonMargin;
+  }
+  if (completeButton) {
+    completeButton.position(muralCanvas.width + buttonMargin, startY);
+  }
+}
+
+
+function drawMural() {
+  background(50);
+
+  if (showComparison) {
+    if (initialMuralImage) {
+      image(initialMuralImage, 0, 0, muralCanvas.width / 2 - 5, height);
+    }
+    image(muralCanvas, muralCanvas.width / 2 + 5, 0, muralCanvas.width / 2 - 5, height);
+
+    fill(255);
+    textAlign(CENTER, CENTER);
+    textSize(20);
+    text("Before", (muralCanvas.width / 2 - 5) / 2, height - 30);
+    text("After", muralCanvas.width / 2 + 5 + (muralCanvas.width / 2 - 5) / 2, height - 30);
+  } else {
+    image(muralCanvas, 0, 0);
+  }
+
+  fill(100);
+  noStroke();
+  rect(muralCanvas.width, 0, sidebarWidth, height);
+
+  fill(255);
+  textSize(14);
+  textAlign(LEFT, TOP);
+  text(`선택: ${selectedBrush.name}`, muralCanvas.width + buttonMargin, height - 60);
+  text("마우스를 드래그하여 그림을 그리세요.", 10, height - 30);
+
+  fill(255, 255, 0);
+  textSize(18);
+  textAlign(CENTER, CENTER);
+  if (currentStage === 1 && !showComparison) {
+    text("붓을 들어 골목길의 활기를 되찾아 보자!", muralCanvas.width / 2, 30);
+  } else if (currentStage === 2 && !showComparison) {
+    text("정말 멋진 벽화야! 거리의 분위기가 밝아졌어!", muralCanvas.width / 2, 30);
+  } else if (showComparison) {
+    text("과거와 비교해 보니, 몰라보게 달라졌네!", muralCanvas.width / 2, 30);
+  }
+
+  // 브러시 크기 슬라이더 그리기 (색상 버튼 아래)
+  let sliderTop = getNextY() + 60; // 색상 버튼과 충분히 띄움
+  sliderY = sliderTop + 30;        // 텍스트와 핸들이 겹치지 않게 더 아래로
+  // 슬라이더 바
+  fill(180);
+  rect(sliderX, sliderY, sliderW, sliderH, 4);
+  // 핸들 위치 계산
+  handleX = sliderX + map(brushSize, 0.5, 6.0, 0, sliderW);
+  // 핸들(동그라미)
+  fill(255);
+  ellipse(handleX, sliderY + sliderH / 2, 28, 28);
+  // 미리보기 원 (슬라이더 아래, 현재 브러시 크기와 색상 반영)
+  let previewY = sliderY + 110; // 더 아래로 내려서 텍스트와 겹치지 않게
+  fill(red(currentColor), green(currentColor), blue(currentColor), 200);
+  noStroke();
+  ellipse(sliderX + sliderW / 2, previewY, min(24 * brushSize, 60), min(24 * brushSize, 60));
+  stroke(80, 80, 80, 80);
+  strokeWeight(1.5);
+  noFill();
+  ellipse(sliderX + sliderW / 2, previewY, min(24 * brushSize, 60), min(24 * brushSize, 60));
+  noStroke();
+  fill(255);
+  textAlign(CENTER, CENTER);
+  textSize(13);
+  // 텍스트를 슬라이더 아래로 이동
+  text('브러시 크기', sliderX + sliderW / 2, sliderY + 40);
 }
