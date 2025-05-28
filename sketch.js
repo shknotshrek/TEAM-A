@@ -36,6 +36,9 @@ let musicAssets = {};
 let currentMusic = null;
 let musicStarted = false;
 
+let introMusic;
+let introMusicStarted = false;
+
   // 스토리 분기 표시
 
   let storyMap = {
@@ -429,6 +432,7 @@ let musicStarted = false;
     wallTextureImage = loadImage('visual assets/wall.png');
     musicAssets.basic = loadSound('audio assets/Dream2.mp3');
     musicAssets.spray = loadSound('audio assets/Dream1.mp3');
+    introMusic = loadSound('audio assets/intro.mp3');
     // 사운드 로드 예시 (실제 사운드 파일이 있다면 사용)
     // soundFormats('mp3', 'ogg');
     // sounds = [loadSound('brush1.mp3'), loadSound('spray.mp3'), loadSound('paint.mp3'), loadSound('marker.mp3')];
@@ -844,6 +848,23 @@ function setup() {
 }
 
 function draw() {
+
+  if (
+    ["screen2", "screen2-1", "screen2-2", "screen2-3", "screen2-4", "screen3", "screen3-1", "screen4", "screen5", "screen6"].includes(currentKey)
+    && !introMusicStarted
+  ) {
+    introMusic.loop(); // 반복 재생
+    introMusicStarted = true;
+  }
+
+  // 👉 다른 화면으로 넘어가면 멈추고 플래그 리셋
+  if (
+    !["screen2", "screen2-1", "screen2-2", "screen2-3", "screen2-4", "screen3", "screen3-1", "screen4", "screen5", "screen6"].includes(currentKey)
+    && introMusicStarted
+  ) {
+    introMusic.stop();
+    introMusicStarted = false;
+  }
 
   if (currentKey === "screen13") {
     showBrushUI(true);  // 벽화 모드일 때만 버튼 보이기
