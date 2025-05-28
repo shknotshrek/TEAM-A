@@ -450,10 +450,16 @@ function setup() {
   currentColor = brushColors[0]; // 기본값으로 첫 번째 색상
 
   // 슬라이더 위치 및 크기 설정
-  sliderW = sidebarWidth - 2 * buttonMargin;
+  // sliderW = sidebarWidth - 2 * buttonMargin;
+  // sliderH = 8;
+  // sliderX = muralCanvas.width + buttonMargin;
+  // sliderY = 320; // 색상 버튼 아래 충분히 떨어지게, draw에서 동적으로 조정
+  // handleX = sliderX + sliderW / 2;
+
+  sliderW = sidebarWidth/2 - 10; // 좌우 여백 합쳐서 40 정도
   sliderH = 8;
-  sliderX = muralCanvas.width + buttonMargin;
-  sliderY = 320; // 색상 버튼 아래 충분히 떨어지게, draw에서 동적으로 조정
+  sliderX = muralCanvasWidth + 80
+  sliderY = 350;
   handleX = sliderX + sliderW / 2;
 
   initializeMuralCanvas();
@@ -924,7 +930,6 @@ function draw() {
 }
 
 
-
 function keyPressed() {
   if (key === ' ') {
     let next = storyMap[currentKey];
@@ -1164,26 +1169,41 @@ function showBrushUI(show) {
 
 
 function drawMural() {
+
+  // 전체 배경 어두운 색
   background(50);
 
-  if (showComparison) {
-    if (initialMuralImage) {
-      image(initialMuralImage, 0, 0, muralCanvas.width / 2 - 5, height);
-    }
-    image(muralCanvas, muralCanvas.width / 2 + 5, 0, muralCanvas.width / 2 - 5, height);
+  // --- 벽화 그리기 영역 ---
+  push();
+  // 좌표 (0,0)이 좌상단이 되도록
+  imageMode(CORNER);
 
-    fill(255);
-    textAlign(CENTER, CENTER);
-    textSize(20);
-    text("Before", (muralCanvas.width / 2 - 5) / 2, height - 30);
-    text("After", muralCanvas.width / 2 + 5 + (muralCanvas.width / 2 - 5) / 2, height - 30);
+  if (showComparison) {
+    // Before / After 비교 모드
+    image(
+      initialMuralImage,
+      0, 0,
+      muralCanvas.width/2 - 5, height
+    );
+    image(
+      muralCanvas,
+      muralCanvas.width/2 + 5, 0,
+      muralCanvas.width/2 - 5, height
+    );
   } else {
-    image(muralCanvas, 0, 0);
+    // 일반 벽화 모드: 왼쪽을 꽉 채워 그림
+    image(
+      muralCanvas,
+      0, 0,
+      muralCanvas.width, height
+    );
   }
+  pop();
+
 
   fill(100);
   noStroke();
-  rect(muralCanvas.width, 0, sidebarWidth, height);
+  // rect(muralCanvas.width, 0, sidebarWidth, height);
 
   fill(255);
   textSize(14);
@@ -1205,14 +1225,18 @@ function drawMural() {
   // 브러시 크기 슬라이더 그리기 (색상 버튼 아래)
   let sliderTop = getNextY() + 60; // 색상 버튼과 충분히 띄움
   sliderY = sliderTop + 30;        // 텍스트와 핸들이 겹치지 않게 더 아래로
+
   // 슬라이더 바
   fill(180);
   rect(sliderX, sliderY, sliderW, sliderH, 4);
+
   // 핸들 위치 계산
   handleX = sliderX + map(brushSize, 0.5, 6.0, 0, sliderW);
+
   // 핸들(동그라미)
   fill(255);
   ellipse(handleX, sliderY + sliderH / 2, 28, 28);
+
   // 미리보기 원 (슬라이더 아래, 현재 브러시 크기와 색상 반영)
   let previewY = sliderY + 110; // 더 아래로 내려서 텍스트와 겹치지 않게
   fill(red(currentColor), green(currentColor), blue(currentColor), 200);
@@ -1226,6 +1250,7 @@ function drawMural() {
   fill(255);
   textAlign(CENTER, CENTER);
   textSize(13);
+
   // 텍스트를 슬라이더 아래로 이동
   text('브러시 크기', sliderX + sliderW / 2, sliderY + 40);
 }
