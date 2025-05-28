@@ -426,7 +426,7 @@ let musicStarted = false;
 
     // 벽화 파트
 
-    wallTextureImage = loadImage('wall.png');
+    wallTextureImage = loadImage('visual assets/wall.png');
     musicAssets.basic = loadSound('audio assets/Dream2.mp3');
     musicAssets.spray = loadSound('audio assets/Dream1.mp3');
     // 사운드 로드 예시 (실제 사운드 파일이 있다면 사용)
