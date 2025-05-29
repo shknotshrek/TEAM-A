@@ -469,8 +469,12 @@ function setup() {
 
   // 색상 배열은 setup에서 p5 color()로 초기화
   brushColors = [
-    color('#f05454'), color('#f5c951'), color('#a4cf38'), color('#1d6332'),
-    color('#86ebd5'), color('#86d0eb'), color('#6481ed'), color('#9f64ed')
+    // Top row (8 colors)
+    color('#f05454'), color('#f77d4d'), color('#f5c951'), color('#c9ffb3'),
+    color('#a4cf38'), color('#57ba5e'), color('#57ba96'), color('#1d6332'),
+    // Bottom row (8 colors)
+    color('#86ebd5'), color('#57baaf'), color('#86d0eb'), color('#6481ed'),
+    color('#575bba'), color('#c1b3ff'), color('#9f64ed'), color('#f5b3ff')
   ];
 
   currentColor = brushColors[0]; // 기본값으로 첫 번째 색상
@@ -1004,7 +1008,9 @@ function keyPressed() {
 function mousePressed() {
 
   if (currentKey === "screen13") {
-    if (mouseX > 0 && mouseX < muralCanvas.width && mouseY > 0 && mouseY < muralCanvas.height) {
+    let d = dist(mouseX, mouseY, handleX, sliderY + sliderH / 2);
+    if (d < 18) draggingHandle = true;
+    if (!draggingHandle && mouseX > 0 && mouseX < muralCanvas.width && mouseY > 0 && mouseY < muralCanvas.height) {
       selectedBrush.draw(mouseX, mouseY, mouseX, mouseY, 0);
       // 음악 재생
       if (!musicStarted && selectedBrush.music && musicAssets[selectedBrush.music]) {
@@ -1013,11 +1019,7 @@ function mousePressed() {
         musicStarted = true;
       }
     }
-    // 슬라이더 핸들 클릭 감지
-    let d = dist(mouseX, mouseY, handleX, sliderY + sliderH / 2);
-    if (d < 18) {
-      draggingHandle = true;
-    }
+    
   }
 
   if (choices[currentKey]) {
@@ -1060,7 +1062,7 @@ function mousePressed() {
 
 function mouseDragged(){
   if (currentKey === "screen13") {
-    if (mouseX > 0 && mouseX < muralCanvas.width && mouseY > 0 && mouseY < muralCanvas.height) {
+    if (!draggingHandle && mouseX > 0 && mouseX < muralCanvas.width && mouseY > 0 && mouseY < muralCanvas.height) {
       let speed = dist(mouseX, mouseY, pmouseX, pmouseY);
       drawLineSmooth(selectedBrush, pmouseX, pmouseY, mouseX, mouseY, speed);
     }
@@ -1168,7 +1170,7 @@ function createColorButtons(startY) {
 
   const btnSize = 28;
   const gap = 10;
-  const colorsPerRow = 4;
+  const colorsPerRow = 8;
   for (let i = 0; i < brushColors.length; i++) {
     let row = floor(i / colorsPerRow);
     let col = i % colorsPerRow;
