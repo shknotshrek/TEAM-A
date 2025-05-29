@@ -480,15 +480,16 @@ function setup() {
   currentColor = brushColors[0]; // 기본값으로 첫 번째 색상
 
   // 슬라이더 위치 및 크기 설정
-  // sliderW = sidebarWidth - 2 * buttonMargin;
-  // sliderH = 8;
-  // sliderX = muralCanvas.width + buttonMargin;
-  // sliderY = 320; // 색상 버튼 아래 충분히 떨어지게, draw에서 동적으로 조정
-  // handleX = sliderX + sliderW / 2;
-
-  sliderW = sidebarWidth/2 - 10; // 좌우 여백 합쳐서 40 정도
+  const btnSize = 28;
+  const gap = 10;
+  const colorsPerRow = 8;
+  // 2nd button (index 1) left edge
+  let sliderStart = muralCanvasWidth + buttonMargin + 1 * (btnSize + gap);
+  // 7th button (index 6) right edge (index 6 + 1 = 7, so 8th button left + btnSize)
+  let sliderEnd = muralCanvasWidth + buttonMargin + 6 * (btnSize + gap) + btnSize;
+  sliderX = sliderStart;
+  sliderW = sliderEnd - sliderStart;
   sliderH = 8;
-  sliderX = muralCanvasWidth + 80
   sliderY = 350;
   handleX = sliderX + sliderW / 2;
 
@@ -1015,6 +1016,8 @@ function mousePressed() {
       // 음악 재생
       if (!musicStarted && selectedBrush.music && musicAssets[selectedBrush.music]) {
         currentMusic = musicAssets[selectedBrush.music];
+        let v = map(brushSize, 0.5, 6.0, 0.1, 1.0);
+        currentMusic.setVolume(v);
         currentMusic.loop();
         musicStarted = true;
       }
@@ -1070,6 +1073,10 @@ function mouseDragged(){
       // 슬라이더 내에서만 이동
       let mx = constrain(mouseX, sliderX, sliderX + sliderW);
       brushSize = map(mx, sliderX, sliderX + sliderW, 0.5, 6.0); // 최대값 6.0으로 증가
+      if (currentMusic && currentMusic.isPlaying()) {
+      let v = map(brushSize, 0.5, 6.0, 0.1, 1.0);
+      currentMusic.setVolume(v);
+    }
     }
   }
 }
@@ -1304,14 +1311,17 @@ function drawMural() {
   ellipse(handleX, sliderY + sliderH / 2, 28, 28);
 
   // 미리보기 원 (슬라이더 아래, 현재 브러시 크기와 색상 반영)
-  let previewY = sliderY + 110; // 더 아래로 내려서 텍스트와 겹치지 않게
+  let previewY = sliderY + 110;
+  let previewMax = min(sliderW, 200);
   fill(red(currentColor), green(currentColor), blue(currentColor), 200);
   noStroke();
-  ellipse(sliderX + sliderW / 2, previewY, min(24 * brushSize, 60), min(24 * brushSize, 60));
+  ellipse(sliderX + sliderW / 2, previewY, min(24 * brushSize, previewMax), min(24 * brushSize, previewMax));
+  
   stroke(80, 80, 80, 80);
   strokeWeight(1.5);
   noFill();
-  ellipse(sliderX + sliderW / 2, previewY, min(24 * brushSize, 60), min(24 * brushSize, 60));
+  ellipse(sliderX + sliderW / 2, previewY, min(24 * brushSize, previewMax), min(24 * brushSize, previewMax));
+  
   noStroke();
   fill(255);
   textAlign(CENTER, CENTER);
