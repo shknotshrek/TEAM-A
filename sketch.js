@@ -492,7 +492,7 @@ function setup() {
   ];
 
   currentColor = brushColors[0]; // 기본값으로 첫 번째 색상
-
+  
   // 슬라이더 위치 및 크기 설정 (색상 버튼과 정렬)
   const btnSize = 28;
   const gap = 10;
@@ -506,7 +506,7 @@ function setup() {
   sliderH = 8;
   sliderY = 350;
   handleX = sliderX + sliderW / 2;
-
+  
   initializeMuralCanvas();
 
   brushes = [
