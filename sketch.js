@@ -493,21 +493,21 @@ function setup() {
   ];
 
   currentColor = brushColors[0]; // 기본값으로 첫 번째 색상
-
-  // 슬라이더 위치 및 크기 설정
+  
+  // 슬라이더 위치 및 크기 설정 (색상 버튼과 정렬)
   const btnSize = 28;
   const gap = 10;
   const colorsPerRow = 8;
-  // 2nd button (index 1) left edge
-  let sliderStart = muralCanvasWidth + buttonMargin + 1 * (btnSize + gap);
-  // 7th button (index 6) right edge (index 6 + 1 = 7, so 8th button left + btnSize)
-  let sliderEnd = muralCanvasWidth + buttonMargin + 6 * (btnSize + gap) + btnSize;
-  sliderX = sliderStart;
-  sliderW = sliderEnd - sliderStart;
+  // 슬라이더 트랙의 시작점: 왼쪽에서 두 번째 색상 버튼의 왼쪽 끝
+  sliderX = muralCanvasWidth + buttonMargin + 1 * (btnSize + gap);
+  // 슬라이더 트랙의 끝점: 오른쪽에서 두 번째 색상 버튼의 오른쪽 끝
+  let rightBtnIdx = colorsPerRow - 2; // 오른쪽에서 두 번째(6번 인덱스)
+  let sliderEnd = muralCanvasWidth + buttonMargin + rightBtnIdx * (btnSize + gap) + btnSize;
+  sliderW = sliderEnd - sliderX;
   sliderH = 8;
   sliderY = 350;
   handleX = sliderX + sliderW / 2;
-
+  
   initializeMuralCanvas();
 
   brushes = [
@@ -791,7 +791,7 @@ function setup() {
         align: "center"
       },
       "screen7-1-1-1": {
-        content: "재즈 공연을 운영하니, 입소문을 타서 친구나 연인과 오기 좋은 핫플로 유명해졌어! 정말 북적거리고 활기차다!",
+        content: "재즈 공연을 운영하니, 입소문을 타서 친구나 연인과 오기 좋은 핫플로 유명해졌어! \n 정말 북적거리고 활기차다!",
         x: width / 2,
         y: 850,
         size: 28,
@@ -879,7 +879,7 @@ function setup() {
         align: "center"
       },
       "screen7-3-2-2": {
-        content: "‘첫 면접용 정장’, ‘돌아가신 아버지의 셔츠 리폼’ 등 감동적인 사연을 바탕으로 옷을 제작했더니, 브랜드가 폭발적인 인기를 얻었어. \n\n 옷에 자신만의 특별한 추억을 담고자 하는 사람들로 매장이 문전성시를 이루고 있는 걸!",
+        content: "‘첫 면접용 정장’, ‘돌아가신 아버지의 셔츠 리폼’ 등 감동적인 사연을 바탕으로 옷을 제작했더니, \n 브랜드가 폭발적인 인기를 얻었어. \n\n 옷에 자신만의 특별한 추억을 담고자 하는 사람들로 매장이 문전성시를 이루고 있는 걸!",
         x: width / 2,
         y: 850,
         size: 28,
