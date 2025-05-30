@@ -464,9 +464,9 @@ let fadeAmount = 0;      // 페이드 투명도
     wallTextureImage = loadImage('visual assets/wall.png');
     musicAssets.basic = loadSound('audio assets/music1.mp3');
     musicAssets.spray = loadSound('audio assets/Dream1.mp3');
-    introMusic = loadSound('audio assets/intro background.mp3');
-    muralMusic = loadSound('audio assets/mural background.mp3');
-    forestMusic = loadSound('audio assets/forest background.mp3');
+    introMusic = loadSound('audio assets/intro.mp3');
+    muralMusic = loadSound('audio assets/mural.mp3');
+    forestMusic = loadSound('audio assets/forest.mp3');
 
     // 사운드 로드 예시 (실제 사운드 파일이 있다면 사용)
     // soundFormats('mp3', 'ogg');
