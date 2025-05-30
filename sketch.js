@@ -1273,6 +1273,9 @@ function createControlButtons() {
     musicStarted = false;
     showComparison = true;
     currentStage = 2;
+
+    // 벽화 저장 코드 
+    muralCanvas.save('completeImage', 'png');
   });
 }
 
