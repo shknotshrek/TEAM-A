@@ -41,7 +41,10 @@ let musicStarted = false;
 let introMusic;
 let introMusicStarted = false;
 
-let completeImage;  // 완성된 벽화 이미지용 변수
+let muralImage;          // 벽화 이미지 저장용
+let isFading = false;    // 페이드인 중 여부
+let isFadedIn = false;   // 페이드인 완료 여부
+let fadeAmount = 0;      // 페이드 투명도
 
   // 스토리 분기 표시
 
@@ -1084,6 +1087,37 @@ function draw() {
     }
   }
 
+  if (currentKey === "screen11-2") {               // 완성된 벽화 표시
+    let bgImg = "screen11-2"
+    background(0); // 화면 초기화
+    image(bgImg, 0, 0, width, height); // 배경 이미지
+
+  if (isFading) {
+    tint(255, fadeAmount);
+    image(muralImage, 0, 0, width, height);
+    // image(pplImg, width - pplImg.width / 1.7, height - pplImg.height / 1.7, pplImg.width / 1.7, pplImg.height / 1.7);  // 셀카 찍는 사람들 파일 업로드 예정
+    fadeAmount += 3.5;
+    if (fadeAmount >= 255) {
+      fadeAmount = 255;
+      isFading = false;
+      isFadedIn = true;
+    }
+    tint(255); // 초기화
+    fill(255);
+    textAlign(CENTER);
+    textSize(24);
+    text("두 번째 스테이지의 첫 번째 미션,", width / 2, 850);
+  } else if (isFadedIn) {
+    image(muralImage, 0, 0, width, height);
+    // image(pplImg, width - pplImg.width / 1.7, height - pplImg.height / 1.7, pplImg.width / 1.7, pplImg.height / 1.7);
+    fill(255);
+    textAlign(CENTER);
+    textSize(22);
+    text("벽화 그리기 미션을 훌륭하게 완수했어!\n어딘가 으스스했던 과거와 비교해 보니, 몰라보게 달라졌다!", width / 2, 850);
+  }
+}
+
+
   textSize(30);
   text(`x-coordinate: ${mouseX}`, 100, 318);
   text(`y-coordinate: ${mouseY}`, 100, 390);
@@ -1098,7 +1132,19 @@ function draw() {
 }
 
 
-function keyPressed() {
+function keyPressed() {  
+  if (currentKey === "screen11-2") {
+    if (!isFading && !isFadedIn) {
+      // 페이드인 시작
+      fadeAmount = 0;
+      isFading = true;
+    } else if (isFadedIn) {
+      // 다음 화면으로 이동
+      currentKey = "screen14";
+    }
+    return; // 아래 공통 처리 방지
+  }
+  
   if (key === ' ') {
     let next = storyMap[currentKey];
     if (typeof next === 'string') {
@@ -1275,9 +1321,12 @@ function createControlButtons() {
     musicStarted = false;
     showComparison = true;
     currentStage = 2;
-
-    // 벽화 저장 코드 
-    muralCanvas.save('completeImage', 'png');
+    
+    muralImage = muralCanvas.get();  // ← 여기서 이미지 저장
+    isFading = false;
+    isFadedIn = false;
+    fadeAmount = 0;
+    currentKey = "screen11-2";       // ← 다음 화면으로 이동
   });
 }
 
