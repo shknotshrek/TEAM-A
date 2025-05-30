@@ -44,6 +44,9 @@ let introMusicStarted = false;
 let muralMusic;
 let muralMusicStarted = false;
 
+let forestMusic;
+let forestMusicStarted = false;
+
 let muralImage;          // 벽화 이미지 저장용
 let isFading = false;    // 페이드인 중 여부
 let isFadedIn = false;   // 페이드인 완료 여부
@@ -463,6 +466,8 @@ let fadeAmount = 0;      // 페이드 투명도
     musicAssets.spray = loadSound('audio assets/Dream1.mp3');
     introMusic = loadSound('audio assets/intro.mp3');
     muralMusic = loadSound('audio assets/mural background.mp3');
+    forestMusic = loadSound('audio assets/forest background.mp3');
+
     // 사운드 로드 예시 (실제 사운드 파일이 있다면 사용)
     // soundFormats('mp3', 'ogg');
     // sounds = [loadSound('brush1.mp3'), loadSound('spray.mp3'), loadSound('paint.mp3'), loadSound('marker.mp3')];
@@ -1001,8 +1006,9 @@ function setup() {
 
 function draw() {
 
+  // 제목 인트로 음원
   if (
-    ["screen2", "screen2-1", "screen2-2", "screen2-3", "screen2-4", "screen3", "screen3-1", "screen4", "screen5", "screen6"].includes(currentKey)
+    ["screen1", "screen2", "screen2-1", "screen2-2", "screen2-3", "screen2-4", "screen3", "screen3-1", "screen4", "screen5", "screen6"].includes(currentKey)
     && !introMusicStarted
   ) {
     introMusic.loop(); // 반복 재생
@@ -1011,7 +1017,7 @@ function draw() {
 
   // 👉 다른 화면으로 넘어가면 멈추고 플래그 리셋
   if (
-    !["screen2", "screen2-1", "screen2-2", "screen2-3", "screen2-4", "screen3", "screen3-1", "screen4", "screen5", "screen6"].includes(currentKey)
+    !["screen1", "screen2", "screen2-1", "screen2-2", "screen2-3", "screen2-4", "screen3", "screen3-1", "screen4", "screen5", "screen6"].includes(currentKey)
     && introMusicStarted
   ) {
     introMusic.stop();
@@ -1020,7 +1026,7 @@ function draw() {
 
   // 벽화 파트 음원
   if (
-    ["screen10", "screen11", "screen12"].includes(currentKey)
+    ["screen10", "screen10-1", "screen10-2", "screen11", "screen11-1", "screen11-2", "screen12"].includes(currentKey)
     && !muralMusicStarted
   ) {
     muralMusic.loop(); // 반복 재생
@@ -1029,11 +1035,29 @@ function draw() {
 
   // 👉 다른 화면으로 넘어가면 멈추고 플래그 리셋
   if (
-    !["screen10", "screen11", "screen12"].includes(currentKey)
+    !["screen10", "screen10-1", "screen10-2", "screen11", "screen11-1", "screen11-2", "screen12"].includes(currentKey)
     && muralMusicStarted
   ) {
     muralMusic.stop();
     muralMusicStarted = false;
+  }
+
+  // 서울숲 파트 음원
+  if (
+    ["screen15", "screen15-1", "screen15-2", "screen15-3", "screen15-4", "screen15-5"].includes(currentKey)
+    && !forestMusicStarted
+  ) {
+    forestMusic.loop(); // 반복 재생
+    forestMusicStarted = true;
+  }
+
+  // 👉 다른 화면으로 넘어가면 멈추고 플래그 리셋
+  if (
+    !["screen15", "screen15-1", "screen15-2", "screen15-3", "screen15-4", "screen15-5"].includes(currentKey)
+    && forestMusicStarted
+  ) {
+    forestMusic.stop();
+    forestMusicStarted = false;
   }
 
   if (currentKey === "screen13") {
