@@ -790,7 +790,7 @@ function setup() {
         align: "center"
       },
       "screen7-1-1-1": {
-        content: "재즈 공연을 운영하니, 입소문을 타서 친구나 연인과 오기 좋은 핫플로 유명해졌어! 정말 북적거리고 활기차다!",
+        content: "재즈 공연을 운영하니, 입소문을 타서 친구나 연인과 오기 좋은 핫플로 유명해졌어! \n 정말 북적거리고 활기차다!",
         x: width / 2,
         y: 850,
         size: 28,
@@ -878,7 +878,7 @@ function setup() {
         align: "center"
       },
       "screen7-3-2-2": {
-        content: "‘첫 면접용 정장’, ‘돌아가신 아버지의 셔츠 리폼’ 등 감동적인 사연을 바탕으로 옷을 제작했더니, 브랜드가 폭발적인 인기를 얻었어. \n\n 옷에 자신만의 특별한 추억을 담고자 하는 사람들로 매장이 문전성시를 이루고 있는 걸!",
+        content: "‘첫 면접용 정장’, ‘돌아가신 아버지의 셔츠 리폼’ 등 감동적인 사연을 바탕으로 옷을 제작했더니, \n 브랜드가 폭발적인 인기를 얻었어. \n\n 옷에 자신만의 특별한 추억을 담고자 하는 사람들로 매장이 문전성시를 이루고 있는 걸!",
         x: width / 2,
         y: 850,
         size: 28,
@@ -1145,30 +1145,30 @@ function draw() {
     background(0); // 화면 초기화
     image(images["screen11-2"], 0, 0, width, height); // 배경 이미지, 사이즈 조정 예정정
 
-  if (isFading) {
-    tint(255, fadeAmount);
-    image(muralImage, 0, 0, width, height);
-    // image(pplImg, width - pplImg.width / 1.7, height - pplImg.height / 1.7, pplImg.width / 1.7, pplImg.height / 1.7);  // 셀카 찍는 사람들 파일 업로드 예정
-    fadeAmount += 3.5;
-    if (fadeAmount >= 255) {
-      fadeAmount = 255;
-      isFading = false;
-      isFadedIn = true;
+    if (isFading) {
+      tint(255, fadeAmount);
+      image(muralImage, 0, 0, width, height);
+      // image(pplImg, width - pplImg.width / 1.7, height - pplImg.height / 1.7, pplImg.width / 1.7, pplImg.height / 1.7);  // 셀카 찍는 사람들 파일 업로드 예정
+      fadeAmount += 3.5;
+      if (fadeAmount >= 255) {
+        fadeAmount = 255;
+        isFading = false;
+        isFadedIn = true;
     }
-    tint(255); // 초기화
-    fill(255);
-    textAlign(CENTER);
-    textSize(24);
-    text("두 번째 스테이지의 첫 번째 미션,", width / 2, 850);
-  } else if (isFadedIn) {
-    image(muralImage, 0, 0, width, height);
-    // image(pplImg, width - pplImg.width / 1.7, height - pplImg.height / 1.7, pplImg.width / 1.7, pplImg.height / 1.7);
-    fill(255);
-    textAlign(CENTER);
-    textSize(22);
-    text("벽화 그리기 미션을 훌륭하게 완수했어!\n어딘가 으스스했던 과거와 비교해 보니, 몰라보게 달라졌다!", width / 2, 850);
+      tint(255); // 초기화
+      fill(255);
+      textAlign(CENTER);
+      textSize(24);
+      text("두 번째 스테이지의 첫 번째 미션,", width / 2, 850);
+    } else if (isFadedIn) {
+      image(muralImage, 0, 0, width, height);
+      // image(pplImg, width - pplImg.width / 1.7, height - pplImg.height / 1.7, pplImg.width / 1.7, pplImg.height / 1.7);
+      fill(255);
+      textAlign(CENTER);
+      textSize(22);
+      text("벽화 그리기 미션을 훌륭하게 완수했어!\n어딘가 으스스했던 과거와 비교해 보니, 몰라보게 달라졌다!", width / 2, 850);
+    }
   }
-}
 
 
   textSize(30);
