@@ -41,6 +41,9 @@ let musicStarted = false;
 let introMusic;
 let introMusicStarted = false;
 
+let muralMusic;
+let muralMusicStarted = false;
+
 let muralImage;          // 벽화 이미지 저장용
 let isFading = false;    // 페이드인 중 여부
 let isFadedIn = false;   // 페이드인 완료 여부
@@ -459,6 +462,7 @@ let fadeAmount = 0;      // 페이드 투명도
     musicAssets.basic = loadSound('audio assets/music1.mp3');
     musicAssets.spray = loadSound('audio assets/Dream1.mp3');
     introMusic = loadSound('audio assets/intro.mp3');
+    muralMusic = loadSound('audio assets/mural background.mp3');
     // 사운드 로드 예시 (실제 사운드 파일이 있다면 사용)
     // soundFormats('mp3', 'ogg');
     // sounds = [loadSound('brush1.mp3'), loadSound('spray.mp3'), loadSound('paint.mp3'), loadSound('marker.mp3')];
@@ -1012,6 +1016,24 @@ function draw() {
   ) {
     introMusic.stop();
     introMusicStarted = false;
+  }
+
+  // 벽화 파트 음원
+  if (
+    ["screen10", "screen11", "screen12"].includes(currentKey)
+    && !muralMusicStarted
+  ) {
+    muralMusic.loop(); // 반복 재생
+    muralMusicStarted = true;
+  }
+
+  // 👉 다른 화면으로 넘어가면 멈추고 플래그 리셋
+  if (
+    !["screen10", "screen11", "screen12"].includes(currentKey)
+    && muralMusicStarted
+  ) {
+    muralMusic.stop();
+    muralMusicStarted = false;
   }
 
   if (currentKey === "screen13") {
