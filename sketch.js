@@ -41,6 +41,8 @@ let musicStarted = false;
 let introMusic;
 let introMusicStarted = false;
 
+let completeImage;  // 완성된 벽화 이미지용 변수
+
   // 스토리 분기 표시
 
   let storyMap = {
