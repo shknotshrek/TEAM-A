@@ -464,7 +464,7 @@ let fadeAmount = 0;      // 페이드 투명도
     wallTextureImage = loadImage('visual assets/wall.png');
     musicAssets.basic = loadSound('audio assets/music1.mp3');
     musicAssets.spray = loadSound('audio assets/Dream1.mp3');
-    introMusic = loadSound('audio assets/intro.mp3');
+    introMusic = loadSound('audio assets/intro background.mp3');
     muralMusic = loadSound('audio assets/mural background.mp3');
     forestMusic = loadSound('audio assets/forest background.mp3');
 
@@ -1008,7 +1008,7 @@ function draw() {
 
   // 제목 인트로 음원
   if (
-    ["screen1", "screen2", "screen2-1", "screen2-2", "screen2-3", "screen2-4", "screen3", "screen3-1", "screen4", "screen5", "screen6"].includes(currentKey)
+    ["screen1", "screen2", "screen2-1", "screen2-2", "screen2-3", "screen2-4", "screen3", "screen3-1", "screen4", "screen5", "screen6", "screen7-intro"].includes(currentKey)
     && !introMusicStarted
   ) {
     introMusic.loop(); // 반복 재생
@@ -1017,7 +1017,7 @@ function draw() {
 
   // 👉 다른 화면으로 넘어가면 멈추고 플래그 리셋
   if (
-    !["screen1", "screen2", "screen2-1", "screen2-2", "screen2-3", "screen2-4", "screen3", "screen3-1", "screen4", "screen5", "screen6"].includes(currentKey)
+    !["screen1", "screen2", "screen2-1", "screen2-2", "screen2-3", "screen2-4", "screen3", "screen3-1", "screen4", "screen5", "screen6", "screen7-intro"].includes(currentKey)
     && introMusicStarted
   ) {
     introMusic.stop();
