@@ -41,6 +41,8 @@ let musicStarted = false;
 let introMusic;
 let introMusicStarted = false;
 
+let completeImage;  // 완성된 벽화 이미지용 변수
+
   // 스토리 분기 표시
 
   let storyMap = {
@@ -451,7 +453,7 @@ let introMusicStarted = false;
     // 벽화 파트
 
     wallTextureImage = loadImage('visual assets/wall.png');
-    musicAssets.basic = loadSound('audio assets/Dream2.mp3');
+    musicAssets.basic = loadSound('audio assets/music1.mp3');
     musicAssets.spray = loadSound('audio assets/Dream1.mp3');
     introMusic = loadSound('audio assets/intro.mp3');
     // 사운드 로드 예시 (실제 사운드 파일이 있다면 사용)
@@ -469,22 +471,27 @@ function setup() {
 
   // 색상 배열은 setup에서 p5 color()로 초기화
   brushColors = [
-    color('#f05454'), color('#f5c951'), color('#a4cf38'), color('#1d6332'),
-    color('#86ebd5'), color('#86d0eb'), color('#6481ed'), color('#9f64ed')
+    // Top row (8 colors)
+    color('#f05454'), color('#f77d4d'), color('#f5c951'), color('#c9ffb3'),
+    color('#a4cf38'), color('#57ba5e'), color('#57ba96'), color('#1d6332'),
+    // Bottom row (8 colors)
+    color('#86ebd5'), color('#57baaf'), color('#86d0eb'), color('#6481ed'),
+    color('#575bba'), color('#c1b3ff'), color('#9f64ed'), color('#f5b3ff')
   ];
 
   currentColor = brushColors[0]; // 기본값으로 첫 번째 색상
 
   // 슬라이더 위치 및 크기 설정
-  // sliderW = sidebarWidth - 2 * buttonMargin;
-  // sliderH = 8;
-  // sliderX = muralCanvas.width + buttonMargin;
-  // sliderY = 320; // 색상 버튼 아래 충분히 떨어지게, draw에서 동적으로 조정
-  // handleX = sliderX + sliderW / 2;
-
-  sliderW = sidebarWidth/2 - 10; // 좌우 여백 합쳐서 40 정도
+  const btnSize = 28;
+  const gap = 10;
+  const colorsPerRow = 8;
+  // 2nd button (index 1) left edge
+  let sliderStart = muralCanvasWidth + buttonMargin + 1 * (btnSize + gap);
+  // 7th button (index 6) right edge (index 6 + 1 = 7, so 8th button left + btnSize)
+  let sliderEnd = muralCanvasWidth + buttonMargin + 6 * (btnSize + gap) + btnSize;
+  sliderX = sliderStart;
+  sliderW = sliderEnd - sliderStart;
   sliderH = 8;
-  sliderX = muralCanvasWidth + 80
   sliderY = 350;
   handleX = sliderX + sliderW / 2;
 
@@ -866,6 +873,114 @@ function setup() {
         color: [255, 255, 255],
         align: "center"
       },
+      
+      "screen10": {
+        content: "두 번째 스테이지: 공공예술 도입_벽화",
+        x: width / 2,
+        y: height / 2,
+        size: 28,
+        color: [255, 255, 255],
+        align: "center"
+      },
+      
+      "screen10-1": {
+        content: "두 번째 장소, 뚝섬역 사거리",
+        x: width / 2,
+        y: 850,
+        size: 28,
+        color: [255, 255, 255],
+        align: "center"
+      },
+
+      "screen10-2": {
+        content: "이곳은 뚝섬역 사거리, 폐공장 벽들이 줄지어 있는 곳이다.",
+        x: width / 2,
+        y: 850,
+        size: 28,
+        color: [255, 255, 255],
+        align: "center"
+      },
+
+      "screen11": {
+        content: "한때 아이들의 낙서로 가득했지만,\n지금은 모두 지워져 회색 콘크리트 벽만 존재해\n더욱 더 골목길이 우중충해 보인다."
+        x: width / 2,
+        y: 850,
+        size: 28,
+        color: [255, 255, 255],
+        align: "center"
+      },
+
+      "screen11-1": {
+        content: "이런 벽들, 왠지 쓸쓸해 보여…\n새롭게 꾸밀 수는 없을까?"
+        x: width / 2,
+        y: 850,
+        size: 28,
+        color: [255, 255, 255],
+        align: "center"
+      },
+
+      "screen12": {
+        content: "붓을 들어 골목길의 활기를 되찾아 보자!",
+        x: width / 2
+        y: 850,
+        size: 28,
+        color: [255, 255, 255],
+        align: "center"
+      },
+
+      "screen15": {
+        content: "세 번째 스테이지: 공공예술 도입_조각",
+        x: width / 2,
+        y: height / 2,
+        size: 28,
+        color: [255, 255, 255],
+        align: "center"
+      },
+
+      "screen15-1": {
+        content: "세 번째 장소, 중랑천 유역 녹지",
+        x: width / 2,
+        y: 850,
+        size: 28,
+        color: [255, 255, 255],
+        align: "center"
+      },
+
+      "screen15-2": {
+        content: "이곳은 중랑천 남쪽의 녹지,\n정돈되지 않은 나무들만 무성하다.",
+        x: width / 2,
+        y: 850,
+        size: 28,
+        color: [255, 255, 255],
+        align: "center"
+      },
+
+      "screen15-3": {
+        content: "이렇게 넓은 곳은 공원으로 쓰기 딱 좋을 텐데,\n아무도 오지 않는 것 같네.",
+        x: width / 2,
+        y: 850,
+        size: 28,
+        color: [255, 255, 255],
+        align: "center"
+      },
+
+      "screen15-4": {
+        content: "너무 휑해서 그런 것 같아.\n여기 무언가를 놓을 수 있으려나?",
+        x: width / 2,
+        y: 850,
+        size: 28,
+        color: [255, 255, 255],
+        align: "center"
+      },
+
+      "screen15-5": {
+        content: "일일 모델이 되어 포즈를 잡고,\n포즈 모양대로 조각품을 만들어 보자!",
+        x: width / 2,
+        y: 850,
+        size: 28,
+        color: [255, 255, 255],
+        align: "center"
+      },
     } 
 }
 
@@ -1004,20 +1119,20 @@ function keyPressed() {
 function mousePressed() {
 
   if (currentKey === "screen13") {
-    if (mouseX > 0 && mouseX < muralCanvas.width && mouseY > 0 && mouseY < muralCanvas.height) {
+    let d = dist(mouseX, mouseY, handleX, sliderY + sliderH / 2);
+    if (d < 18) draggingHandle = true;
+    if (!draggingHandle && mouseX > 0 && mouseX < muralCanvas.width && mouseY > 0 && mouseY < muralCanvas.height) {
       selectedBrush.draw(mouseX, mouseY, mouseX, mouseY, 0);
       // 음악 재생
       if (!musicStarted && selectedBrush.music && musicAssets[selectedBrush.music]) {
         currentMusic = musicAssets[selectedBrush.music];
+        let v = map(brushSize, 0.5, 6.0, 0.1, 1.0);
+        currentMusic.setVolume(v);
         currentMusic.loop();
         musicStarted = true;
       }
     }
-    // 슬라이더 핸들 클릭 감지
-    let d = dist(mouseX, mouseY, handleX, sliderY + sliderH / 2);
-    if (d < 18) {
-      draggingHandle = true;
-    }
+    
   }
 
   if (choices[currentKey]) {
@@ -1060,7 +1175,7 @@ function mousePressed() {
 
 function mouseDragged(){
   if (currentKey === "screen13") {
-    if (mouseX > 0 && mouseX < muralCanvas.width && mouseY > 0 && mouseY < muralCanvas.height) {
+    if (!draggingHandle && mouseX > 0 && mouseX < muralCanvas.width && mouseY > 0 && mouseY < muralCanvas.height) {
       let speed = dist(mouseX, mouseY, pmouseX, pmouseY);
       drawLineSmooth(selectedBrush, pmouseX, pmouseY, mouseX, mouseY, speed);
     }
@@ -1068,6 +1183,10 @@ function mouseDragged(){
       // 슬라이더 내에서만 이동
       let mx = constrain(mouseX, sliderX, sliderX + sliderW);
       brushSize = map(mx, sliderX, sliderX + sliderW, 0.5, 6.0); // 최대값 6.0으로 증가
+      if (currentMusic && currentMusic.isPlaying()) {
+      let v = map(brushSize, 0.5, 6.0, 0.1, 1.0);
+      currentMusic.setVolume(v);
+    }
     }
   }
 }
@@ -1156,6 +1275,9 @@ function createControlButtons() {
     musicStarted = false;
     showComparison = true;
     currentStage = 2;
+
+    // 벽화 저장 코드 
+    muralCanvas.save('completeImage', 'png');
   });
 }
 
@@ -1168,7 +1290,7 @@ function createColorButtons(startY) {
 
   const btnSize = 28;
   const gap = 10;
-  const colorsPerRow = 4;
+  const colorsPerRow = 8;
   for (let i = 0; i < brushColors.length; i++) {
     let row = floor(i / colorsPerRow);
     let col = i % colorsPerRow;
@@ -1302,14 +1424,17 @@ function drawMural() {
   ellipse(handleX, sliderY + sliderH / 2, 28, 28);
 
   // 미리보기 원 (슬라이더 아래, 현재 브러시 크기와 색상 반영)
-  let previewY = sliderY + 110; // 더 아래로 내려서 텍스트와 겹치지 않게
+  let previewY = sliderY + 110;
+  let previewMax = min(sliderW, 200);
   fill(red(currentColor), green(currentColor), blue(currentColor), 200);
   noStroke();
-  ellipse(sliderX + sliderW / 2, previewY, min(24 * brushSize, 60), min(24 * brushSize, 60));
+  ellipse(sliderX + sliderW / 2, previewY, min(24 * brushSize, previewMax), min(24 * brushSize, previewMax));
+  
   stroke(80, 80, 80, 80);
   strokeWeight(1.5);
   noFill();
-  ellipse(sliderX + sliderW / 2, previewY, min(24 * brushSize, 60), min(24 * brushSize, 60));
+  ellipse(sliderX + sliderW / 2, previewY, min(24 * brushSize, previewMax), min(24 * brushSize, previewMax));
+  
   noStroke();
   fill(255);
   textAlign(CENTER, CENTER);
