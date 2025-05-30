@@ -493,16 +493,16 @@ function setup() {
 
   currentColor = brushColors[0]; // 기본값으로 첫 번째 색상
 
-  // 슬라이더 위치 및 크기 설정
+  // 슬라이더 위치 및 크기 설정 (색상 버튼과 정렬)
   const btnSize = 28;
   const gap = 10;
   const colorsPerRow = 8;
-  // 2nd button (index 1) left edge
-  let sliderStart = muralCanvasWidth + buttonMargin + 1 * (btnSize + gap);
-  // 7th button (index 6) right edge (index 6 + 1 = 7, so 8th button left + btnSize)
-  let sliderEnd = muralCanvasWidth + buttonMargin + 6 * (btnSize + gap) + btnSize;
-  sliderX = sliderStart;
-  sliderW = sliderEnd - sliderStart;
+  // 슬라이더 트랙의 시작점: 왼쪽에서 두 번째 색상 버튼의 왼쪽 끝
+  sliderX = muralCanvasWidth + buttonMargin + 1 * (btnSize + gap);
+  // 슬라이더 트랙의 끝점: 오른쪽에서 두 번째 색상 버튼의 오른쪽 끝
+  let rightBtnIdx = colorsPerRow - 2; // 오른쪽에서 두 번째(6번 인덱스)
+  let sliderEnd = muralCanvasWidth + buttonMargin + rightBtnIdx * (btnSize + gap) + btnSize;
+  sliderW = sliderEnd - sliderX;
   sliderH = 8;
   sliderY = 350;
   handleX = sliderX + sliderW / 2;
