@@ -871,6 +871,114 @@ function setup() {
         color: [255, 255, 255],
         align: "center"
       },
+      
+      "screen10": {
+        content: "두 번째 스테이지: 공공예술 도입_벽화",
+        x: width / 2,
+        y: height / 2,
+        size: 28,
+        color: [255, 255, 255],
+        align: "center"
+      },
+      
+      "screen10-1": {
+        content: "두 번째 장소, 뚝섬역 사거리",
+        x: width / 2,
+        y: 850,
+        size: 28,
+        color: [255, 255, 255],
+        align: "center"
+      },
+
+      "screen10-2": {
+        content: "이곳은 뚝섬역 사거리, 폐공장 벽들이 줄지어 있는 곳이다.",
+        x: width / 2,
+        y: 850,
+        size: 28,
+        color: [255, 255, 255],
+        align: "center"
+      },
+
+      "screen11": {
+        content: "한때 아이들의 낙서로 가득했지만,\n지금은 모두 지워져 회색 콘크리트 벽만 존재해\n더욱 더 골목길이 우중충해 보인다."
+        x: width / 2,
+        y: 850,
+        size: 28,
+        color: [255, 255, 255],
+        align: "center"
+      },
+
+      "screen11-1": {
+        content: "이런 벽들, 왠지 쓸쓸해 보여…\n새롭게 꾸밀 수는 없을까?"
+        x: width / 2,
+        y: 850,
+        size: 28,
+        color: [255, 255, 255],
+        align: "center"
+      },
+
+      "screen12": {
+        content: "붓을 들어 골목길의 활기를 되찾아 보자!",
+        x: width / 2
+        y: 850,
+        size: 28,
+        color: [255, 255, 255],
+        align: "center"
+      },
+
+      "screen15": {
+        content: "세 번째 스테이지: 공공예술 도입_조각",
+        x: width / 2,
+        y: height / 2,
+        size: 28,
+        color: [255, 255, 255],
+        align: "center"
+      },
+
+      "screen15-1": {
+        content: "세 번째 장소, 중랑천 유역 녹지",
+        x: width / 2,
+        y: 850,
+        size: 28,
+        color: [255, 255, 255],
+        align: "center"
+      },
+
+      "screen15-2": {
+        content: "이곳은 중랑천 남쪽의 녹지,\n정돈되지 않은 나무들만 무성하다.",
+        x: width / 2,
+        y: 850,
+        size: 28,
+        color: [255, 255, 255],
+        align: "center"
+      },
+
+      "screen15-3": {
+        content: "이렇게 넓은 곳은 공원으로 쓰기 딱 좋을 텐데,\n아무도 오지 않는 것 같네.",
+        x: width / 2,
+        y: 850,
+        size: 28,
+        color: [255, 255, 255],
+        align: "center"
+      },
+
+      "screen15-4": {
+        content: "너무 휑해서 그런 것 같아.\n여기 무언가를 놓을 수 있으려나?",
+        x: width / 2,
+        y: 850,
+        size: 28,
+        color: [255, 255, 255],
+        align: "center"
+      },
+
+      "screen15-5": {
+        content: "일일 모델이 되어 포즈를 잡고,\n포즈 모양대로 조각품을 만들어 보자!",
+        x: width / 2,
+        y: 850,
+        size: 28,
+        color: [255, 255, 255],
+        align: "center"
+      },
     } 
 }
 
