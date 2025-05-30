@@ -183,6 +183,7 @@ let fadeAmount = 0;      // 페이드 투명도
     "screen11.png",
     "screen11-1.png",
     "screen11-2.png",
+    "screen11-3.png",
     "screen12.png",
     "screen13.png",
     "screen14.png",
@@ -1143,12 +1144,11 @@ function draw() {
 
   if (currentKey === "screen11-2") {               // 완성된 벽화 표시
     background(0); // 화면 초기화
-    image(images["screen11-2"], width / 2, height / 2, width, height); // 배경 이미지, 사이즈 조정 예정
+    image(images["screen11-2"], width / 2, height / 2, width, height);
 
     if (isFading) {
       tint(255, fadeAmount);
       image(muralImage, width / 2, height / 2, width, height);
-      // image(pplImg, width - pplImg.width / 1.7, height - pplImg.height / 1.7, pplImg.width / 1.7, pplImg.height / 1.7);  // 셀카 찍는 사람들 파일 업로드 예정
       fadeAmount += 3.5;
       if (fadeAmount >= 255) {
         fadeAmount = 255;
@@ -1162,7 +1162,7 @@ function draw() {
       text("두 번째 스테이지의 첫 번째 미션,", width / 2, 850);
     } else if (isFadedIn) {
       image(muralImage, width / 2, height / 2, width, height);
-      // image(pplImg, width - pplImg.width / 1.7, height - pplImg.height / 1.7, pplImg.width / 1.7, pplImg.height / 1.7);
+      image(images["screen11-3"], images["screen11-3"].width / 2 / 2, height - images["screen11-3"].height / 2 / 2, images["screen11-3"].width / 2, images["screen11-3"].height / 2);
       fill(255);
       textAlign(CENTER);
       textSize(22);
@@ -1374,14 +1374,8 @@ function createControlButtons() {
       currentMusic.stop();
     }
     musicStarted = false;
-    showComparison = true;
-    currentStage = 2;
-    
     muralImage = muralCanvas.get();  // ← 여기서 이미지 저장
-    isFading = false;
-    isFadedIn = false;
-    fadeAmount = 0;
-    currentKey = "screen11-2";       // ← 다음 화면으로 이동
+    currentKey = "screen11-2";       // ← 바로 다음 화면으로 이동
   });
 }
 
