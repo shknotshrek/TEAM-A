@@ -1,6 +1,7 @@
 let images = {};
 let currentKey = "screen1";
 let textMap = {};
+let transitionSpeed = 5;
 let screenHistory = [];
 let customFont;
 
@@ -1104,7 +1105,6 @@ function draw() {
     text(t.content, t.x, t.y);
   }
 
-
   // 선택지 아이콘 표시
   
   if (choices[currentKey]) {
@@ -1214,6 +1214,8 @@ function keyPressed() {
     }
   }
 }
+
+
 
 function mousePressed() {
 
