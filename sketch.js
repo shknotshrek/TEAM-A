@@ -1374,14 +1374,8 @@ function createControlButtons() {
       currentMusic.stop();
     }
     musicStarted = false;
-    showComparison = true;
-    currentStage = 2;
-    
     muralImage = muralCanvas.get();  // ← 여기서 이미지 저장
-    isFading = false;
-    isFadedIn = false;
-    fadeAmount = 0;
-    currentKey = "screen11-2";       // ← 다음 화면으로 이동
+    currentKey = "screen11-2";       // ← 바로 다음 화면으로 이동
   });
 }
 
