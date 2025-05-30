@@ -1,6 +1,7 @@
 let images = {};
 let currentKey = "screen1";
 let textMap = {};
+let transitionSpeed = 5;
 let screenHistory = [];
 let customFont;
 
@@ -182,6 +183,7 @@ let fadeAmount = 0;      // 페이드 투명도
     "screen11.png",
     "screen11-1.png",
     "screen11-2.png",
+    "screen11-3.png",
     "screen12.png",
     "screen13.png",
     "screen14.png",
@@ -492,21 +494,21 @@ function setup() {
   ];
 
   currentColor = brushColors[0]; // 기본값으로 첫 번째 색상
-
-  // 슬라이더 위치 및 크기 설정
+  
+  // 슬라이더 위치 및 크기 설정 (색상 버튼과 정렬)
   const btnSize = 28;
   const gap = 10;
   const colorsPerRow = 8;
-  // 2nd button (index 1) left edge
-  let sliderStart = muralCanvasWidth + buttonMargin + 1 * (btnSize + gap);
-  // 7th button (index 6) right edge (index 6 + 1 = 7, so 8th button left + btnSize)
-  let sliderEnd = muralCanvasWidth + buttonMargin + 6 * (btnSize + gap) + btnSize;
-  sliderX = sliderStart;
-  sliderW = sliderEnd - sliderStart;
+  // 슬라이더 트랙의 시작점: 왼쪽에서 두 번째 색상 버튼의 왼쪽 끝
+  sliderX = muralCanvasWidth + buttonMargin + 1 * (btnSize + gap);
+  // 슬라이더 트랙의 끝점: 오른쪽에서 두 번째 색상 버튼의 오른쪽 끝
+  let rightBtnIdx = colorsPerRow - 2; // 오른쪽에서 두 번째(6번 인덱스)
+  let sliderEnd = muralCanvasWidth + buttonMargin + rightBtnIdx * (btnSize + gap) + btnSize;
+  sliderW = sliderEnd - sliderX;
   sliderH = 8;
   sliderY = 350;
   handleX = sliderX + sliderW / 2;
-
+  
   initializeMuralCanvas();
 
   brushes = [
@@ -1104,7 +1106,6 @@ function draw() {
     text(t.content, t.x, t.y);
   }
 
-
   // 선택지 아이콘 표시
   
   if (choices[currentKey]) {
@@ -1143,12 +1144,11 @@ function draw() {
 
   if (currentKey === "screen11-2") {               // 완성된 벽화 표시
     background(0); // 화면 초기화
-    image(images["screen11-2"], 0, 0, width, height); // 배경 이미지, 사이즈 조정 예정정
+    image(images["screen11-2"], width / 2, height / 2, width, height);
 
     if (isFading) {
       tint(255, fadeAmount);
-      image(muralImage, 0, 0, width, height);
-      // image(pplImg, width - pplImg.width / 1.7, height - pplImg.height / 1.7, pplImg.width / 1.7, pplImg.height / 1.7);  // 셀카 찍는 사람들 파일 업로드 예정
+      image(muralImage, width / 2, height / 2, width, height);
       fadeAmount += 3.5;
       if (fadeAmount >= 255) {
         fadeAmount = 255;
@@ -1161,8 +1161,8 @@ function draw() {
       textSize(24);
       text("두 번째 스테이지의 첫 번째 미션,", width / 2, 850);
     } else if (isFadedIn) {
-      image(muralImage, 0, 0, width, height);
-      // image(pplImg, width - pplImg.width / 1.7, height - pplImg.height / 1.7, pplImg.width / 1.7, pplImg.height / 1.7);
+      image(muralImage, width / 2, height / 2, width, height);
+      image(images["screen11-3"], images["screen11-3"].width / 2 / 2, height - images["screen11-3"].height / 2 / 2, images["screen11-3"].width / 2, images["screen11-3"].height / 2);
       fill(255);
       textAlign(CENTER);
       textSize(22);
@@ -1214,6 +1214,8 @@ function keyPressed() {
     }
   }
 }
+
+
 
 function mousePressed() {
 
@@ -1372,14 +1374,8 @@ function createControlButtons() {
       currentMusic.stop();
     }
     musicStarted = false;
-    showComparison = true;
-    currentStage = 2;
-    
     muralImage = muralCanvas.get();  // ← 여기서 이미지 저장
-    isFading = false;
-    isFadedIn = false;
-    fadeAmount = 0;
-    currentKey = "screen11-2";       // ← 다음 화면으로 이동
+    currentKey = "screen11-2";       // ← 바로 다음 화면으로 이동
   });
 }
 
