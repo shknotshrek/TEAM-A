@@ -876,6 +876,14 @@ function setup() {
         color: [255, 255, 255],
         align: "center"
       },
+      "screen8": {
+        content: "첫 번째 스테이지, 인프라 확충 미션을 훌륭하게 완수했어! \n 황량했던 과거와는 비교도 안 되게 멋진 공간이 되었어! \n\n 그럼 다음 스테이지로 넘어가 볼까?",
+        x: width / 2,
+        y: 850,
+        size: 28,
+        color: [255, 255, 255],
+        align: "center"
+      },
       
       "screen10": {
         content: "두 번째 스테이지: 공공예술 도입_벽화",
