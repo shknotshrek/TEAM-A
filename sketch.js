@@ -53,6 +53,8 @@ let isFading = false;    // 페이드인 중 여부
 let isFadedIn = false;   // 페이드인 완료 여부
 let fadeAmount = 0;      // 페이드 투명도
 
+let fadingStrokes = [];
+
   // 스토리 분기 표시
 
   let storyMap = {
@@ -516,33 +518,31 @@ function setup() {
       name: '기본 붓',
       music: 'basic',
       color: color(255, 100, 100, 200),
-      draw: function(x, y, pX, pY, speed) {
-        // 기본 붓: 둥근 붓 느낌, 끝이 둥글고 soft
-        muralCanvas.strokeWeight(8 * brushSize);
-        muralCanvas.stroke(currentColor);
+      draw: function(x, y, pX, pY, speed, color, size, alpha) {
+        muralCanvas.strokeWeight(8 * size);
+        muralCanvas.stroke(red(color), green(color), blue(color), alpha);
         muralCanvas.line(x, y, pX, pY);
-        // 끝에 둥근 붓 느낌
         muralCanvas.noStroke();
-        muralCanvas.fill(currentColor);
-        muralCanvas.ellipse(x, y, 8 * brushSize, 8 * brushSize);
-        muralCanvas.ellipse(pX, pY, 8 * brushSize, 8 * brushSize);
+        muralCanvas.fill(red(color), green(color), blue(color), alpha);
+        muralCanvas.ellipse(x, y, 8 * size, 8 * size);
+        muralCanvas.ellipse(pX, pY, 8 * size, 8 * size);
       }
     },
     {
       name: '스프레이',
       music: 'spray',
       color: color(100, 255, 100, 150),
-      draw: function(x, y, pX, pY, speed) {
-        let spraySize = 20 * brushSize; // 분사 범위만 brushSize에 비례
+      draw: function(x, y, pX, pY, speed, color, size, alpha) {
+        let spraySize = 20 * size;
         muralCanvas.noStroke();
-        let dotCount = floor(map(brushSize, 0.5, 6.0, 6, 24));
+        let dotCount = floor(map(size, 0.5, 6.0, 6, 24));
         for (let i = 0; i < dotCount; i++) {
           let offsetX = random(-spraySize, spraySize);
           let offsetY = random(-spraySize, spraySize);
           let d = dist(0, 0, offsetX, offsetY);
           if (d < spraySize) {
-            muralCanvas.fill(red(currentColor), green(currentColor), blue(currentColor), random(50, 120));
-            muralCanvas.ellipse(x + offsetX, y + offsetY, random(2, 5), random(2, 5)); // brushSize와 무관하게 고정
+            muralCanvas.fill(red(color), green(color), blue(color), random(50, alpha));
+            muralCanvas.ellipse(x + offsetX, y + offsetY, random(2, 5), random(2, 5));
           }
         }
       }
@@ -550,42 +550,34 @@ function setup() {
     {
       name: '물감붓',
       color: color(100, 100, 255, 180),
-      draw: function(x, y, pX, pY, speed) {
-        // 물감붓: brushSize가 작을 때도 자연스러운 번짐 효과
+      draw: function(x, y, pX, pY, speed, color, size, alpha) {
         muralCanvas.noStroke();
-        let r = red(currentColor);
-        let g = green(currentColor);
-        let b = blue(currentColor);
-
+        let r = red(color);
+        let g = green(color);
+        let b = blue(color);
         let len = dist(x, y, pX, pY);
-        // brushSize가 작을수록 steps를 더 늘림
-        let steps = max(3, floor(len / Math.max(1.2, brushSize * 1.5)));
+        let steps = max(3, floor(len / Math.max(1.2, size * 1.5)));
         for (let i = 0; i <= steps; i++) {
           let t = i / steps;
           let ix = lerp(x, pX, t);
           let iy = lerp(y, pY, t);
           let angle = atan2(y - pY, x - pX) + random(-0.5, 0.5);
-
-          // 중심부 진한 타원
-          let w1 = Math.max(8, brushSize * random(10, 18));
-          let h1 = Math.max(5, brushSize * random(6, 14));
+          let w1 = Math.max(8, size * random(10, 18));
+          let h1 = Math.max(5, size * random(6, 14));
           muralCanvas.push();
           muralCanvas.translate(ix, iy);
           muralCanvas.rotate(angle);
-          muralCanvas.fill(r, g, b, 40 * random(0.8, 1.2));
+          muralCanvas.fill(r, g, b, 40 * random(0.8, 1.2) * (alpha / 255));
           muralCanvas.ellipse(0, 0, w1, h1);
           muralCanvas.pop();
-
-          // 바깥쪽 연한 번짐(brushSize가 작아도 일정 크기 이상)
           if (random() < 0.5) {
-            let w2 = Math.max(18, brushSize * random(22, 38));
-            let h2 = Math.max(10, brushSize * random(14, 28));
+            let w2 = Math.max(18, size * random(22, 38));
+            let h2 = Math.max(10, size * random(14, 28));
             muralCanvas.push();
             muralCanvas.translate(ix + random(-8, 8), iy + random(-8, 8));
             muralCanvas.rotate(angle + random(-0.3, 0.3));
-            // brushSize가 작을수록 알파값을 더 높임
-            let alpha = lerp(18, 10, constrain(brushSize / 2, 0, 1));
-            muralCanvas.fill(r, g, b, alpha * random(0.7, 1.2));
+            let alpha2 = lerp(18, 10, constrain(size / 2, 0, 1)) * (alpha / 255);
+            muralCanvas.fill(r, g, b, alpha2 * random(0.7, 1.2));
             muralCanvas.ellipse(0, 0, w2, h2);
             muralCanvas.pop();
           }
@@ -595,23 +587,21 @@ function setup() {
     {
       name: '마커펜',
       color: color(255, 255, 100, 100),
-      draw: function(x, y, pX, pY, speed) {
-        // 마커펜: 선분 전체에 네모 단면 반복, 잉크 번짐 효과
-        let thick = 16 * brushSize;
+      draw: function(x, y, pX, pY, speed, color, size, alpha) {
+        let thick = 16 * size;
         let len = dist(x, y, pX, pY);
         let steps = max(1, floor(len / (thick * 0.7)));
         muralCanvas.noStroke();
-        muralCanvas.fill(currentColor);
+        muralCanvas.fill(red(color), green(color), blue(color), alpha);
         muralCanvas.rectMode(CENTER);
         for (let i = 0; i <= steps; i++) {
           let t = i / steps;
           let ix = lerp(x, pX, t);
           let iy = lerp(y, pY, t);
           muralCanvas.rect(ix, iy, thick, thick * 0.7, 2);
-          // 잉크 번짐 효과
-          muralCanvas.fill(red(currentColor), green(currentColor), blue(currentColor), 40);
+          muralCanvas.fill(red(color), green(color), blue(color), 40 * (alpha / 255));
           muralCanvas.rect(ix, iy, thick * 1.4, thick * 1.1, 4);
-          muralCanvas.fill(currentColor);
+          muralCanvas.fill(red(color), green(color), blue(color), alpha);
         }
         muralCanvas.rectMode(CORNER);
       }
@@ -1278,16 +1268,16 @@ function mouseDragged(){
   if (currentKey === "screen13") {
     if (!draggingHandle && mouseX > 0 && mouseX < muralCanvas.width && mouseY > 0 && mouseY < muralCanvas.height) {
       let speed = dist(mouseX, mouseY, pmouseX, pmouseY);
-      drawLineSmooth(selectedBrush, pmouseX, pmouseY, mouseX, mouseY, speed);
+      addFadingStroke(selectedBrush, pmouseX, pmouseY, mouseX, mouseY, speed, currentColor, brushSize);
     }
     if (draggingHandle) {
       // 슬라이더 내에서만 이동
       let mx = constrain(mouseX, sliderX, sliderX + sliderW);
       brushSize = map(mx, sliderX, sliderX + sliderW, 0.5, 6.0); // 최대값 6.0으로 증가
       if (currentMusic && currentMusic.isPlaying()) {
-      let v = map(brushSize, 0.5, 6.0, 0.1, 1.0);
-      currentMusic.setVolume(v);
-    }
+        let v = map(brushSize, 0.5, 6.0, 0.1, 1.0);
+        currentMusic.setVolume(v);
+      }
     }
   }
 }
@@ -1307,6 +1297,13 @@ function initializeMuralCanvas() {
   showComparison = false;
   currentStage = 1;
   initialMuralImage = muralCanvas.get();
+}
+
+function addFadingStroke(brush, x1, y1, x2, y2, speed, color, size) {
+  fadingStrokes.push({
+    brush, x1, y1, x2, y2, speed, color, size,
+    startTime: millis()
+  });
 }
 
 function drawLineSmooth(brush, x1, y1, x2, y2, speed) {
@@ -1457,33 +1454,21 @@ function drawMural() {
   // 전체 배경 어두운 색
   background(50);
 
-  // --- 벽화 그리기 영역 ---
-  push();
-  // 좌표 (0,0)이 좌상단이 되도록
-  imageMode(CORNER);
-
-  if (showComparison) {
-    // Before / After 비교 모드
-    image(
-      initialMuralImage,
-      0, 0,
-      muralCanvas.width/2 - 5, height
-    );
-    image(
-      muralCanvas,
-      muralCanvas.width/2 + 5, 0,
-      muralCanvas.width/2 - 5, height
-    );
-  } else {
-    // 일반 벽화 모드: 왼쪽을 꽉 채워 그림
-    image(
-      muralCanvas,
-      0, 0,
-      muralCanvas.width, height
-    );
+  // muralCanvas 초기화 및 벽 텍스처 다시 그림
+  muralCanvas.clear();
+  if (wallTextureImage) {
+    muralCanvas.image(wallTextureImage, 0, 0, muralCanvas.width, muralCanvas.height);
   }
-  pop();
 
+  // fadingStrokes를 5초간 점점 진해지게 그리기
+  let now = millis();
+  for (let s of fadingStrokes) {
+    let elapsed = now - s.startTime;
+    let alpha = constrain(map(elapsed, 0, 5000, 0, 255), 0, 255);
+    muralCanvas.push();
+    s.brush.draw(s.x2, s.y2, s.x1, s.y1, s.speed, s.color, s.size, alpha);
+    muralCanvas.pop();
+  }
 
   fill(100);
   noStroke();
