@@ -1175,13 +1175,38 @@ function draw() {
   text(`x-coordinate: ${mouseX}`, 100, 318);
   text(`y-coordinate: ${mouseY}`, 100, 390);
 
-  fill(255);
+  // fill(255);
+  // textSize(20);
+  // textAlign(RIGHT, TOP);
+  // text("Press SPACE to proceed", width - 30, 20);
+
+  // textAlign(LEFT, TOP);
+  // text("Press BACKSPACE to go back", 30, 20);
+
+  if (
+    currentKey === "screen3"   ||
+    currentKey === "screen3-1" ||
+    currentKey === "screen9"   ||
+    currentKey === "screen9-1" ||
+    currentKey === "screen14"  ||
+    currentKey === "screen14-1"
+  ) {
+    fill(18, 99, 230);
+  } else {
+    fill(255);
+  }
+  
   textSize(20);
   textAlign(RIGHT, TOP);
-  text("Press SPACE to proceed", width - 30, 20);
-
+  textStyle(BOLD);
+  text("Press SPACE to proceed", width - 30, 10);
+  
   textAlign(LEFT, TOP);
-  text("Press BACKSPACE to go back", 30, 20);
+  text("Press BACKSPACE to go back", 30, 10);
+
+  textAlign(LEFT, BOTTOM);
+  text("Press R to restart", 30,972);
+  
 }
 
 
@@ -1212,6 +1237,13 @@ function keyPressed() {
       currentKey = screenHistory.pop(); 
       redraw();
     }
+  }
+
+  if (key === 'r' || key === 'R') {
+    currentKey = "screen1";
+    screenHistory = [];
+    redraw();
+    return; // 다른 처리 필요 없으므로 바로 리턴
   }
 }
 
