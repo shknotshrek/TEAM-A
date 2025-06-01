@@ -288,7 +288,7 @@ let fadeAmount = 0;      // 페이드 투명도
         hoverImg: null,
         hoverImgPath: "visual assets/screen7-1-2icon1MO.png",
         next: "screen7-1-2-1",
-        label: "회화, 디자인, 사진 관련 희귀 예술 서적 구비 (음료 구매 시 무료 열람 가능)"
+        label: "회화, 디자인, 사진 관련 희귀 예술 서적 구비 \n (음료 구매 시 무료 열람 가능)"
       },
       {
         x: 1156, y: 760,
@@ -298,7 +298,7 @@ let fadeAmount = 0;      // 페이드 투명도
         hoverImg: null,
         hoverImgPath: "visual assets/screen7-1-2icon2MO.png",
         next: "screen7-1-2-2",
-        label: "인기 만화 시리즈 대여섯 편 전권 구비 (음료 구매 시 무료 열람 가능)"
+        label: "인기 만화 시리즈 대여섯 편 전권 구비 \n(음료 구매 시 무료 열람 가능)"
       }
     ],
 
@@ -334,7 +334,7 @@ let fadeAmount = 0;      // 페이드 투명도
         hoverImg: null,
         hoverImgPath: "visual assets/screen7-2-1icon1MO.png",
         next: "screen7-2-1-1",
-        label: "강연 후 한 달 동안 작가 추천 노트가 담긴 서적 10선 DP, 할인된 가격에 판매"
+        label: "강연 후 한 달 동안 작가 추천 노트가 담긴 서적 10선 DP, \n할인된 가격에 판매"
       },
       {
         x: 1156, y: 760,
@@ -344,7 +344,7 @@ let fadeAmount = 0;      // 페이드 투명도
         hoverImg: null,
         hoverImgPath: "visual assets/screen7-2-1icon2MO.png",
         next: "screen7-2-1-2",
-        label: "신청자를 받아 작가와 함께하는 문예창작 원데이 클래스 운영, 추후 서점에 결과물 전시"
+        label: "신청자를 받아 작가와 함께하는 문예창작 원데이 클래스 운영, \n추후 서점에 결과물 전시"
       }
     ],
 
@@ -357,7 +357,7 @@ let fadeAmount = 0;      // 페이드 투명도
         hoverImg: null,
         hoverImgPath: "visual assets/screen7-2-2icon1MO.png",
         next: "screen7-2-2-1",
-        label: "도서 구매 시, 인근 가죽 공장과 협업하여 책 사이즈에 맞는 가죽 북커버 제작 클래스 참여 가능"
+        label: "도서 구매 시, 인근 가죽 공장과 협업하여 \n책 사이즈에 맞는 가죽 북커버 제작 클래스 참여 가능"
       },
       {
         x: 1156, y: 760,
@@ -380,7 +380,7 @@ let fadeAmount = 0;      // 페이드 투명도
         hoverImg: null,
         hoverImgPath: "visual assets/screen7-3icon1MO.png",
         next: "screen7-3-1",
-        label: "인근 봉제공장과 협동하여 의류 구매자 대상으로 빈티지 작업복 리폼 클래스 운영"
+        label: "인근 봉제공장과 협동하여 \n의류 구매자 대상으로 빈티지 작업복 리폼 클래스 운영"
       },
       {
         x: 1156, y: 760,
@@ -403,7 +403,7 @@ let fadeAmount = 0;      // 페이드 투명도
         hoverImg: null,
         hoverImgPath: "visual assets/screen7-3-1icon1MO.png",
         next: "screen7-3-1-1",
-        label: "베스트 작업복 리폼작 선정 후 작가 이름 병기하여 정식 라인업 출시"
+        label: "베스트 작업복 리폼작 선정 후 \n작가 이름 병기하여 정식 라인업 출시"
       },
       {
         x: 1156, y: 760,
@@ -436,7 +436,7 @@ let fadeAmount = 0;      // 페이드 투명도
         hoverImg: null,
         hoverImgPath: "visual assets/screen7-3-2icon2MO.png",
         next: "screen7-3-2-2",
-        label: "라디오에서 '사연 기반 테일러링' 응모를 받아 추첨을 통해 10명에게 무료로 의류 제작"
+        label: "라디오에서 '사연 기반 테일러링' 응모를 받아 \n추첨을 통해 10명에게 무료로 의류 제작"
       }
     ],
   };
@@ -714,7 +714,7 @@ function setup() {
       "screen7": {
         content: "이 공간을 활용해서 새로운 인프라를 설치할 수 있을 것 같아. \n\n 무엇을 도입하면 좋을까?",
         x: width / 2,
-        y: 350, // 👈 각 텍스트에 대한 y 위치
+        y: height/2, // 👈 각 텍스트에 대한 y 위치
         size: 28,
         color: [255, 255, 255],
         align: "center"
@@ -722,7 +722,7 @@ function setup() {
       "screen7-1": {
         content: "카페를 도입했더니 지역 주민들이 가끔 오가기는 하지만, 장사가 특별히 잘 되지는 않네. \n\n 경쟁력이 부족한 것 같아. \n\n 어떤 추가 전략을 사용해야 할까?",
         x: width / 2,
-        y: 350,
+        y: height/2,
         size: 28,
         color: [255, 255, 255],
         align: "center"
@@ -730,7 +730,7 @@ function setup() {
       "screen7-2": {
         content: "독립서점을 도입했더니 사람들이 가끔 오가기는 하지만, 주민들은 독서에 큰 관심을 갖지 않는 것 같아. \n\n 어떤 추가 전략을 사용해야 할까?",
         x: width / 2,
-        y: 350,
+        y: height/2 - 50,
         size: 28,
         color: [255, 255, 255],
         align: "center"
@@ -746,15 +746,15 @@ function setup() {
       "screen7-1-1": {
         content: "낮과 밤이 다른 이 공간에 여러 사람들이 관심을 가져주고 있어! \n 그런데 칵테일 바도 이미 워낙 많아서, 특색이 있어야 할 것 같아. \n\n 어떤 추가 전략을 사용해야 할까?",
         x: width / 2,
-        y: 350,
+        y: height/2-60,
         size: 28,
         color: [255, 255, 255],
         align: "center"
       },
       "screen7-1-2": {
-        content: "북카페로 운영하니 전보다 사람들이 더 관심을 가져 주는 것 같지만, 근처 주민들은 독서에 큰 관심을 갖지 않는 것 같아. \n\n 책 장르를 전문화해서 아예 외부인 매니아 독자를 끌어들여야겠어. \n\n 어떤 추가 전략을 사용해야 할까?",
+        content: "북카페로 운영하니 전보다 사람들이 더 관심을 가져 주는 것 같지만, \n근처 주민들은 독서에 큰 관심을 갖지 않는 것 같아. \n\n 책 장르를 전문화해서 아예 외부인 매니아 독자를 끌어들여야겠어. \n\n 어떤 추가 전략을 사용해야 할까?",
         x: width / 2,
-        y: 350,
+        y: height/ 2 - 100,
         size: 28,
         color: [255, 255, 255],
         align: "center"
@@ -762,7 +762,7 @@ function setup() {
       "screen7-2-1": {
         content: "유명 작가가 강연을 한다고 하니, 주민들도 관심을 가져주고 있어! \n 하지만 작가와의 만남이 단발적이라 아쉬워하는 분들이 많네. \n\n 어떤 추가 전략을 사용해야 할까?",
         x: width / 2,
-        y: 350,
+        y: 150,
         size: 28,
         color: [255, 255, 255],
         align: "center"
@@ -770,7 +770,7 @@ function setup() {
       "screen7-2-2": {
         content: "예쁜 문구류를 구경하러 오는 주민과 외부인이 증가했어! \n\n 그런데 정작 책에 대한 관심은 오히려 떨어진 것 같네. \n 여기가 책방이에요, 문방구예요?”하고 묻는 분들도 계셨어. \n\n 어떻게 하면 책과 문구류 사이의 연결을 강화할 수 있을까?",
         x: width / 2,
-        y: 350,
+        y: height/2,
         size: 28,
         color: [255, 255, 255],
         align: "center"
@@ -850,7 +850,7 @@ function setup() {
       "screen7-2-2-2": {
         content: "공들여 큐레이션을 했더니 매달 사람들이 구매를 위해 줄을 설 정도야! \n\n 책 내용을 되새길 수 있는 문구류를 판매하는 특별한 서점이 되었어!",
         x: width / 2,
-        y: 850,
+        y: height/2,
         size: 28,
         color: [255, 255, 255],
         align: "center"
@@ -888,9 +888,9 @@ function setup() {
         align: "center"
       },
       "screen8": {
-        content: "첫 번째 스테이지, 인프라 확충 미션을 훌륭하게 완수했어! \n 황량했던 과거와는 비교도 안 되게 멋진 공간이 되었어! \n\n 그럼 다음 스테이지로 넘어가 볼까?",
+        content: "첫 번째 스테이지, 인프라 확충 미션을 훌륭하게 완수했어! \n\n 황량했던 과거와는 비교도 안 되게 멋진 공간이 되었어! \n\n\n 그럼 다음 스테이지로 넘어가 볼까?",
         x: width / 2,
-        y: 850,
+        y: height/2,
         size: 28,
         color: [255, 255, 255],
         align: "center"
@@ -1120,14 +1120,14 @@ function draw() {
   
       // 🔍 마우스오버 시 텍스트 박스도 같이 표시
       if (isHovered) {
-        let paddingX = 10;
-        let paddingY = 8;
+        let paddingX = 5;
+        let paddingY = 10;
         textSize(24);
         textAlign(CENTER, CENTER);
   
         let labelWidth = textWidth(c.label);
         let boxW = labelWidth + paddingX * 2;
-        let boxH = textAscent() + textDescent() + paddingY * 2;
+        let boxH = textAscent() + textDescent() + paddingY * 3.7;
   
         // 📦 텍스트 박스 배경
         rectMode(CENTER);
