@@ -65,7 +65,9 @@ let fadeAmount = 0;      // 페이드 투명도
     "screen2-4": "screen3",
     "screen3": "screen3-1", // 여기 전환이 안됨 why
     "screen3-1": "screen4",
-    "screen4": "screen5",
+    "screen4": "screen4-1",
+    "screen4-1": "screen4-2",
+    "screen4-2": "screen5",
     "screen5": "screen6",
     "screen6": "screen7-intro",
     "screen7-intro": "screen7",
@@ -145,6 +147,8 @@ let fadeAmount = 0;      // 페이드 투명도
     "screen3.png",
     "screen3-1.png",
     "screen4.png",
+    "screen4-1.png",
+    "screen4-2.png",
     "screen5.png",
     "screen6.png",
     "screen7-intro.png",
@@ -640,7 +644,7 @@ function setup() {
         align: "center"
       },
       "screen2" : {
-        content: "이곳은 19XX년의 성수동. \n\n 한국의 브루클린으로 불리는, 오늘날의 활기찬 성수동과는 사뭇 다르다.. \n\n 과거의 성수동은 어떤 모습을 하고 있었고, 어떤 역사를 갖고 있을까?",
+        content: "이곳은 19XX년의 성수동. \n\n 한국의 브루클린으로 불리는, 오늘날의 활기찬 성수동과는 사뭇 다르다. \n\n 과거의 성수동은 어떤 모습을 하고 있었고, 어떤 역사를 갖고 있을까?",
         x: width / 2,
         y: height / 2,
         size: 28,
@@ -680,6 +684,22 @@ function setup() {
         align: "center"
       },
       "screen4" : {
+        content: "첫 번째 스테이지: 인프라 도입",
+        x: width / 2,
+        y: 850,
+        size: 28,
+        color: [255, 255, 255],
+        align: "center"
+      },
+      "screen4-1" : {
+        content: "첫 번째 장소: 연무장길",
+        x: width / 2,
+        y: 850,
+        size: 28,
+        color: [255, 255, 255],
+        align: "center"
+      },
+      "screen4-2" : {
         content: "저쪽은 주거 단지인가 보네. 건물이 낡고 협소한 걸 보니, 주로 노동자 1인 가구가 많을 것 같아.",
         x: width / 2,
         y: 850,
@@ -1010,7 +1030,7 @@ function draw() {
 
   // 제목 인트로 음원
   if (
-    ["screen2", "screen2-1", "screen2-2", "screen2-3", "screen2-4", "screen3", "screen3-1", "screen4", "screen5", "screen6", "screen7-intro"].includes(currentKey)
+    ["screen2", "screen2-1", "screen2-2", "screen2-3", "screen2-4", "screen3", "screen3-1", "screen4", "screen4-1", "screen4-2", "screen5", "screen6", "screen7-intro"].includes(currentKey)
     && !introMusicStarted
   ) {
     introMusic.loop(); // 반복 재생
@@ -1019,7 +1039,7 @@ function draw() {
 
   // 👉 다른 화면으로 넘어가면 멈추고 플래그 리셋
   if (
-    !["screen2", "screen2-1", "screen2-2", "screen2-3", "screen2-4", "screen3", "screen3-1", "screen4", "screen5", "screen6", "screen7-intro"].includes(currentKey)
+    !["screen2", "screen2-1", "screen2-2", "screen2-3", "screen2-4", "screen3", "screen3-1", "screen4", "screen4-1", "screen4-2", "screen5", "screen6", "screen7-intro"].includes(currentKey)
     && introMusicStarted
   ) {
     introMusic.stop();
@@ -1175,15 +1195,7 @@ function draw() {
   text(`x-coordinate: ${mouseX}`, 100, 318);
   text(`y-coordinate: ${mouseY}`, 100, 390);
 
-  // fill(255);
-  // textSize(20);
-  // textAlign(RIGHT, TOP);
-  // text("Press SPACE to proceed", width - 30, 20);
-
-  // textAlign(LEFT, TOP);
-  // text("Press BACKSPACE to go back", 30, 20);
-
-  if (
+  if ( // 지도 부분 흰 글씨 안보여서 파란색으로 표시
     currentKey === "screen3"   ||
     currentKey === "screen3-1" ||
     currentKey === "screen9"   ||
