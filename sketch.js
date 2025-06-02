@@ -1553,10 +1553,11 @@ function drawMural() {
   // 브러시 크기 슬라이더 그리기 (색상 버튼 아래)
   let sliderTop = getNextY() + 60; // 색상 버튼과 충분히 띄움
   sliderY = sliderTop + 30;        // 텍스트와 핸들이 겹치지 않게 더 아래로
+  sliderbarx= sliderX + sliderW/2;
 
   // 슬라이더 바
   fill(180);
-  rect(sliderX, sliderY, sliderW, sliderH, 4);
+  rect(sliderbarx, sliderY, sliderW, sliderH, 4);
 
   // 핸들 위치 계산
   handleX = sliderX + map(brushSize, 0.5, 6.0, 0, sliderW);
