@@ -62,6 +62,21 @@ let isFading = false;    // 페이드인 중 여부
 let isFadedIn = false;   // 페이드인 완료 여부
 let fadeAmount = 0;      // 페이드 투명도
 
+
+// 페이드 효과를 줄 화면들
+  const fadeScreens = [
+    "screen2", "screen2-1", "screen2-2", "screen2-3", "screen2-4", "screen8",
+    "screen10", "screen10-1", "screen10-2",
+    "screen11", "screen11-1", "screen11-2",
+    "screen15", "screen15-1", "screen15-2", "screen15-3", "screen15-4", "screen15-5"
+  ];
+
+// 페이드 상태 관리 변수
+  let fadeMode = "";       // "", "fadingOut", "fadingIn"
+  let fadeFrame = 0;       // 현재 페이드가 진행된 프레임 수
+  let pendingKey = "";     // 페이드 아웃이 끝난 뒤 실제로 넘어갈 next 화면
+  const FADE_DURATION = 60 * 2; // 60FPS 기준 3초 동안 진행
+
   // 스토리 분기 표시
 
   let storyMap = {
@@ -1609,6 +1624,7 @@ function draw() {
 
   background(0);
 
+  // ─── 1) 배경 이미지 그리기 (기존 코드 유지) ─────────────────────────────────
   let img = images[currentKey];
   if (img) {
     let canvasRatio = width / height;
@@ -1624,20 +1640,45 @@ function draw() {
     image(img, width / 2, height / 2, newW, newH);
   }
 
+  // ─── 2) 페이드 상태에 따른 프레임 증가 및 전환 처리 ─────────────────────────────
+  if (fadeMode === "fadingOut") {
+    fadeFrame++;
+    if (fadeFrame >= FADE_DURATION) {
+      // 3초(180프레임) 페이드 아웃 끝 → 실제 화면 전환 & 페이드 인 시작
+      currentKey = pendingKey;
+      pendingKey = "";
+      fadeMode = "fadingIn";
+      fadeFrame = 0;
+      redraw();
+      return;
+    }
+  }
+  else if (fadeMode === "fadingIn") {
+    fadeFrame++;
+    if (fadeFrame >= FADE_DURATION) {
+      // 3초 페이드 인 끝 → 일반 상태로 복귀
+      fadeMode = "";
+      fadeFrame = 0;
+    }
+  }
 
-  // 화면에 글자 표시
+  // ─── 3) 텍스트 그리기 (기존 color + 알파값 적용) ───────────────────────────────
   if (textMap[currentKey]) {
     let t = textMap[currentKey];
-
-    fill(...(t.color || [255]));
+    let base = t.color || [255, 255, 255];
+    let alpha = 255;
+    if (fadeMode === "fadingOut") {
+      alpha = 255 - floor((fadeFrame / FADE_DURATION) * 255);
+    } else if (fadeMode === "fadingIn") {
+      alpha = floor((fadeFrame / FADE_DURATION) * 255);
+    }
+    fill(base[0], base[1], base[2], alpha);
 
     if (t.align === "left") {
       textAlign(LEFT, CENTER);
     } else {
       textAlign(CENTER, CENTER);
     }
-
-    fill(...(t.color || [255]));
     textSize(t.size || 32);
     text(t.content, t.x, t.y);
   }
@@ -1750,13 +1791,29 @@ function keyPressed() {
     }
     return; // 아래 공통 처리 방지
   }
+
+  if (fadeMode !== "") {
+    return;
+  }
   
+  // 3) 스페이스바 누르면 넘어가는 로직
   if (key === ' ') {
     let next = storyMap[currentKey];
+    // next가 문자열일 때만 처리 (객체 분기일 때는 마우스 클릭으로 넘어가므로)
     if (typeof next === 'string') {
-      screenHistory.push(currentKey);
-      currentKey = next;
-      redraw();
+      // 3-1) 현재 화면이 fade 대상이면 → 페이드 아웃 모드로 진입
+      if (fadeScreens.includes(currentKey)) {
+        screenHistory.push(currentKey);
+        pendingKey = next;         // 실제 넘어갈 화면을 잠시 보관
+        fadeMode = "fadingOut";    // 페이드 아웃 상태로 변경
+        fadeFrame = 0;             // 프레임 카운트 리셋
+      }
+      // 3-2) fade 대상이 아니면 → 즉시 넘어감
+      else {
+        screenHistory.push(currentKey);
+        currentKey = next;
+        redraw();
+      }
     }
   }
 
