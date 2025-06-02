@@ -43,13 +43,15 @@ let musicStarted = false;
 let introMusic, muralMusic, forestMusic,
 choice1Music, cafeMusic, cockbarMusic, jazzbarMusic, musicbarMusic, chatMusic, animeMusic,
 bookstoreMusic, bookcafeMusic,artMusic, bookturnMusic, stationeryMusic,statchatMusic, leatherMusic,
-authorvoiceMusic,
+authorvoiceMusic,authorMusic,exhibitMusic, discountMusic, fashionMusic, reformMusic, runwayMusic, diyMusic,
 stage1endMusic;
 
 let introMusicStarted, muralMusicStarted, forestMusicStarted, choice1MusicStarted, cafeMusicStarted,
 cockbarMusicStarted, jazzbarMusicStarted, musicbarMusicStarted, chatMusicStarted, animeMusicStarted,
 bookstoreMusicStarted, bookcafeMusicStarted, artMusicStarted, bookturnMusicStarted, stage1endMusicStarted,
-stationeryMusicStarted, statchatMusicStarted, leatherMusicStarted, authorvoiceMusicStarted
+stationeryMusicStarted, statchatMusicStarted, leatherMusicStarted, authorvoiceMusicStarted, authorMusicStarted,
+exhibitMusicStarted, discountMusicStarted,fashionMusicStarted, runwayMusicStarted, diyMusicStarted,
+reformMusicStarted
 = false;
 
 
@@ -321,7 +323,7 @@ let fadeAmount = 0;      // 페이드 투명도
         imgPath: "visual assets/screen7-2icon1.png",
         hoverImg: null,
         hoverImgPath: "visual assets/screen7-2icon1MO.png",
-        next: "screen7-2-1",
+        next: "screen7-2-1 voice",
         label: "매주 주말 작가 초청 북토크 운영"
       },
       {
@@ -496,7 +498,14 @@ let fadeAmount = 0;      // 페이드 투명도
     stationeryMusic = loadSound('audio assets/stationery.mp3');
     statchatMusic = loadSound('audio assets/statchat.mp3');
     leatherMusic = loadSound('audio assets/leather.mp3');
+    authorMusic = loadSound('audio assets/author.mp3');
     authorvoiceMusic = loadSound('audio assets/authorvoice.mp3');
+    exhibitMusic = loadSound('audio assets/exhibit.mp3');
+    discountMusic = loadSound('audio assets/discount.mp3');
+    fashionMusic = loadSound('audio assets/fashion.mp3');
+    reformMusic = loadSound('audio assets/reform.mp3');
+    runwayMusic = loadSound('audio assets/runway.mp3');
+    diyMusic = loadSound('audio assets/diy.mp3');
 
 
     // 사운드 로드 예시 (실제 사운드 파일이 있다면 사용)
@@ -1111,7 +1120,7 @@ function draw() {
 
   // 칵테일바 음원
   if (
-    ["screen7-1-1"].includes(currentKey)
+    ["screen7-1-1","screen7-3-1-2","screen7-3-1-1"].includes(currentKey)
     && !cockbarMusicStarted
   ) {
     cockbarMusic.loop(); // 반복 재생
@@ -1121,7 +1130,7 @@ function draw() {
 
   // 👉 다른 화면으로 넘어가면 멈추고 플래그 리셋
   if (
-    !["screen7-1-1"].includes(currentKey)
+    !["screen7-1-1","screen7-3-1-2", "screen7-3-1-1"].includes(currentKey)
     && cockbarMusicStarted
   ) {
     cockbarMusic.stop();
@@ -1189,7 +1198,7 @@ function draw() {
     && !animeMusicStarted
   ) {
     animeMusic.loop(); // 반복 재생
-    animeMusic.setVolume(0.1);
+    animeMusic.setVolume(0.2);
     animeMusicStarted = true;
   }
 
@@ -1302,7 +1311,7 @@ function draw() {
     && !leatherMusicStarted
   ) {
     leatherMusic.loop(); // 반복 재생
-    leatherMusic.setVolume(0.7);
+    leatherMusic.setVolume(0.5);
     leatherMusicStarted = true;
   }
 
@@ -1317,7 +1326,7 @@ function draw() {
 
   // 문방구 소음
   if (
-    ["screen7-2-2", "screen7-2-2-1", "screen7-2-2-2"].includes(currentKey)
+    ["screen7-2-2", "screen7-2-2-1", "screen7-2-2-2", "screen7-2-1-1", "screen7-2-1-2", "screen7-3-1"].includes(currentKey)
     && !statchatMusicStarted
   ) {
     statchatMusic.loop(); // 반복 재생
@@ -1327,18 +1336,19 @@ function draw() {
 
   // 👉 다른 화면으로 넘어가면 멈추고 플래그 리셋
   if (
-    !["screen7-2-2", "screen7-2-2-1", "screen7-2-2-2"].includes(currentKey)
+    !["screen7-2-2", "screen7-2-2-1", "screen7-2-2-2", "screen7-2-1-1", "screen7-2-1-2", "screen7-3-1"].includes(currentKey)
     && statchatMusicStarted
   ) {
     statchatMusic.stop();
     statchatMusicStarted = false;
   }
 
-  // 작가 음원
+  // 작가 목소리
   if (
     ["screen7-2-1 voice"].includes(currentKey)
     && !authorvoiceMusicStarted
   ) {
+    authorvoiceMusic.play();
     authorvoiceMusicStarted = true;
   }
 
@@ -1349,6 +1359,138 @@ function draw() {
   ) {
     authorvoiceMusic.stop();
     authorvoiceMusicStarted = false;
+  }
+
+  // 작가 음원
+  if (
+    ["screen7-2-1"].includes(currentKey)
+    && !authorMusicStarted
+  ) {
+    authorMusic.loop(); // 반복 재생
+    authorMusicStarted = true;
+  }
+
+  // 👉 다른 화면으로 넘어가면 멈추고 플래그 리셋
+  if (
+    !["screen7-2-1"].includes(currentKey)
+    && authorMusicStarted
+  ) {
+    authorMusic.stop();
+    authorMusicStarted = false;
+  }
+
+  // 작가 노트 할인
+  if (
+    ["screen7-2-1-1"].includes(currentKey)
+    && !discountMusicStarted
+  ) {
+    discountMusic.loop(); // 반복 재생
+    discountMusic.setVolume(0.3);
+    discountMusicStarted = true;
+  }
+
+  // 👉 다른 화면으로 넘어가면 멈추고 플래그 리셋
+  if (
+    !["screen7-2-1-1"].includes(currentKey)
+    && discountMusicStarted
+  ) {
+    discountMusic.stop();
+    discountMusicStarted = false;
+  }
+
+  // 작가 전시
+  if (
+    ["screen7-2-1-2"].includes(currentKey)
+    && !exhibitMusicStarted
+  ) {
+    exhibitMusic.loop(); // 반복 재생
+    exhibitMusic.setVolume(0.3);
+    exhibitMusicStarted = true;
+  }
+
+  // 👉 다른 화면으로 넘어가면 멈추고 플래그 리셋
+  if (
+    !["screen7-2-1-2"].includes(currentKey)
+    && exhibitMusicStarted
+  ) {
+    exhibitMusic.stop();
+    exhibitMusicStarted = false;
+  }
+
+  // 작가 전시
+  if (
+    ["screen7-3"].includes(currentKey)
+    && !fashionMusicStarted
+  ) {
+    fashionMusic.loop(); // 반복 재생
+    fashionMusic.setVolume(0.2);
+    fashionMusicStarted = true;
+  }
+
+  // 👉 다른 화면으로 넘어가면 멈추고 플래그 리셋
+  if (
+    !["screen7-3"].includes(currentKey)
+    && fashionMusicStarted
+  ) {
+    fashionMusic.stop();
+    fashionMusicStarted = false;
+  }
+
+  // 리폼 음원
+  if (
+    ["screen7-3-1"].includes(currentKey)
+    && !reformMusicStarted
+  ) {
+    reformMusic.loop(); // 반복 재생
+    reformMusic.setVolume(0.3);
+    reformMusicStarted = true;
+  }
+
+  // 👉 다른 화면으로 넘어가면 멈추고 플래그 리셋
+  if (
+    !["screen7-3-1"].includes(currentKey)
+    && reformMusicStarted
+  ) {
+    reformMusic.stop();
+    reformMusicStarted = false;
+  }
+
+  // 런웨이 음원
+  if (
+    ["screen7-3-1-2"].includes(currentKey)
+    && !runwayMusicStarted
+  ) {
+    runwayMusic.loop(); // 반복 재생
+    runwayMusic.setVolume(0.4);
+    runwayMusicStarted = true;
+  }
+
+  // 👉 다른 화면으로 넘어가면 멈추고 플래그 리셋
+  if (
+    !["screen7-3-1-2"].includes(currentKey)
+    && runwayMusicStarted
+  ) {
+    runwayMusic.stop();
+    runwayMusicStarted = false;
+  }
+
+  // 라인업 음원
+  if (
+    ["screen7-3-1-1"].includes(currentKey)
+    && !diyMusicStarted
+  ) {
+    diyMusic.loop(); // 반복 재생
+    diyMusic.setVolume(0.15);
+    diyMusicStarted = true;
+  }
+
+  // 👉 다른 화면으로 넘어가면 멈추고 플래그 리셋
+  if (
+    !["screen7-3-1-1"].includes(currentKey)
+    && diyMusicStarted
+  ) {
+    diyMusic.stop();
+    diyMusicStarted = false;
   }
 
   // 인프라 엔딩 음원
