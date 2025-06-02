@@ -845,7 +845,7 @@ function setup() {
         align: "center"
       },
       "screen7-3-2": {
-        content: "테일러링 서비스를 제공했더니, 본인이 원하는 스타일의 옷을 만들어 입을 수 있어 주민들의 만족도가 커! \n 특히 수제화의 인기가 높네. \n\n 그런데 브랜드에 대한 외부인의 인지도는 여전히 낮네. \n\n 어떤 추가 전략을 사용해야 할까?",
+        content: "테일러링 서비스를 제공했더니, 본인이 원하는 스타일의 옷을 만들어 입을 수 있어 주민들의 만족도가 커! \n 특히 수제화의 인기가 높네. \n\n 그런데 브랜드에 대한 외부인의 인지도는 여전히 낮아. \n\n 어떤 추가 전략을 사용해야 할까?",
         x: width / 2,
         y: 350,
         size: 28,
@@ -1494,7 +1494,7 @@ function draw() {
     && !diyMusicStarted
   ) {
     diyMusic.loop(); // 반복 재생
-    diyMusic.setVolume(0.15);
+    diyMusic.setVolume(0.3);
     diyMusicStarted = true;
   }
 
