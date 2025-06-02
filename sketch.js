@@ -1559,9 +1559,9 @@ function draw() {
     storytaylorMusicStarted = false;
   }
 
-  // 인프라 엔딩 음원
+  // 엔딩 음원
   if (
-    ["screen8"].includes(currentKey)
+    ["screen8", "screen11-2", "screen16"].includes(currentKey)
     && !stage1endMusicStarted
   ) {
     stage1endMusic.loop(); // 반복 재생
@@ -1570,7 +1570,7 @@ function draw() {
 
   // 👉 다른 화면으로 넘어가면 멈추고 플래그 리셋
   if (
-    !["screen8"].includes(currentKey)
+    !["screen8", "screen11-2", "screen16"].includes(currentKey)
     && stage1endMusicStarted
   ) {
     stage1endMusic.stop();
@@ -1579,7 +1579,7 @@ function draw() {
 
   // 벽화 파트 음원
   if (
-    ["screen10", "screen10-1", "screen10-2", "screen11", "screen11-1", "screen11-2", "screen12"].includes(currentKey)
+    ["screen10", "screen10-1", "screen10-2", "screen11", "screen11-1", "screen12"].includes(currentKey)
     && !muralMusicStarted
   ) {
     muralMusic.loop(); // 반복 재생
@@ -1588,7 +1588,7 @@ function draw() {
 
   // 👉 다른 화면으로 넘어가면 멈추고 플래그 리셋
   if (
-    !["screen10", "screen10-1", "screen10-2", "screen11", "screen11-1", "screen11-2", "screen12"].includes(currentKey)
+    !["screen10", "screen10-1", "screen10-2", "screen11", "screen11-1", "screen12"].includes(currentKey)
     && muralMusicStarted
   ) {
     muralMusic.stop();
