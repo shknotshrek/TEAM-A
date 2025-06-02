@@ -469,7 +469,8 @@ let fadeAmount = 0;      // 페이드 투명도
 
     wallTextureImage = loadImage('visual assets/wall.png');
     musicAssets.basic = loadSound('audio assets/music1.mp3');
-    musicAssets.spray = loadSound('audio assets/Dream1.mp3');
+    musicAssets.spray = loadSound('audio assets/music2.mp3');
+    musicAssets.paint = loadSound('audio assets/music3.mp3');
     introMusic = loadSound('audio assets/intro.mp3');
     muralMusic = loadSound('audio assets/mural.mp3');
     forestMusic = loadSound('audio assets/forest.mp3');
@@ -553,6 +554,7 @@ function setup() {
     },
     {
       name: '물감붓',
+      music: 'paint',
       color: color(100, 100, 255, 180),
       draw: function(x, y, pX, pY, speed) {
         // 물감붓: brushSize가 작을 때도 자연스러운 번짐 효과
@@ -1553,10 +1555,11 @@ function drawMural() {
   // 브러시 크기 슬라이더 그리기 (색상 버튼 아래)
   let sliderTop = getNextY() + 60; // 색상 버튼과 충분히 띄움
   sliderY = sliderTop + 30;        // 텍스트와 핸들이 겹치지 않게 더 아래로
+  sliderbarx= sliderX + (sliderX+sliderW)/2;
 
   // 슬라이더 바
   fill(180);
-  rect(sliderX, sliderY, sliderW, sliderH, 4);
+  rect(sliderbarx, sliderY, sliderW, sliderH, 4);
 
   // 핸들 위치 계산
   handleX = sliderX + map(brushSize, 0.5, 6.0, 0, sliderW);
