@@ -44,6 +44,7 @@ let introMusic, muralMusic, forestMusic,
 choice1Music, cafeMusic, cockbarMusic, jazzbarMusic, musicbarMusic, chatMusic, animeMusic,
 bookstoreMusic, bookcafeMusic,artMusic, bookturnMusic, stationeryMusic,statchatMusic, leatherMusic,
 authorvoiceMusic,authorMusic,exhibitMusic, discountMusic, fashionMusic, reformMusic, runwayMusic, diyMusic,
+storytaylorMusic,taylorMusic,
 stage1endMusic;
 
 let introMusicStarted, muralMusicStarted, forestMusicStarted, choice1MusicStarted, cafeMusicStarted,
@@ -51,6 +52,7 @@ cockbarMusicStarted, jazzbarMusicStarted, musicbarMusicStarted, chatMusicStarted
 bookstoreMusicStarted, bookcafeMusicStarted, artMusicStarted, bookturnMusicStarted, stage1endMusicStarted,
 stationeryMusicStarted, statchatMusicStarted, leatherMusicStarted, authorvoiceMusicStarted, authorMusicStarted,
 exhibitMusicStarted, discountMusicStarted,fashionMusicStarted, runwayMusicStarted, diyMusicStarted,
+storytaylorMusicStarted,taylorMusicStarted,
 reformMusicStarted
 = false;
 
@@ -117,7 +119,8 @@ let fadeAmount = 0;      // 페이드 투명도
     // screen7-3 마지막 단계 → screen8
     "screen7-3-1-1": "screen8",
     "screen7-3-1-2": "screen8",
-    "screen7-3-2-1": "screen8",
+    "screen7-3-2-1": "screen7-3-2-1+",
+    "screen7-3-2-1+": "screen8",
     "screen7-3-2-2": "screen8",
 
     "screen8" : "screen9",
@@ -185,6 +188,7 @@ let fadeAmount = 0;      // 페이드 투명도
     "screen7-3-1-2.png",
     "screen7-3-2.png",
     "screen7-3-2-1.png",
+    "screen7-3-2-1+.png",
     "screen7-3-2-2.png",
   
     "screen8.png",
@@ -506,6 +510,8 @@ let fadeAmount = 0;      // 페이드 투명도
     reformMusic = loadSound('audio assets/reform.mp3');
     runwayMusic = loadSound('audio assets/runway.mp3');
     diyMusic = loadSound('audio assets/diy.mp3');
+    storytaylorMusic = loadSound('audio assets/storytaylor.mp3');
+    taylorMusic = loadSound('audio assets/taylor.mp3');
 
 
     // 사운드 로드 예시 (실제 사운드 파일이 있다면 사용)
@@ -927,7 +933,15 @@ function setup() {
         align: "center"
       },
       "screen7-3-2-1": {
-        content: "부스에서 고객들에게 신체 치수 측정, 옷감 선정, 샘플 수제화 착용 등의 경험을 제공했더니, 큰 인기를 끌었어. \n\n 소문을 들은 외부인들의 매장 방문이 증가하니, 정말 북적거리고 활기차다!",
+        content: "부스에서 고객들에게 신체 치수 측정, 옷감 선정, 샘플 수제화 착용 등의 경험을 제공했더니, 큰 인기를 끌었어.",
+        x: width / 2,
+        y: 850,
+        size: 28,
+        color: [255, 255, 255],
+        align: "center"
+      },
+      "screen7-3-2-1+": {
+        content: "소문을 들은 외부인들의 매장 방문이 증가하니, 정말 북적거리고 활기차다!",
         x: width / 2,
         y: 850,
         size: 28,
@@ -1120,7 +1134,7 @@ function draw() {
 
   // 칵테일바 음원
   if (
-    ["screen7-1-1","screen7-3-1-2","screen7-3-1-1"].includes(currentKey)
+    ["screen7-1-1","screen7-3-1-2","screen7-3-1-1", "screen7-3-2-1+"].includes(currentKey)
     && !cockbarMusicStarted
   ) {
     cockbarMusic.loop(); // 반복 재생
@@ -1130,7 +1144,7 @@ function draw() {
 
   // 👉 다른 화면으로 넘어가면 멈추고 플래그 리셋
   if (
-    !["screen7-1-1","screen7-3-1-2", "screen7-3-1-1"].includes(currentKey)
+    !["screen7-1-1","screen7-3-1-2", "screen7-3-1-1", "screen7-3-2-1+"].includes(currentKey)
     && cockbarMusicStarted
   ) {
     cockbarMusic.stop();
@@ -1213,7 +1227,7 @@ function draw() {
 
   // 북카페 음원
   if (
-    ["screen7-1-2"].includes(currentKey)
+    ["screen7-1-2", "screen7-3-2-1", "screen7-3-2-1+"].includes(currentKey)
     && !bookcafeMusicStarted
   ) {
     bookcafeMusic.loop(); // 반복 재생
@@ -1223,7 +1237,7 @@ function draw() {
 
   // 👉 다른 화면으로 넘어가면 멈추고 플래그 리셋
   if (
-    !["screen7-1-2"].includes(currentKey)
+    !["screen7-1-2", "screen7-3-2-1", "screen7-3-2-1+"].includes(currentKey)
     && bookcafeMusicStarted
   ) {
     bookcafeMusic.stop();
@@ -1326,7 +1340,7 @@ function draw() {
 
   // 문방구 소음
   if (
-    ["screen7-2-2", "screen7-2-2-1", "screen7-2-2-2", "screen7-2-1-1", "screen7-2-1-2", "screen7-3-1"].includes(currentKey)
+    ["screen7-2-2", "screen7-2-2-1", "screen7-2-2-2", "screen7-2-1-1", "screen7-2-1-2", "screen7-3-1", "screen7-3-2-1", "screen7-3-2-2"].includes(currentKey)
     && !statchatMusicStarted
   ) {
     statchatMusic.loop(); // 반복 재생
@@ -1336,7 +1350,7 @@ function draw() {
 
   // 👉 다른 화면으로 넘어가면 멈추고 플래그 리셋
   if (
-    !["screen7-2-2", "screen7-2-2-1", "screen7-2-2-2", "screen7-2-1-1", "screen7-2-1-2", "screen7-3-1"].includes(currentKey)
+    !["screen7-2-2", "screen7-2-2-1", "screen7-2-2-2", "screen7-2-1-1", "screen7-2-1-2", "screen7-3-1", "screen7-3-2-1", "screen7-3-2-2"].includes(currentKey)
     && statchatMusicStarted
   ) {
     statchatMusic.stop();
@@ -1491,6 +1505,43 @@ function draw() {
   ) {
     diyMusic.stop();
     diyMusicStarted = false;
+  }
+
+  // 테일러링 음원
+  if (
+    ["screen7-3-2"].includes(currentKey)
+    && !taylorMusicStarted
+  ) {
+    taylorMusic.loop(); // 반복 재생
+    taylorMusicStarted = true;
+  }
+
+  // 👉 다른 화면으로 넘어가면 멈추고 플래그 리셋
+  if (
+    !["screen7-3-2"].includes(currentKey)
+    && taylorMusicStarted
+  ) {
+    taylorMusic.stop();
+    taylorMusicStarted = false;
+  }
+
+  // 사연 테일러링 음원
+  if (
+    ["screen7-3-2-2"].includes(currentKey)
+    && !storytaylorMusicStarted
+  ) {
+    storytaylorMusic.loop(); // 반복 재생
+    storytaylorMusic.setVolume(0.6);
+    storytaylorMusicStarted = true;
+  }
+
+  // 👉 다른 화면으로 넘어가면 멈추고 플래그 리셋
+  if (
+    !["screen7-3-2-2"].includes(currentKey)
+    && storytaylorMusicStarted
+  ) {
+    storytaylorMusic.stop();
+    storytaylorMusicStarted = false;
   }
 
   // 인프라 엔딩 음원
