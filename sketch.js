@@ -42,13 +42,14 @@ let musicStarted = false;
 // 음원 변수
 let introMusic, muralMusic, forestMusic,
 choice1Music, cafeMusic, cockbarMusic, jazzbarMusic, musicbarMusic, chatMusic, animeMusic,
-bookstoreMusic, bookcafeMusic,artMusic, bookturnMusic, stationeryMusic,statchatMusic
+bookstoreMusic, bookcafeMusic,artMusic, bookturnMusic, stationeryMusic,statchatMusic, leatherMusic,
+authorvoiceMusic,
 stage1endMusic;
 
 let introMusicStarted, muralMusicStarted, forestMusicStarted, choice1MusicStarted, cafeMusicStarted,
 cockbarMusicStarted, jazzbarMusicStarted, musicbarMusicStarted, chatMusicStarted, animeMusicStarted,
 bookstoreMusicStarted, bookcafeMusicStarted, artMusicStarted, bookturnMusicStarted, stage1endMusicStarted,
-stationeryMusicStarted, statchatMusicStarted
+stationeryMusicStarted, statchatMusicStarted, leatherMusicStarted, authorvoiceMusicStarted
 = false;
 
 
@@ -95,8 +96,9 @@ let fadeAmount = 0;      // 페이드 투명도
     "screen7-1-2-2": "screen8",
   
     // screen7-2 가지
-    "screen7-2": { "A": "screen7-2-1", "B": "screen7-2-2" },
-    "screen7-2-1": { "A": "screen7-2-1-1", "B": "screen7-2-1-2" },
+    "screen7-2": { "A": "screen7-2-1 voice", "B": "screen7-2-2" },
+    "screen7-2-1 voice": "screen7-2-1",
+    "screen7-2-1" : { "A": "screen7-2-1-1", "B": "screen7-2-1-2" },
     "screen7-2-2": { "A": "screen7-2-2-1", "B": "screen7-2-2-2" },
   
     // screen7-2 마지막 단계 → screen8
@@ -167,6 +169,7 @@ let fadeAmount = 0;      // 페이드 투명도
     "screen7-1-2-2.png",
   
     "screen7-2.png",
+    "screen7-2-1 voice.png",
     "screen7-2-1.png",
     "screen7-2-1-1.png",
     "screen7-2-1-2.png",
@@ -492,6 +495,8 @@ let fadeAmount = 0;      // 페이드 투명도
     bookturnMusic = loadSound('audio assets/bookturn.mp3');
     stationeryMusic = loadSound('audio assets/stationery.mp3');
     statchatMusic = loadSound('audio assets/statchat.mp3');
+    leatherMusic = loadSound('audio assets/leather.mp3');
+    authorvoiceMusic = loadSound('audio assets/authorvoice.mp3');
 
 
     // 사운드 로드 예시 (실제 사운드 파일이 있다면 사용)
@@ -881,11 +886,11 @@ function setup() {
         align: "center"
       },
       "screen7-2-2-1": {
-        content: "사람들이 북커버가 탐이 나서 책을 더 많이 구매하네. 게다가 인근 공장과 협업하니, 지역 상생 효과까지 있잖아? \n\n 서점이 지역 공장과 독자들을 잇는 징검다리가 되었어!",
+        content: "사람들이 북커버가 탐이 나서 책을 더 많이 구매하네. \n게다가 인근 공장과 협업하니, 지역 상생 효과까지 있잖아? \n\n 서점이 지역 공장과 독자들을 잇는 징검다리가 되었어!",
         x: width / 2,
-        y: 850,
+        y: 100,
         size: 28,
-        color: [255, 255, 255],
+        color: [255,255,255],
         align: "center"
       },
       "screen7-2-2-2": {
@@ -1278,7 +1283,7 @@ function draw() {
     && !stationeryMusicStarted
   ) {
     stationeryMusic.loop(); // 반복 재생
-    stationeryMusic.setVolume(0.4);
+    stationeryMusic.setVolume(0.3);
     stationeryMusicStarted = true;
   }
 
@@ -1291,22 +1296,59 @@ function draw() {
     stationeryMusicStarted = false;
   }
 
+  // 북커버 음원
+  if (
+    ["screen7-2-2-1"].includes(currentKey)
+    && !leatherMusicStarted
+  ) {
+    leatherMusic.loop(); // 반복 재생
+    leatherMusic.setVolume(0.7);
+    leatherMusicStarted = true;
+  }
+
+  // 👉 다른 화면으로 넘어가면 멈추고 플래그 리셋
+  if (
+    !["screen7-2-2-1"].includes(currentKey)
+    && leatherMusicStarted
+  ) {
+    leatherMusic.stop();
+    leatherMusicStarted = false;
+  }
+
   // 문방구 소음
   if (
-    ["screen7-2-2", "screen7-2-2-2"].includes(currentKey)
+    ["screen7-2-2", "screen7-2-2-1", "screen7-2-2-2"].includes(currentKey)
     && !statchatMusicStarted
   ) {
     statchatMusic.loop(); // 반복 재생
+    statchatMusic.setVolume(0.4);
     statchatMusicStarted = true;
   }
 
   // 👉 다른 화면으로 넘어가면 멈추고 플래그 리셋
   if (
-    !["screen7-2-2", "screen7-2-2-2"].includes(currentKey)
+    !["screen7-2-2", "screen7-2-2-1", "screen7-2-2-2"].includes(currentKey)
     && statchatMusicStarted
   ) {
     statchatMusic.stop();
     statchatMusicStarted = false;
+  }
+
+  // 작가 음원
+  if (
+    ["screen7-2-1 voice"].includes(currentKey)
+    && !authorvoiceMusicStarted
+  ) {
+    authorvoiceMusicStarted = true;
+  }
+
+  // 👉 다른 화면으로 넘어가면 멈추고 플래그 리셋
+  if (
+    !["screen7-2-1 voice"].includes(currentKey)
+    && authorvoiceMusicStarted
+  ) {
+    authorvoiceMusic.stop();
+    authorvoiceMusicStarted = false;
   }
 
   // 인프라 엔딩 음원
