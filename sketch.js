@@ -39,14 +39,18 @@ let musicAssets = {};
 let currentMusic = null;
 let musicStarted = false;
 
-let introMusic;
-let introMusicStarted = false;
+// 음원 변수
+let introMusic, muralMusic, forestMusic,
+choice1Music, cafeMusic, cockbarMusic, jazzbarMusic, musicbarMusic, chatMusic, animeMusic,
+bookstoreMusic, bookcafeMusic,artMusic, bookturnMusic, stationeryMusic,statchatMusic
+stage1endMusic;
 
-let muralMusic;
-let muralMusicStarted = false;
+let introMusicStarted, muralMusicStarted, forestMusicStarted, choice1MusicStarted, cafeMusicStarted,
+cockbarMusicStarted, jazzbarMusicStarted, musicbarMusicStarted, chatMusicStarted, animeMusicStarted,
+bookstoreMusicStarted, bookcafeMusicStarted, artMusicStarted, bookturnMusicStarted, stage1endMusicStarted,
+stationeryMusicStarted, statchatMusicStarted
+= false;
 
-let forestMusic;
-let forestMusicStarted = false;
 
 let muralImage;          // 벽화 이미지 저장용
 let isFading = false;    // 페이드인 중 여부
@@ -474,6 +478,21 @@ let fadeAmount = 0;      // 페이드 투명도
     introMusic = loadSound('audio assets/intro.mp3');
     muralMusic = loadSound('audio assets/mural.mp3');
     forestMusic = loadSound('audio assets/forest.mp3');
+    choice1Music = loadSound('audio assets/choice1.mp3');
+    cafeMusic = loadSound('audio assets/cafe.mp3');
+    jazzbarMusic = loadSound('audio assets/jazzbar.mp3');
+    stage1endMusic = loadSound('audio assets/stage1end.mp3');
+    musicbarMusic = loadSound('audio assets/musicbar.mp3');
+    chatMusic = loadSound('audio assets/chat.mp3');
+    cockbarMusic = loadSound('audio assets/cockbar.mp3');
+    animeMusic = loadSound('audio assets/anime.mp3');
+    bookstoreMusic = loadSound('audio assets/bookstore.mp3');
+    bookcafeMusic = loadSound('audio assets/bookcafe.mp3');
+    artMusic = loadSound('audio assets/art.mp3');
+    bookturnMusic = loadSound('audio assets/bookturn.mp3');
+    stationeryMusic = loadSound('audio assets/stationery.mp3');
+    statchatMusic = loadSound('audio assets/statchat.mp3');
+
 
     // 사운드 로드 예시 (실제 사운드 파일이 있다면 사용)
     // soundFormats('mp3', 'ogg');
@@ -726,7 +745,7 @@ function setup() {
         align: "center"
       },
       "screen7-intro": {
-        content: "이 커다란 빌딩은 뭐지? 옛날 공장인가 봐. 벽이 다 벗겨진 걸 보니, 지금은 사용하지 않는 것 같아.",
+        content: "이 커다란 빌딩은 뭐지? 옛날 공장인가 봐. \n벽이 다 벗겨진 걸 보니, 지금은 사용하지 않는 것 같아.",
         x: width / 2,
         y: 850, // 👈 각 텍스트에 대한 y 위치
         size: 28,
@@ -774,7 +793,7 @@ function setup() {
         align: "center"
       },
       "screen7-1-2": {
-        content: "북카페로 운영하니 전보다 사람들이 더 관심을 가져 주는 것 같지만, \n근처 주민들은 독서에 큰 관심을 갖지 않는 것 같아. \n\n 책 장르를 전문화해서 아예 외부인 매니아 독자를 끌어들여야겠어. \n\n 어떤 추가 전략을 사용해야 할까?",
+        content: "북카페로 운영하니 전보다 방문객이 늘었지만, \n근처 주민들은 독서에 큰 관심을 갖지 않는 것 같아. \n\n 책 장르를 전문화해서 아예 외부인 매니아 독자를 끌어들여야겠어. \n\n 어떤 추가 전략을 사용해야 할까?",
         x: width / 2,
         y: height/ 2 - 100,
         size: 28,
@@ -822,7 +841,7 @@ function setup() {
         align: "center"
       },
       "screen7-1-1-2": {
-        content: "통장 출혈이 심하긴 했지만, 음악에 관심 있는 사람들이 많이 찾아왔어. \n\n 서울 힙스터들이 전부 모여 있으니, 정말 북적거리고 활기차다!",
+        content: "통장 출혈이 심하긴 했지만, 음악에 관심 있는 사람들이 많이 찾아왔어. \n\n 서울 힙스터들이 전부 모여 있으니, 정말 멋진 걸!",
         x: width / 2,
         y: 850,
         size: 28,
@@ -1032,7 +1051,7 @@ function draw() {
 
   // 제목 인트로 음원
   if (
-    ["screen2", "screen2-1", "screen2-2", "screen2-3", "screen2-4", "screen3", "screen3-1", "screen4", "screen4-1", "screen4-2", "screen5", "screen6", "screen7-intro"].includes(currentKey)
+    ["screen2", "screen2-1", "screen2-2", "screen2-3", "screen2-4", "screen3", "screen3-1", "screen4", "screen4-1", "screen4-2", "screen5", "screen6"].includes(currentKey)
     && !introMusicStarted
   ) {
     introMusic.loop(); // 반복 재생
@@ -1041,11 +1060,271 @@ function draw() {
 
   // 👉 다른 화면으로 넘어가면 멈추고 플래그 리셋
   if (
-    !["screen2", "screen2-1", "screen2-2", "screen2-3", "screen2-4", "screen3", "screen3-1", "screen4", "screen4-1", "screen4-2", "screen5", "screen6", "screen7-intro"].includes(currentKey)
+    !["screen2", "screen2-1", "screen2-2", "screen2-3", "screen2-4", "screen3", "screen3-1", "screen4", "screen4-1", "screen4-2", "screen5", "screen6"].includes(currentKey)
     && introMusicStarted
   ) {
     introMusic.stop();
     introMusicStarted = false;
+  }
+
+  // 첫 번째 분기 음원
+  if (
+    ["screen7-intro", "screen7"].includes(currentKey)
+    && !choice1MusicStarted
+  ) {
+    choice1Music.loop(); // 반복 재생
+    choice1MusicStarted = true;
+  }
+
+  // 👉 다른 화면으로 넘어가면 멈추고 플래그 리셋
+  if (
+    !["screen7-intro", "screen7"].includes(currentKey)
+    && choice1MusicStarted
+  ) {
+    choice1Music.stop();
+    choice1MusicStarted = false;
+  }
+
+  // 카페 음원
+  if (
+    ["screen7-1"].includes(currentKey)
+    && !cafeMusicStarted
+  ) {
+    cafeMusic.loop(); // 반복 재생
+    cockbarMusic.setVolume(0.7);
+    cafeMusicStarted = true;
+  }
+
+  // 👉 다른 화면으로 넘어가면 멈추고 플래그 리셋
+  if (
+    !["screen7-1"].includes(currentKey)
+    && cafeMusicStarted
+  ) {
+    cafeMusic.stop();
+    cafeMusicStarted = false;
+  }
+
+  // 칵테일바 음원
+  if (
+    ["screen7-1-1"].includes(currentKey)
+    && !cockbarMusicStarted
+  ) {
+    cockbarMusic.loop(); // 반복 재생
+    cockbarMusic.setVolume(0.7);
+    cockbarMusicStarted = true;
+  }
+
+  // 👉 다른 화면으로 넘어가면 멈추고 플래그 리셋
+  if (
+    !["screen7-1-1"].includes(currentKey)
+    && cockbarMusicStarted
+  ) {
+    cockbarMusic.stop();
+    cockbarMusicStarted = false;
+  }
+
+  // 재즈바 음원
+  if (
+    ["screen7-1-1-1"].includes(currentKey)
+    && !jazzbarMusicStarted
+  ) {
+    jazzbarMusic.loop(); // 반복 재생
+    jazzbarMusicStarted = true;
+  }
+
+  // 👉 다른 화면으로 넘어가면 멈추고 플래그 리셋
+  if (
+    !["screen7-1-1-1"].includes(currentKey)
+    && jazzbarMusicStarted
+  ) {
+    jazzbarMusic.stop();
+    jazzbarMusicStarted = false;
+  }
+
+  // 뮤직바 음원
+  if (
+    ["screen7-1-1-2"].includes(currentKey)
+    && !musicbarMusicStarted
+  ) {
+    musicbarMusic.loop(); // 반복 재생
+    musicbarMusicStarted = true;
+  }
+
+  // 👉 다른 화면으로 넘어가면 멈추고 플래그 리셋
+  if (
+    !["screen7-1-1-2"].includes(currentKey)
+    && musicbarMusicStarted
+  ) {
+    musicbarMusic.stop();
+    musicbarMusicStarted = false;
+  }
+
+  // 사람 소음
+  if (
+    ["screen7-1-1-2", "screen7-1-2-2", "screen7-1-2-1"].includes(currentKey)
+    && !chatMusicStarted
+  ) {
+    chatMusic.loop(); // 반복 재생
+    chatMusic.setVolume(0.6);
+    chatMusicStarted = true;
+  }
+
+  // 👉 다른 화면으로 넘어가면 멈추고 플래그 리셋
+  if (
+    !["screen7-1-1-2", "screen7-1-2-2", "screen7-1-2-1"].includes(currentKey)
+    && chatMusicStarted
+  ) {
+    chatMusic.stop();
+    chatMusicStarted = false;
+  }
+
+  // 만화책 음원
+  if (
+    ["screen7-1-2-2"].includes(currentKey)
+    && !animeMusicStarted
+  ) {
+    animeMusic.loop(); // 반복 재생
+    animeMusic.setVolume(0.1);
+    animeMusicStarted = true;
+  }
+
+  // 👉 다른 화면으로 넘어가면 멈추고 플래그 리셋
+  if (
+    !["screen7-1-2-2"].includes(currentKey)
+    && animeMusicStarted
+  ) {
+    animeMusic.stop();
+    animeMusicStarted = false;
+  }
+
+  // 북카페 음원
+  if (
+    ["screen7-1-2"].includes(currentKey)
+    && !bookcafeMusicStarted
+  ) {
+    bookcafeMusic.loop(); // 반복 재생
+    bookcafeMusic.setVolume(0.3);
+    bookcafeMusicStarted = true;
+  }
+
+  // 👉 다른 화면으로 넘어가면 멈추고 플래그 리셋
+  if (
+    !["screen7-1-2"].includes(currentKey)
+    && bookcafeMusicStarted
+  ) {
+    bookcafeMusic.stop();
+    bookcafeMusicStarted = false;
+  }
+
+  // 예술서적 음원
+  if (
+    ["screen7-1-2-1", "screen7-2-2-2"].includes(currentKey)
+    && !artMusicStarted
+  ) {
+    artMusic.loop(); // 반복 재생
+    artMusic.setVolume(0.5);
+    artMusicStarted = true;
+  }
+
+  // 👉 다른 화면으로 넘어가면 멈추고 플래그 리셋
+  if (
+    !["screen7-1-2-1", "screen7-2-2-2"].includes(currentKey)
+    && artMusicStarted
+  ) {
+    artMusic.stop();
+    artMusicStarted = false;
+  }
+
+  // 서점 음원
+  if (
+    ["screen7-1-2", "screen7-2"].includes(currentKey)
+    && !bookstoreMusicStarted
+  ) {
+    bookstoreMusic.loop(); // 반복 재생
+    bookstoreMusicStarted = true;
+  }
+
+  // 👉 다른 화면으로 넘어가면 멈추고 플래그 리셋
+  if (
+    !["screen7-1-2", "screen7-2"].includes(currentKey)
+    && bookstoreMusicStarted
+  ) {
+    bookstoreMusic.stop();
+    bookstoreMusicStarted = false;
+  }
+
+  // 서점 책 소리
+  if (
+    ["screen7-2"].includes(currentKey)
+    && !bookturnMusicStarted
+  ) {
+    bookturnMusic.loop(); // 반복 재생
+    bookturnMusic.setVolume(0.8);
+    bookturnMusicStarted = true;
+  }
+
+  // 👉 다른 화면으로 넘어가면 멈추고 플래그 리셋
+  if (
+    !["screen7-2"].includes(currentKey)
+    && bookturnMusicStarted
+  ) {
+    bookturnMusic.stop();
+    bookturnMusicStarted = false;
+  }
+
+  // 문방구 음원
+  if (
+    ["screen7-2-2"].includes(currentKey)
+    && !stationeryMusicStarted
+  ) {
+    stationeryMusic.loop(); // 반복 재생
+    stationeryMusic.setVolume(0.4);
+    stationeryMusicStarted = true;
+  }
+
+  // 👉 다른 화면으로 넘어가면 멈추고 플래그 리셋
+  if (
+    !["screen7-2-2"].includes(currentKey)
+    && stationeryMusicStarted
+  ) {
+    stationeryMusic.stop();
+    stationeryMusicStarted = false;
+  }
+
+  // 문방구 소음
+  if (
+    ["screen7-2-2", "screen7-2-2-2"].includes(currentKey)
+    && !statchatMusicStarted
+  ) {
+    statchatMusic.loop(); // 반복 재생
+    statchatMusicStarted = true;
+  }
+
+  // 👉 다른 화면으로 넘어가면 멈추고 플래그 리셋
+  if (
+    !["screen7-2-2", "screen7-2-2-2"].includes(currentKey)
+    && statchatMusicStarted
+  ) {
+    statchatMusic.stop();
+    statchatMusicStarted = false;
+  }
+
+  // 인프라 엔딩 음원
+  if (
+    ["screen8"].includes(currentKey)
+    && !stage1endMusicStarted
+  ) {
+    stage1endMusic.loop(); // 반복 재생
+    stage1endMusicStarted = true;
+  }
+
+  // 👉 다른 화면으로 넘어가면 멈추고 플래그 리셋
+  if (
+    !["screen8"].includes(currentKey)
+    && stage1endMusicStarted
+  ) {
+    stage1endMusic.stop();
+    stage1endMusicStarted = false;
   }
 
   // 벽화 파트 음원
