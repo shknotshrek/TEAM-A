@@ -4,6 +4,7 @@ let textMap = {};
 let transitionSpeed = 5;
 let screenHistory = [];
 let customFont;
+let brushCursors = {};
 
 // 벽화 파트 변수
 
@@ -532,6 +533,12 @@ let fadeAmount = 0;      // 페이드 투명도
     // 사운드 로드 예시 (실제 사운드 파일이 있다면 사용)
     // soundFormats('mp3', 'ogg');
     // sounds = [loadSound('brush1.mp3'), loadSound('spray.mp3'), loadSound('paint.mp3'), loadSound('marker.mp3')];
+
+    brushCursors['물감붓'] = loadImage('visual assets/screen13icon4.png');
+    brushCursors['마커펜'] = loadImage('visual assets/screen13icon2.png');
+    brushCursors['스프레이'] = loadImage('visual assets/screen13icon3.png');
+    brushCursors['기본 붓'] = loadImage('visual assets/screen13icon1.png');
+
   };
   
 
@@ -1720,6 +1727,7 @@ function draw() {
   }
 
   if (currentKey === "screen11-2") {               // 완성된 벽화 표시
+    cursor()
     background(0); // 화면 초기화
     image(images["screen11-2"], width / 2, height / 2, width, height);
 
@@ -2158,4 +2166,11 @@ function drawMural() {
 
   // 텍스트를 슬라이더 아래로 이동
   text('브러시 크기', sliderX + sliderW / 2, sliderY + 40);
+
+  noCursor();  // 기본 커서 숨김
+
+  if (selectedBrush && brushCursors[selectedBrush.name]) {
+    imageMode(CENTER);
+    image(brushCursors[selectedBrush.name], mouseX, mouseY, 64, 64);
+  }
 }
