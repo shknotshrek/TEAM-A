@@ -500,6 +500,7 @@ let fadeAmount = 0;      // 페이드 투명도
     musicAssets.basic = loadSound('audio assets/music1.mp3');
     musicAssets.spray = loadSound('audio assets/music2.mp3');
     musicAssets.paint = loadSound('audio assets/music3.mp3');
+    musicAssets.marker = loadSound('audio assets/music4.mp3');
     introMusic = loadSound('audio assets/intro.mp3');
     muralMusic = loadSound('audio assets/mural.mp3');
     forestMusic = loadSound('audio assets/forest.mp3');
@@ -661,6 +662,7 @@ function setup() {
     },
     {
       name: '마커펜',
+      music: 'marker',
       color: color(255, 255, 100, 100),
       draw: function(x, y, pX, pY, speed) {
         // 마커펜: 선분 전체에 네모 단면 반복, 잉크 번짐 효과
