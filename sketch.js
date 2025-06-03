@@ -44,14 +44,14 @@ let musicStarted = false;
 let introMusic, muralMusic, forestMusic,
 choice1Music, cafeMusic, cockbarMusic, jazzbarMusic, musicbarMusic, chatMusic, animeMusic,
 bookstoreMusic, bookcafeMusic,artMusic, bookturnMusic, stationeryMusic,statchatMusic, leatherMusic,
-authorvoiceMusic,authorMusic,exhibitMusic, discountMusic, fashionMusic, reformMusic, runwayMusic, diyMusic,
+authorMusic,exhibitMusic, discountMusic, fashionMusic, reformMusic, runwayMusic, diyMusic,
 storytaylorMusic,taylorMusic,
 stage1endMusic;
 
 let introMusicStarted, muralMusicStarted, forestMusicStarted, choice1MusicStarted, cafeMusicStarted,
 cockbarMusicStarted, jazzbarMusicStarted, musicbarMusicStarted, chatMusicStarted, animeMusicStarted,
 bookstoreMusicStarted, bookcafeMusicStarted, artMusicStarted, bookturnMusicStarted, stage1endMusicStarted,
-stationeryMusicStarted, statchatMusicStarted, leatherMusicStarted, authorvoiceMusicStarted, authorMusicStarted,
+stationeryMusicStarted, statchatMusicStarted, leatherMusicStarted, authorMusicStarted,
 exhibitMusicStarted, discountMusicStarted,fashionMusicStarted, runwayMusicStarted, diyMusicStarted,
 storytaylorMusicStarted,taylorMusicStarted,
 reformMusicStarted
@@ -116,8 +116,7 @@ let fadeAmount = 0;      // 페이드 투명도
     "screen7-1-2-2": "screen8",
   
     // screen7-2 가지
-    "screen7-2": { "A": "screen7-2-1 voice", "B": "screen7-2-2" },
-    "screen7-2-1 voice": "screen7-2-1",
+    "screen7-2": { "A": "screen7-2-1", "B": "screen7-2-2" },
     "screen7-2-1" : { "A": "screen7-2-1-1", "B": "screen7-2-1-2" },
     "screen7-2-2": { "A": "screen7-2-2-1", "B": "screen7-2-2-2" },
   
@@ -190,7 +189,6 @@ let fadeAmount = 0;      // 페이드 투명도
     "screen7-1-2-2.png",
   
     "screen7-2.png",
-    "screen7-2-1 voice.png",
     "screen7-2-1.png",
     "screen7-2-1-1.png",
     "screen7-2-1-2.png",
@@ -520,7 +518,6 @@ let fadeAmount = 0;      // 페이드 투명도
     statchatMusic = loadSound('audio assets/statchat.mp3');
     leatherMusic = loadSound('audio assets/leather.mp3');
     authorMusic = loadSound('audio assets/author.mp3');
-    authorvoiceMusic = loadSound('audio assets/authorvoice.mp3');
     exhibitMusic = loadSound('audio assets/exhibit.mp3');
     discountMusic = loadSound('audio assets/discount.mp3');
     fashionMusic = loadSound('audio assets/fashion.mp3');
@@ -1379,24 +1376,6 @@ function draw() {
   ) {
     statchatMusic.stop();
     statchatMusicStarted = false;
-  }
-
-  // 작가 목소리
-  if (
-    ["screen7-2-1 voice"].includes(currentKey)
-    && !authorvoiceMusicStarted
-  ) {
-    authorvoiceMusic.play();
-    authorvoiceMusicStarted = true;
-  }
-
-  // 👉 다른 화면으로 넘어가면 멈추고 플래그 리셋
-  if (
-    !["screen7-2-1 voice"].includes(currentKey)
-    && authorvoiceMusicStarted
-  ) {
-    authorvoiceMusic.stop();
-    authorvoiceMusicStarted = false;
   }
 
   // 작가 음원
