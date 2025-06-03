@@ -1787,59 +1787,55 @@ function draw() {
 }
 
 
-function keyPressed() {  
-  if (currentKey === "screen11-2") {
-    if (!isFading && !isFadedIn) {
-      // 페이드인 시작
-      fadeAmount = 0;
-      isFading = true;
-    } else if (isFadedIn) {
-      // 다음 화면으로 이동
-      currentKey = "screen14";
-    }
-    return; // 아래 공통 처리 방지
-  }
+function keyPressed() {
 
-  if (fadeMode !== "") {
-    return;
-  }
-  
-  // 3) 스페이스바 누르면 넘어가는 로직
-  if (key === ' ') {
-    let next = storyMap[currentKey];
-    // next가 문자열일 때만 처리 (객체 분기일 때는 마우스 클릭으로 넘어가므로)
-    if (typeof next === 'string') {
-      // 3-1) 현재 화면이 fade 대상이면 → 페이드 아웃 모드로 진입
-      if (fadeScreens.includes(currentKey)) {
-        screenHistory.push(currentKey);
-        pendingKey = next;         // 실제 넘어갈 화면을 잠시 보관
-        fadeMode = "fadingOut";    // 페이드 아웃 상태로 변경
-        fadeFrame = 0;             // 프레임 카운트 리셋
-      }
-      // 3-2) fade 대상이 아니면 → 즉시 넘어감
-      else {
-        screenHistory.push(currentKey);
-        currentKey = next;
-        redraw();
-      }
-    }
-  }
-
+  /* ───────── 1) BACKSPACE : 언제 눌러도 먼저 처리 ───────── */
   if (keyCode === BACKSPACE) {
     if (screenHistory.length > 0) {
-      currentKey = screenHistory.pop(); 
+      currentKey = screenHistory.pop();
       redraw();
     }
+    return;               // ← 더 내려가지 않고 종료
   }
 
+    /* ───────── 2) R 키로 처음으로 ───────── */
   if (key === 'r' || key === 'R') {
     currentKey = "screen1";
     screenHistory = [];
     redraw();
-    return; // 다른 처리 필요 없으므로 바로 리턴
+    return;
+  }
+
+  /* ───────── 3) screen11-2 특수 처리 ───────── */
+  if (currentKey === "screen11-2") {
+
+    if (!isFading && !isFadedIn) {
+      fadeAmount = 0;
+      isFading = true;
+    } else if (isFadedIn) {
+      /* 화면 전환 + 히스토리 저장 */
+      screenHistory.push(currentKey);
+      currentKey = "screen14";
+      redraw();
+    }
+    return;               // ← 공통 키 처리로 내려가지 않음
+  }
+
+  /* ───────── 4) screen13 : 스페이스바 무시 ───────── */
+  if (key === ' ' && currentKey === 'screen13' || key === ' ' && currentKey === 'screen1') {
+    return;
+  }
+  
+  /* ───────── 5) 일반 스페이스바 진행 ───────── */
+  if (key === ' ') {
+    let next = storyMap[currentKey];
+    if (typeof next === 'string') {
+      screenHistory.push(currentKey);
+      currentKey = next;
+      redraw();
+    }
   }
 }
-
 
 
 function mousePressed() {
