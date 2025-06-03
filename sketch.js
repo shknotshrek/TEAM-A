@@ -66,8 +66,8 @@ let fadeAmount = 0;      // 페이드 투명도
 
 // 페이드 효과를 줄 화면들
   const fadeScreens = [
-    "screen2", "screen2-1", "screen2-2", "screen2-3", "screen2-4", "screen8",
-    "screen10", "screen10-1", "screen10-2",
+    "screen2", "screen2-1", "screen2-2", "screen2-3", "screen2-4", "screen4", "screen4-1", "screen4-2", "screen5", "screen6", "screen7",
+    "screen8", "screen10", "screen10-1", "screen10-2",
     "screen11", "screen11-1", "screen11-2",
     "screen15", "screen15-1", "screen15-2", "screen15-3", "screen15-4", "screen15-5"
   ];
@@ -273,7 +273,7 @@ let fadeAmount = 0;      // 페이드 투명도
         hoverImg: null,
         hoverImgPath: "visual assets/screen7-1icon1.png",
         next: "screen7-1-1",
-        label: "낮에는 카페, 밤에는 칵테일 바로 \n 혼합 운영"
+        label: "낮에는 카페, 밤에는 \n칵테일 바로 혼합 운영"
       },
       {
         x: 904, y: 238,
@@ -405,7 +405,7 @@ let fadeAmount = 0;      // 페이드 투명도
     "screen7-3": [
       {
         x: 654, y: 895,
-        w: 225, h: 225,
+        w: 200, h: 200,
         img: null,
         imgPath: "visual assets/screen7-3icon1.png",
         hoverImg: null,
@@ -415,7 +415,7 @@ let fadeAmount = 0;      // 페이드 투명도
       },
       {
         x: 939, y: 840,
-        w: 225, h: 225,
+        w: 170, h: 170,
         img: null,
         imgPath: "visual assets/screen7-3icon2.png",
         hoverImg: null,
@@ -427,7 +427,7 @@ let fadeAmount = 0;      // 페이드 투명도
 
     "screen7-3-1": [
       {
-        x: 560, y: 833,
+        x: 926, y: 191,
         w: 70, h: 100,
         img: null,
         imgPath: "visual assets/screen7-3-1icon1.png",
@@ -450,8 +450,8 @@ let fadeAmount = 0;      // 페이드 투명도
 
     "screen7-3-2": [
       {
-        x: 870, y: 880,
-        w: 80, h: 80,
+        x: 716, y: 871,
+        w: 110, h:110,
         img: null,
         imgPath: "visual assets/screen7-3-2icon1.png",
         hoverImg: null,
@@ -467,7 +467,7 @@ let fadeAmount = 0;      // 페이드 투명도
         hoverImg: null,
         hoverImgPath: "visual assets/screen7-3-2icon2.png",
         next: "screen7-3-2-2",
-        label: "라디오에서 '사연 기반 테일러링' 응모를 받아 \n추첨을 통해 10명에게 무료로 의류 제작"
+        label: "라디오에서 사연 응모를 받아 \n사연 기반 의류 제작"
       }
     ],
   };
@@ -812,7 +812,7 @@ function setup() {
       "screen7-2": {
         content: "독립서점을 도입했더니 사람들이 가끔 오가기는 하지만, 주민들은 독서에 큰 관심을 갖지 않는 것 같아. \n\n 어떤 추가 전략을 사용해야 할까? \n\n Hint: 방 안에 사용할 만한 도구는 없을까? 물체들에 마우스를 올려보자.",
         x: width / 2,
-        y: 555,
+        y: height/2,
         size: 28,
         color: [255, 255, 255],
         align: "center"
@@ -844,7 +844,7 @@ function setup() {
       "screen7-2-1": {
         content: "유명 작가가 강연을 한다고 하니, 주민들도 관심을 가져주고 있어! \n 하지만 작가와의 만남이 단발적이라 아쉬워하는 분들이 많네. \n\n 어떤 추가 전략을 사용해야 할까?",
         x: width / 2,
-        y: 150,
+        y: 180,
         size: 28,
         color: [255, 255, 255],
         align: "center"
@@ -852,7 +852,7 @@ function setup() {
       "screen7-2-2": {
         content: "예쁜 문구류를 구경하러 오는 주민과 외부인이 증가했어! \n\n 그런데 정작 책에 대한 관심은 오히려 떨어진 것 같네. \n 여기가 책방이에요, 문방구예요?”하고 묻는 분들도 계셨어. \n\n 어떻게 하면 책과 문구류 사이의 연결을 강화할 수 있을까?",
         x: width / 2,
-        y: height/2,
+        y: 200,
         size: 28,
         color: [255, 255, 255],
         align: "center"
@@ -860,7 +860,7 @@ function setup() {
       "screen7-3-1": {
         content: "클래스가 주민들을 포함한 여러 방문객들의 큰 호응을 얻었어! \n 게다가 인근 공장과 협업하니, 지역 상생 효과까지 있잖아? \n\n 그런데 클래스는 일회성이다 보니, 투입되는 비용 대비 브랜드 홍보 효과가 크지 않은 것 같아. \n\n 어떤 추가 전략을 사용해야 할까?",
         x: width / 2,
-        y: 350,
+        y: height/2,
         size: 28,
         color: [255, 255, 255],
         align: "center"
@@ -923,8 +923,8 @@ function setup() {
       },
       "screen7-2-2-1": {
         content: "사람들이 북커버가 탐이 나서 책을 더 많이 구매하네. \n게다가 인근 공장과 협업하니, 지역 상생 효과까지 있잖아? \n\n 서점이 지역 공장과 독자들을 잇는 징검다리가 되었어!",
-        x: width / 2,
-        y: 850,
+        x: 440,
+        y: 830,
         size: 28,
         color: [255,255,255],
         align: "center"
@@ -1807,36 +1807,36 @@ function keyPressed() {
     return;
   }
   
-  // /* ───────── 5) 일반 스페이스바 진행 ───────── */
-  // if (key === ' ') {
-  //   let next = storyMap[currentKey];
-  //   if (typeof next === 'string') {
-  //     screenHistory.push(currentKey);
-  //     currentKey = next;
-  //     redraw();
-  //   }
-  // }
-
-  // 3) 스페이스바 누르면 넘어가는 로직
+  /// 텍스트 페이드인 효과 제거
   if (key === ' ') {
     let next = storyMap[currentKey];
-    // next가 문자열일 때만 처리 (객체 분기일 때는 마우스 클릭으로 넘어가므로)
     if (typeof next === 'string') {
-      // 3-1) 현재 화면이 fade 대상이면 → 페이드 아웃 모드로 진입
-      if (fadeScreens.includes(currentKey)) {
-        screenHistory.push(currentKey);
-        pendingKey = next;         // 실제 넘어갈 화면을 잠시 보관
-        fadeMode = "fadingOut";    // 페이드 아웃 상태로 변경
-        fadeFrame = 0;             // 프레임 카운트 리셋
-      }
-      // 3-2) fade 대상이 아니면 → 즉시 넘어감
-      else {
-        screenHistory.push(currentKey);
-        currentKey = next;
-        redraw();
-      }
+      screenHistory.push(currentKey);
+      currentKey = next;
+      redraw();
     }
   }
+
+  // // 텍스트 페이드인 효과 유
+  // if (key === ' ') {
+  //   let next = storyMap[currentKey];
+  //   // next가 문자열일 때만 처리 (객체 분기일 때는 마우스 클릭으로 넘어가므로)
+  //   if (typeof next === 'string') {
+  //     // 3-1) 현재 화면이 fade 대상이면 → 페이드 아웃 모드로 진입
+  //     if (fadeScreens.includes(currentKey)) {
+  //       screenHistory.push(currentKey);
+  //       pendingKey = next;         // 실제 넘어갈 화면을 잠시 보관
+  //       fadeMode = "fadingOut";    // 페이드 아웃 상태로 변경
+  //       fadeFrame = 0;             // 프레임 카운트 리셋
+  //     }
+  //     // 3-2) fade 대상이 아니면 → 즉시 넘어감
+  //     else {
+  //       screenHistory.push(currentKey);
+  //       currentKey = next;
+  //       redraw();
+  //     }
+  //   }
+  // }
 }
 
 
