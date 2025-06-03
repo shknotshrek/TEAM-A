@@ -1828,13 +1828,34 @@ function keyPressed() {
     return;
   }
   
-  /* ───────── 5) 일반 스페이스바 진행 ───────── */
+  // /* ───────── 5) 일반 스페이스바 진행 ───────── */
+  // if (key === ' ') {
+  //   let next = storyMap[currentKey];
+  //   if (typeof next === 'string') {
+  //     screenHistory.push(currentKey);
+  //     currentKey = next;
+  //     redraw();
+  //   }
+  // }
+
+  // 3) 스페이스바 누르면 넘어가는 로직
   if (key === ' ') {
     let next = storyMap[currentKey];
+    // next가 문자열일 때만 처리 (객체 분기일 때는 마우스 클릭으로 넘어가므로)
     if (typeof next === 'string') {
-      screenHistory.push(currentKey);
-      currentKey = next;
-      redraw();
+      // 3-1) 현재 화면이 fade 대상이면 → 페이드 아웃 모드로 진입
+      if (fadeScreens.includes(currentKey)) {
+        screenHistory.push(currentKey);
+        pendingKey = next;         // 실제 넘어갈 화면을 잠시 보관
+        fadeMode = "fadingOut";    // 페이드 아웃 상태로 변경
+        fadeFrame = 0;             // 프레임 카운트 리셋
+      }
+      // 3-2) fade 대상이 아니면 → 즉시 넘어감
+      else {
+        screenHistory.push(currentKey);
+        currentKey = next;
+        redraw();
+      }
     }
   }
 }
