@@ -1099,6 +1099,7 @@ function setup() {
         align: "center"
       },
     } 
+    setupSculptureFeature(); // 조각상 기능 초기화
 }
 
 function draw() {
@@ -1612,14 +1613,18 @@ function draw() {
     return;
   } else {
     showBrushUI(false); // 그 외 화면에서는 버튼 숨기기
-  }
-
-
-  background(0);
-
-  // ─── 1) 배경 이미지 그리기 (기존 코드 유지) ─────────────────────────────────
+  } 
+   // ─────── 바로 이 부분입니다. 기존 background(0)와 let img... 부분을 아래 코드로 교체하세요. ───────
+  if (currentKey === 'screen15-5') {
+    image(images[currentKey], width / 2, height / 2, width, height);
+    drawSculpturePoseScreen();
+  } else if (currentKey === 'screen16') {
+  image(images[currentKey], width / 2, height / 2, width, height);
+  drawSculptureResultScreen();
+} else { // screen15-5도, screen16도 아닐 때
   let img = images[currentKey];
   if (img) {
+    // ✅ 사용자님의 원래 비율 계산 로직을 여기에 다시 적용!
     let canvasRatio = width / height;
     let imgRatio = img.width / img.height;
     let newW, newH;
@@ -1631,7 +1636,10 @@ function draw() {
       newW = height * imgRatio;
     }
     image(img, width / 2, height / 2, newW, newH);
+  } else {
+    background(0);
   }
+}
 
   // ─── 2) 페이드 상태에 따른 프레임 증가 및 전환 처리 ─────────────────────────────
   if (fadeMode === "fadingOut") {
@@ -1822,6 +1830,15 @@ function keyPressed() {
   
   /// 텍스트 페이드인 효과 제거
   if (key === ' ') {
+    // >>> 추가할 코드 시작 <<<
+    if (currentKey === 'screen15-5') {
+      capturePoseAndGenerateSculpture(); // 포즈 캡처 및 API 요청 함수 호출
+      screenHistory.push(currentKey);
+      currentKey = storyMap[currentKey]; // storyMap에 따라 'screen16'으로 전환
+      redraw();
+      return; // 다른 스페이스바 로직을 타지 않도록 여기서 종료
+    }
+    // >>> 추가할 코드 끝 <<<
     let next = storyMap[currentKey];
     if (typeof next === 'string') {
       screenHistory.push(currentKey);
