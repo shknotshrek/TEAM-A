@@ -5,6 +5,11 @@ let transitionSpeed = 5;
 let screenHistory = [];
 let customFont;
 let brushCursors = {};
+const hintScreens = [
+  "screen7-1", "screen7-1-1", "screen7-1-2",
+  "screen7-2", "screen7-2-1", "screen7-2-2",
+  "screen7-3", "screen7-3-1", "screen7-3-2"
+];
 
 // 벽화 파트 변수
 
@@ -802,7 +807,7 @@ function setup() {
         align: "center"
       },
       "screen7-1": {
-        content: "카페를 도입했더니 지역 주민들이 가끔 오가기는 하지만, 장사가 특별히 잘 되지는 않네. \n\n 경쟁력이 부족한 것 같아. \n\n 어떤 추가 전략을 사용해야 할까? \n\n Hint: 방 안에 사용할 만한 도구는 없을까? 물체들에 마우스를 올려보자.",
+        content: "카페를 도입했더니 지역 주민들이 가끔 오가기는 하지만, 장사가 특별히 잘 되지는 않네. \n\n 경쟁력이 부족한 것 같아. \n\n 어떤 추가 전략을 사용해야 할까?",
         x: width / 2,
         y: height/2,
         size: 28,
@@ -810,7 +815,7 @@ function setup() {
         align: "center"
       },
       "screen7-2": {
-        content: "독립서점을 도입했더니 사람들이 가끔 오가기는 하지만, 주민들은 독서에 큰 관심을 갖지 않는 것 같아. \n\n 어떤 추가 전략을 사용해야 할까? \n\n Hint: 방 안에 사용할 만한 도구는 없을까? 물체들에 마우스를 올려보자.",
+        content: "독립서점을 도입했더니 사람들이 가끔 오가기는 하지만, 주민들은 독서에 큰 관심을 갖지 않는 것 같아. \n\n 어떤 추가 전략을 사용해야 할까?",
         x: width / 2,
         y: height/2,
         size: 28,
@@ -818,7 +823,7 @@ function setup() {
         align: "center"
       },
       "screen7-3": {
-        content: "들여 놓은 옷들은 너무 예쁜데, 주민들의 연령대가 높은 편이라 이런 옷에 대한 수요가 부족한 것 같아. \n\n 어떤 추가 전략을 사용해야 할까? \n\n Hint: 방 안에 사용할 만한 도구는 없을까? 물체들에 마우스를 올려보자.",
+        content: "들여 놓은 옷들은 너무 예쁜데, 주민들의 연령대가 높은 편이라 이런 옷에 대한 수요가 부족한 것 같아. \n\n 어떤 추가 전략을 사용해야 할까?",
         x: width / 2,
         y: 350,
         size: 28,
@@ -1671,6 +1676,13 @@ function draw() {
     text(t.content, t.x, t.y);
   }
 
+  // Hint 문구 그리기 (선택된 screen에서만)
+  if (hintScreens.includes(currentKey)) {
+    fill(173, 216, 230); // 연파랑 (light blue)
+    textSize(25);
+    textAlign(CENTER, TOP);
+    text("Hint: 방 안에 사용할 만한 도구는 없을까? 물체들에 마우스를 올려보자.", width / 2, 30);
+  }
   // 선택지 아이콘 표시
   
   if (choices[currentKey]) {
@@ -1706,6 +1718,7 @@ function draw() {
       }
     }
   }
+  
 
   if (currentKey === "screen11-2") {               // 완성된 벽화 표시
     cursor()
