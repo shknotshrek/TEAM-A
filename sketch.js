@@ -271,7 +271,7 @@ let fadeAmount = 0;      // 페이드 투명도
         img: null,
         imgPath: "visual assets/screen7-1icon1.png",
         hoverImg: null,
-        hoverImgPath: "visual assets/screen7-1icon1.png",
+        hoverImgPath: "visual assets/screen7-1icon1MO.png",
         next: "screen7-1-1",
         label: "낮에는 카페, 밤에는 \n칵테일 바로 혼합 운영"
       },
@@ -281,7 +281,7 @@ let fadeAmount = 0;      // 페이드 투명도
         img: null,
         imgPath: "visual assets/screen7-1icon2.png",
         hoverImg: null,
-        hoverImgPath: "visual assets/screen7-1icon2.png",
+        hoverImgPath: "visual assets/screen7-1icon2MO.png",
         next: "screen7-1-2",
         label: "카페에 책 보급을 통해 북카페로 운영"
       }
@@ -294,7 +294,7 @@ let fadeAmount = 0;      // 페이드 투명도
         img: null,
         imgPath: "visual assets/screen7-1-1icon1.png",
         hoverImg: null,
-        hoverImgPath: "visual assets/screen7-1-1icon1.png",
+        hoverImgPath: "visual assets/screen7-1-1icon1MO.png",
         next: "screen7-1-1-1",
         label: "매주 주말 라이브 재즈 공연 호스팅"
       },
@@ -304,7 +304,7 @@ let fadeAmount = 0;      // 페이드 투명도
         img: null,
         imgPath: "visual assets/screen7-1-1icon2.png",
         hoverImg: null,
-        hoverImgPath: "visual assets/screen7-1-1icon2.png",
+        hoverImgPath: "visual assets/screen7-1-1icon2MO.png",
         next: "screen7-1-1-2",
         label: "하이엔드 스피커 구비하여 뮤직바로 운영"
       }
@@ -317,7 +317,7 @@ let fadeAmount = 0;      // 페이드 투명도
         img: null,
         imgPath: "visual assets/screen7-1-2icon1.png",
         hoverImg: null,
-        hoverImgPath: "visual assets/screen7-1-2icon1.png",
+        hoverImgPath: "visual assets/screen7-1-2icon1MO.png",
         next: "screen7-1-2-1",
         label: "회화, 디자인, 사진 관련 희귀 예술 서적 구비 \n (음료 구매 시 무료 열람 가능)"
       },
@@ -327,7 +327,7 @@ let fadeAmount = 0;      // 페이드 투명도
         img: null,
         imgPath: "visual assets/screen7-1-2icon2.png",
         hoverImg: null,
-        hoverImgPath: "visual assets/screen7-1-2icon2.png",
+        hoverImgPath: "visual assets/screen7-1-2icon2MO.png",
         next: "screen7-1-2-2",
         label: "인기 만화 시리즈 대여섯 편 전권 구비 \n(음료 구매 시 무료 열람 가능)"
       }
@@ -340,7 +340,7 @@ let fadeAmount = 0;      // 페이드 투명도
         img: null,
         imgPath: "visual assets/screen7-2icon1.png",
         hoverImg: null,
-        hoverImgPath: "visual assets/screen7-2icon1.png",
+        hoverImgPath: "visual assets/screen7-2icon1MO.png",
         next: "screen7-2-1",
         label: "매주 주말 작가 초청 북토크 운영"
       },
@@ -350,7 +350,7 @@ let fadeAmount = 0;      // 페이드 투명도
         img: null,
         imgPath: "visual assets/screen7-2icon2.png",
         hoverImg: null,
-        hoverImgPath: "visual assets/screen7-2icon2.png",
+        hoverImgPath: "visual assets/screen7-2icon2MO.png",
         next: "screen7-2-2",
         label: "문구 편집샵으로 동시 운영"
       }
@@ -363,7 +363,7 @@ let fadeAmount = 0;      // 페이드 투명도
         img: null,
         imgPath: "visual assets/screen7-2-1icon1.png",
         hoverImg: null,
-        hoverImgPath: "visual assets/screen7-2-1icon1.png",
+        hoverImgPath: "visual assets/screen7-2-1icon1MO.png",
         next: "screen7-2-1-1",
         label: "강연 후 한 달 동안 작가 추천 노트가 담긴 서적 10선 DP, \n할인된 가격에 판매"
       },
@@ -373,7 +373,7 @@ let fadeAmount = 0;      // 페이드 투명도
         img: null,
         imgPath: "visual assets/screen7-2-1icon2.png",
         hoverImg: null,
-        hoverImgPath: "visual assets/screen7-2-1icon2.png",
+        hoverImgPath: "visual assets/screen7-2-1icon2MO.png",
         next: "screen7-2-1-2",
         label: "신청자를 받아 작가와 함께하는 문예창작 원데이 클래스 운영, \n추후 서점에 결과물 전시"
       }
@@ -386,7 +386,7 @@ let fadeAmount = 0;      // 페이드 투명도
         img: null,
         imgPath: "visual assets/screen7-2-2icon1.png",
         hoverImg: null,
-        hoverImgPath: "visual assets/screen7-2-2icon1.png",
+        hoverImgPath: "visual assets/screen7-2-2icon1MO.png",
         next: "screen7-2-2-1",
         label: "도서 구매 시, 인근 가죽 공장과 협업하여 \n책 사이즈에 맞는 가죽 북커버 제작 클래스 참여 가능"
       },
@@ -396,7 +396,7 @@ let fadeAmount = 0;      // 페이드 투명도
         img: null,
         imgPath: "visual assets/screen7-2-2icon2.png",
         hoverImg: null,
-        hoverImgPath: "visual assets/screen7-2-2icon2.png",
+        hoverImgPath: "visual assets/screen7-2-2icon2MO.png",
         next: "screen7-2-2-2",
         label: "매달 책과 어울리는 문구 큐레이션 묶음을 새로 런칭 후 판매"
       }
@@ -409,7 +409,7 @@ let fadeAmount = 0;      // 페이드 투명도
         img: null,
         imgPath: "visual assets/screen7-3icon1.png",
         hoverImg: null,
-        hoverImgPath: "visual assets/screen7-3icon1.png",
+        hoverImgPath: "visual assets/screen7-3icon1MO.png",
         next: "screen7-3-1",
         label: "인근 봉제공장과 협동하여 \n의류 구매자 대상으로 빈티지 작업복 리폼 클래스 운영"
       },
@@ -419,7 +419,7 @@ let fadeAmount = 0;      // 페이드 투명도
         img: null,
         imgPath: "visual assets/screen7-3icon2.png",
         hoverImg: null,
-        hoverImgPath: "visual assets/screen7-3icon2.png",
+        hoverImgPath: "visual assets/screen7-3icon2MO.png",
         next: "screen7-3-2",
         label: "맞춤형 테일러링 서비스 기반 수제 의류 판매"
       }
@@ -432,7 +432,7 @@ let fadeAmount = 0;      // 페이드 투명도
         img: null,
         imgPath: "visual assets/screen7-3-1icon1.png",
         hoverImg: null,
-        hoverImgPath: "visual assets/screen7-3-1icon1.png",
+        hoverImgPath: "visual assets/screen7-3-1icon1MO.png",
         next: "screen7-3-1-1",
         label: "베스트 작업복 리폼작 선정 후 \n작가 이름 병기하여 정식 라인업 출시"
       },
@@ -442,7 +442,7 @@ let fadeAmount = 0;      // 페이드 투명도
         img: null,
         imgPath: "visual assets/screen7-3-1icon2.png",
         hoverImg: null,
-        hoverImgPath: "visual assets/screen7-3-1icon2.png",
+        hoverImgPath: "visual assets/screen7-3-1icon2MO.png",
         next: "screen7-3-1-2",
         label: "매달 작업복 리폼작을 활용하여 모델 런웨이 개최"
       }
@@ -455,7 +455,7 @@ let fadeAmount = 0;      // 페이드 투명도
         img: null,
         imgPath: "visual assets/screen7-3-2icon1.png",
         hoverImg: null,
-        hoverImgPath: "visual assets/screen7-3-2icon1.png",
+        hoverImgPath: "visual assets/screen7-3-2icon1MO.png",
         next: "screen7-3-2-1",
         label: "서울 주요 대학가에 이동식 테일러링 부스 설치하여 매장 홍보"
       },
@@ -465,7 +465,7 @@ let fadeAmount = 0;      // 페이드 투명도
         img: null,
         imgPath: "visual assets/screen7-3-2icon2.png",
         hoverImg: null,
-        hoverImgPath: "visual assets/screen7-3-2icon2.png",
+        hoverImgPath: "visual assets/screen7-3-2icon2MO.png",
         next: "screen7-3-2-2",
         label: "라디오에서 사연 응모를 받아 \n사연 기반 의류 제작"
       }
