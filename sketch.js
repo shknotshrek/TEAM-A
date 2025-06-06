@@ -5,6 +5,11 @@ let transitionSpeed = 5;
 let screenHistory = [];
 let customFont;
 let brushCursors = {};
+const hintScreens = [
+  "screen7-1", "screen7-1-1", "screen7-1-2",
+  "screen7-2", "screen7-2-1", "screen7-2-2",
+  "screen7-3", "screen7-3-1", "screen7-3-2"
+];
 
 // 벽화 파트 변수
 
@@ -579,14 +584,17 @@ function setup() {
     {
       name: '기본 붓',
       music: 'basic',
-      color: color(255, 100, 100, 200),
+      // '기본 붓'의 초기 알파값을 200에서 100으로 절반으로 낮춤
+      color: color(255, 100, 100, 100),
       draw: function(x, y, pX, pY, speed) {
         // 기본 붓: 둥근 붓 느낌, 끝이 둥글고 soft
         muralCanvas.strokeWeight(8 * brushSize);
+        // currentColor에 이미 페이드된 알파값이 적용되어 있으므로 그대로 사용
         muralCanvas.stroke(currentColor);
         muralCanvas.line(x, y, pX, pY);
         // 끝에 둥근 붓 느낌
         muralCanvas.noStroke();
+        // currentColor에 이미 페이드된 알파값이 적용되어 있으므로 그대로 사용
         muralCanvas.fill(currentColor);
         muralCanvas.ellipse(x, y, 8 * brushSize, 8 * brushSize);
         muralCanvas.ellipse(pX, pY, 8 * brushSize, 8 * brushSize);
@@ -595,6 +603,7 @@ function setup() {
     {
       name: '스프레이',
       music: 'spray',
+      // 스프레이는 투명도를 변경하지 않음 (기존 150 유지)
       color: color(100, 255, 100, 150),
       draw: function(x, y, pX, pY, speed) {
         let spraySize = 20 * brushSize; // 분사 범위만 brushSize에 비례
@@ -605,6 +614,7 @@ function setup() {
           let offsetY = random(-spraySize, spraySize);
           let d = dist(0, 0, offsetX, offsetY);
           if (d < spraySize) {
+            // 스프레이의 알파는 랜덤값을 유지 (50~120)
             muralCanvas.fill(red(currentColor), green(currentColor), blue(currentColor), random(50, 120));
             muralCanvas.ellipse(x + offsetX, y + offsetY, random(2, 5), random(2, 5)); // brushSize와 무관하게 고정
           }
@@ -614,13 +624,16 @@ function setup() {
     {
       name: '물감붓',
       music: 'paint',
-      color: color(100, 100, 255, 180),
+      // '물감붓'의 초기 알파값을 180에서 90으로 절반으로 낮춤
+      color: color(100, 100, 255, 90),
       draw: function(x, y, pX, pY, speed) {
         // 물감붓: brushSize가 작을 때도 자연스러운 번짐 효과
         muralCanvas.noStroke();
         let r = red(currentColor);
         let g = green(currentColor);
         let b = blue(currentColor);
+        // currentColor의 현재 알파값(페이드 중인 값)을 가져옴
+        let currentAlpha = alpha(currentColor);
 
         let len = dist(x, y, pX, pY);
         // brushSize가 작을수록 steps를 더 늘림
@@ -631,13 +644,14 @@ function setup() {
           let iy = lerp(y, pY, t);
           let angle = atan2(y - pY, x - pX) + random(-0.5, 0.5);
 
-          // 중심부 진한 타원
+          // 중심부 진한 타원: 기존 알파 40을 현재 알파에 비례하여 조정
           let w1 = Math.max(8, brushSize * random(10, 18));
           let h1 = Math.max(5, brushSize * random(6, 14));
           muralCanvas.push();
           muralCanvas.translate(ix, iy);
           muralCanvas.rotate(angle);
-          muralCanvas.fill(r, g, b, 40 * random(0.8, 1.2));
+          // (40 / 180)은 물감붓의 원래 기본 알파 180에 대한 40의 비율
+          muralCanvas.fill(r, g, b, currentAlpha * (40 / 180) * random(0.8, 1.2));
           muralCanvas.ellipse(0, 0, w1, h1);
           muralCanvas.pop();
 
@@ -649,8 +663,9 @@ function setup() {
             muralCanvas.translate(ix + random(-8, 8), iy + random(-8, 8));
             muralCanvas.rotate(angle + random(-0.3, 0.3));
             // brushSize가 작을수록 알파값을 더 높임
-            let alpha = lerp(18, 10, constrain(brushSize / 2, 0, 1));
-            muralCanvas.fill(r, g, b, alpha * random(0.7, 1.2));
+            let alphaFactor = lerp(18, 10, constrain(brushSize / 2, 0, 1));
+            // 기존 알파값에 대한 비율을 현재 알파에 곱함
+            muralCanvas.fill(r, g, b, currentAlpha * (alphaFactor / 180) * random(0.7, 1.2));
             muralCanvas.ellipse(0, 0, w2, h2);
             muralCanvas.pop();
           }
@@ -660,13 +675,15 @@ function setup() {
     {
       name: '마커펜',
       music: 'marker',
-      color: color(255, 255, 100, 100),
+      // '마커펜'의 초기 알파값을 100에서 50으로 절반으로 낮춤
+      color: color(255, 255, 100, 50),
       draw: function(x, y, pX, pY, speed) {
         // 마커펜: 선분 전체에 네모 단면 반복, 잉크 번짐 효과
         let thick = 16 * brushSize;
         let len = dist(x, y, pX, pY);
         let steps = max(1, floor(len / (thick * 0.7)));
         muralCanvas.noStroke();
+        // currentColor에 이미 페이드된 알파값이 적용되어 있으므로 그대로 사용
         muralCanvas.fill(currentColor);
         muralCanvas.rectMode(CENTER);
         for (let i = 0; i <= steps; i++) {
@@ -674,9 +691,11 @@ function setup() {
           let ix = lerp(x, pX, t);
           let iy = lerp(y, pY, t);
           muralCanvas.rect(ix, iy, thick, thick * 0.7, 2);
-          // 잉크 번짐 효과
-          muralCanvas.fill(red(currentColor), green(currentColor), blue(currentColor), 40);
+          // 잉크 번짐 효과: 기존 알파 40을 현재 알파에 비례하여 조정
+          // (40 / 100)은 마커펜의 원래 기본 알파 100에 대한 40의 비율
+          muralCanvas.fill(red(currentColor), green(currentColor), blue(currentColor), alpha(currentColor) * (40 / 100));
           muralCanvas.rect(ix, iy, thick * 1.4, thick * 1.1, 4);
+          // currentColor에 이미 페이드된 알파값이 적용되어 있으므로 그대로 사용
           muralCanvas.fill(currentColor);
         }
         muralCanvas.rectMode(CORNER);
@@ -802,7 +821,7 @@ function setup() {
         align: "center"
       },
       "screen7-1": {
-        content: "카페를 도입했더니 지역 주민들이 가끔 오가기는 하지만, 장사가 특별히 잘 되지는 않네. \n\n 경쟁력이 부족한 것 같아. \n\n 어떤 추가 전략을 사용해야 할까? \n\n Hint: 방 안에 사용할 만한 도구는 없을까? 물체들에 마우스를 올려보자.",
+        content: "카페를 도입했더니 지역 주민들이 가끔 오가기는 하지만, 장사가 특별히 잘 되지는 않네. \n\n 경쟁력이 부족한 것 같아. \n\n 어떤 추가 전략을 사용해야 할까?",
         x: width / 2,
         y: height/2,
         size: 28,
@@ -810,7 +829,7 @@ function setup() {
         align: "center"
       },
       "screen7-2": {
-        content: "독립서점을 도입했더니 사람들이 가끔 오가기는 하지만, 주민들은 독서에 큰 관심을 갖지 않는 것 같아. \n\n 어떤 추가 전략을 사용해야 할까? \n\n Hint: 방 안에 사용할 만한 도구는 없을까? 물체들에 마우스를 올려보자.",
+        content: "독립서점을 도입했더니 사람들이 가끔 오가기는 하지만, 주민들은 독서에 큰 관심을 갖지 않는 것 같아. \n\n 어떤 추가 전략을 사용해야 할까?",
         x: width / 2,
         y: height/2,
         size: 28,
@@ -818,7 +837,7 @@ function setup() {
         align: "center"
       },
       "screen7-3": {
-        content: "들여 놓은 옷들은 너무 예쁜데, 주민들의 연령대가 높은 편이라 이런 옷에 대한 수요가 부족한 것 같아. \n\n 어떤 추가 전략을 사용해야 할까? \n\n Hint: 방 안에 사용할 만한 도구는 없을까? 물체들에 마우스를 올려보자.",
+        content: "들여 놓은 옷들은 너무 예쁜데, 주민들의 연령대가 높은 편이라 이런 옷에 대한 수요가 부족한 것 같아. \n\n 어떤 추가 전략을 사용해야 할까?",
         x: width / 2,
         y: 350,
         size: 28,
@@ -1671,6 +1690,13 @@ function draw() {
     text(t.content, t.x, t.y);
   }
 
+  // Hint 문구 그리기 (선택된 screen에서만)
+  if (hintScreens.includes(currentKey)) {
+    fill(173, 216, 230); // 연파랑 (light blue)
+    textSize(25);
+    textAlign(CENTER, TOP);
+    text("Hint: 방 안에 사용할 만한 도구는 없을까? 물체들에 마우스를 올려보자.", width / 2, 30);
+  }
   // 선택지 아이콘 표시
   
   if (choices[currentKey]) {
@@ -1706,6 +1732,7 @@ function draw() {
       }
     }
   }
+  
 
   if (currentKey === "screen11-2") {               // 완성된 벽화 표시
     cursor()
@@ -2132,11 +2159,11 @@ function drawMural() {
   // 브러시 크기 슬라이더 그리기 (색상 버튼 아래)
   let sliderTop = getNextY() + 60; // 색상 버튼과 충분히 띄움
   sliderY = sliderTop + 30;        // 텍스트와 핸들이 겹치지 않게 더 아래로
-  sliderbarx= sliderX + (sliderX+sliderW)/2;
+  sliderbar_x= sliderX + sliderW/2;
 
   // 슬라이더 바
   fill(180);
-  rect(sliderbarx, sliderY, sliderW, sliderH, 4);
+  rect(sliderbar_x, sliderY, sliderW, sliderH, 4);
 
   // 핸들 위치 계산
   handleX = sliderX + map(brushSize, 0.5, 6.0, 0, sliderW);
