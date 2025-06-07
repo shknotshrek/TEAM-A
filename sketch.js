@@ -5,6 +5,7 @@ let transitionSpeed = 5;
 let screenHistory = [];
 let customFont;
 let brushCursors = {};
+let aiVisionCanvas; // <<< AI에게 보낼 이미지를 그릴 숨겨진 캔버스 변수 추가
 const hintScreens = [
   "screen7-1", "screen7-1-1", "screen7-1-2",
   "screen7-2", "screen7-2-1", "screen7-2-2",
@@ -162,7 +163,8 @@ let fadeAmount = 0;      // 페이드 투명도
     "screen15-2" : "screen15-3",
     "screen15-3" : "screen15-4",
     "screen15-4" : "screen15-5",
-    "screen15-5" : "screen16",
+    "screen15-5": "screen15-pose", // screen15-5 다음은 새로운 포즈 화면으로
+   "screen15-pose": "screen16",  // 포즈 화면 다음이 결과 화면이 됩니다.
   };
   
 
@@ -547,6 +549,7 @@ let fadeAmount = 0;      // 페이드 투명도
 
 function setup() {
   createCanvas(1512, 982); // 혹은 windowWidth, windowHeight로 바꿔도 돼
+  aiVisionCanvas = createGraphics(1512, 982); // <<< 숨겨진 캔버스 생성
   textFont(customFont);
   imageMode(CENTER);
 
@@ -1616,29 +1619,41 @@ function draw() {
   } 
    // ─────── 바로 이 부분입니다. 기존 background(0)와 let img... 부분을 아래 코드로 교체하세요. ───────
   if (currentKey === 'screen15-5') {
-    image(images[currentKey], width / 2, height / 2, width, height);
-    drawSculpturePoseScreen();
-  } else if (currentKey === 'screen16') {
-  image(images[currentKey], width / 2, height / 2, width, height);
-  drawSculptureResultScreen();
-} else { // screen15-5도, screen16도 아닐 때
-  let img = images[currentKey];
-  if (img) {
-    // ✅ 사용자님의 원래 비율 계산 로직을 여기에 다시 적용!
-    let canvasRatio = width / height;
-    let imgRatio = img.width / img.height;
-    let newW, newH;
-    if (imgRatio < canvasRatio) {
-      newW = width;
-      newH = width / imgRatio;
-    } else {
-      newH = height;
-      newW = height * imgRatio;
+    // screen15-5는 배경과 텍스트만 그립니다. (웹캠 호출 없음)
+    let img = images[currentKey];
+    if (img) {
+        image(img, width / 2, height / 2, width, height);
     }
-    image(img, width / 2, height / 2, newW, newH);
-  } else {
-    background(0);
-  }
+
+} else if (currentKey === 'screen15-pose') {
+    // 'screen15' 이미지를 배경으로 사용하고, 그 위에 웹캠을 그립니다.
+    image(images['screen15'], width / 2, height / 2, width, height);
+    drawSculpturePoseScreen();
+
+} else if (currentKey === 'screen16') {
+    // screen16은 결과물을 그립니다.
+    image(images[currentKey], width / 2, height / 2, width, height);
+    drawSculptureResultScreen();
+
+} else {
+    // 그 외 모든 일반 화면은 원래의 비율 계산 로직을 사용해 그립니다.
+    let img = images[currentKey];
+    if (img) {
+        let canvasRatio = width / height;
+        let imgRatio = img.width / img.height;
+        let newW, newH;
+        if (imgRatio < canvasRatio) {
+            newW = width;
+            newH = width / imgRatio;
+        } else {
+            newH = height;
+            newW = height * imgRatio;
+        }
+        image(img, width / 2, height / 2, newW, newH);
+    } else {
+        // 이미지가 없는 경우를 대비한 검은색 배경
+        background(0);
+    }
 }
 
   // ─── 2) 페이드 상태에 따른 프레임 증가 및 전환 처리 ─────────────────────────────
@@ -1791,62 +1806,61 @@ function draw() {
 
 function keyPressed() {
 
-  /* ───────── 1) BACKSPACE : 언제 눌러도 먼저 처리 ───────── */
-  if (keyCode === BACKSPACE) {
-    if (screenHistory.length > 0) {
-      currentKey = screenHistory.pop();
-      redraw();
+    /* ───────── 1) BACKSPACE : 언제 눌러도 먼저 처리 ───────── */
+    if (keyCode === BACKSPACE) {
+        if (screenHistory.length > 0) {
+            currentKey = screenHistory.pop();
+            redraw();
+        }
+        return; // ← 더 내려가지 않고 종료
     }
-    return;               // ← 더 내려가지 않고 종료
-  }
 
     /* ───────── 2) R 키로 처음으로 ───────── */
-  if (key === 'r' || key === 'R') {
-    currentKey = "screen1";
-    screenHistory = [];
-    redraw();
-    return;
-  }
-
-  /* ───────── 3) screen11-2 특수 처리 ───────── */
-  if (currentKey === "screen11-2") {
-
-    if (!isFading && !isFadedIn) {
-      fadeAmount = 0;
-      isFading = true;
-    } else if (isFadedIn) {
-      /* 화면 전환 + 히스토리 저장 */
-      screenHistory.push(currentKey);
-      currentKey = "screen14";
-      redraw();
+    if (key === 'r' || key === 'R') {
+        currentKey = "screen1";
+        screenHistory = [];
+        redraw();
+        return;
     }
-    return;               // ← 공통 키 처리로 내려가지 않음
-  }
 
-  /* ───────── 4) screen13 : 스페이스바 무시 ───────── */
-  if (key === ' ' && currentKey === 'screen13' || key === ' ' && currentKey === 'screen1') {
-    return;
-  }
-  
-  /// 텍스트 페이드인 효과 제거
-  if (key === ' ') {
-    // >>> 추가할 코드 시작 <<<
-    if (currentKey === 'screen15-5') {
-      capturePoseAndGenerateSculpture(); // 포즈 캡처 및 API 요청 함수 호출
-      screenHistory.push(currentKey);
-      currentKey = storyMap[currentKey]; // storyMap에 따라 'screen16'으로 전환
-      redraw();
-      return; // 다른 스페이스바 로직을 타지 않도록 여기서 종료
+    /* ───────── 3) screen11-2 특수 처리 ───────── */
+    if (currentKey === "screen11-2") {
+        if (!isFading && !isFadedIn) {
+            fadeAmount = 0;
+            isFading = true;
+        } else if (isFadedIn) {
+            screenHistory.push(currentKey);
+            currentKey = "screen14";
+            redraw();
+        }
+        return; // ← 공통 키 처리로 내려가지 않음
     }
-    // >>> 추가할 코드 끝 <<<
-    let next = storyMap[currentKey];
-    if (typeof next === 'string') {
-      screenHistory.push(currentKey);
-      currentKey = next;
-      redraw();
-    }
-  }
 
+    /* ───────── 4) 스페이스바 처리 ───────── */
+    if (key === ' ') {
+        // screen13과 screen1에서는 스페이스바 무시
+        if (currentKey === 'screen13' || currentKey === 'screen1') {
+            return;
+        }
+
+        // [변경] screen15-pose에서만 특별한 동작을 하도록 수정
+        if (currentKey === 'screen15-pose') {
+            screenHistory.push(currentKey);
+            currentKey = storyMap[currentKey];      // storyMap에 따라 'screen16'으로 전환
+            capturePoseAndGenerateSculpture();      // API 호출 시작
+            redraw();
+            return; // 여기서 종료해야 다른 로직을 타지 않습니다.
+        }
+
+        // [변경 없음] screen15-5를 포함한 나머지 모든 일반 화면은 이 로직을 따름
+        let next = storyMap[currentKey];
+        if (typeof next === 'string') {
+            screenHistory.push(currentKey);
+            currentKey = next;
+            redraw();
+        }
+    }
+}
   // // 텍스트 페이드인 효과 유
   // if (key === ' ') {
   //   let next = storyMap[currentKey];
@@ -1867,7 +1881,7 @@ function keyPressed() {
   //     }
   //   }
   // }
-}
+
 
 
 function mousePressed() {
