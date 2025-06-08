@@ -589,13 +589,18 @@ function setup() {
       draw: function(x, y, pX, pY, speed) {
         // 기본 붓: 둥근 붓 느낌, 끝이 둥글고 soft
         muralCanvas.strokeWeight(8 * brushSize);
+        let r = red(currentColor);
+        let g = green(currentColor);
+        let b = blue(currentColor);
+        // currentColor의 현재 알파값(페이드 중인 값)을 가져옴
+        //let currentAlpha = alpha(currentColor)*0.3;
         // currentColor에 이미 페이드된 알파값이 적용되어 있으므로 그대로 사용
-        muralCanvas.stroke(currentColor);
+        muralCanvas.stroke(r,g,b, 50);
         muralCanvas.line(x, y, pX, pY);
         // 끝에 둥근 붓 느낌
         muralCanvas.noStroke();
         // currentColor에 이미 페이드된 알파값이 적용되어 있으므로 그대로 사용
-        muralCanvas.fill(currentColor);
+        muralCanvas.fill(r, g, b, 50);
         muralCanvas.ellipse(x, y, 8 * brushSize, 8 * brushSize);
         muralCanvas.ellipse(pX, pY, 8 * brushSize, 8 * brushSize);
       }
@@ -1962,7 +1967,12 @@ function initializeMuralCanvas() {
 function drawLineSmooth(brush, x1, y1, x2, y2, speed) {
   // 점 간 간격을 더 촘촘하게 하여 자연스러운 선이 되도록 개선
   const distance = dist(x1, y1, x2, y2);
-  const steps = max(2, floor(distance / 0.8)); // 더 촘촘하게
+  let steps;
+  if (selectedBrush.name === '물감붓') {
+    steps = max(2, floor(distance / 10)); // 스프레이일 때
+  } else {
+    steps = max(2, floor(distance / 0.8)); // 다른 붓일 때
+  }
   for (let i = 1; i <= steps; i++) { // i=1부터 시작
     let t = i / steps;
     let x = lerp(x1, x2, t);
@@ -2052,7 +2062,8 @@ function createColorButtons(startY) {
     btn.style('background-color', `rgb(${red(brushColors[i])},${green(brushColors[i])},${blue(brushColors[i])})`);
     btn.style('border', '2px solid #fff');
     btn.mousePressed(() => {
-      currentColor = brushColors[i];
+      let baseColor = brushColors[i];
+      currentColor = color(red(baseColor), green(baseColor), blue(baseColor), 150);
     });
     colorButtons.push(btn);
   }
