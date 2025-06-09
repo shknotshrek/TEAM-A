@@ -19,7 +19,7 @@ let initialMuralImage;
 
 let brushes = [];
 let selectedBrush;
-const BRUSH_COUNT = 4;
+const BRUSH_COUNT = 3;
 let brushButtons = [];
 let resetButton;
 let completeButton;
@@ -540,7 +540,6 @@ let fadeAmount = 0;      // 페이드 투명도
     brushCursors['물감붓'] = loadImage('visual assets/screen13icon4.png');
     brushCursors['마커펜'] = loadImage('visual assets/screen13icon2.png');
     brushCursors['스프레이'] = loadImage('visual assets/screen13icon3.png');
-    brushCursors['기본 붓'] = loadImage('visual assets/screen13icon1.png');
 
   };
   
@@ -581,51 +580,6 @@ function setup() {
   initializeMuralCanvas();
 
   brushes = [
-    {
-      name: '기본 붓',
-      music: 'basic',
-      // '기본 붓'의 초기 알파값을 200에서 100으로 절반으로 낮춤
-      color: color(255, 100, 100, 100),
-      draw: function(x, y, pX, pY, speed) {
-        // 기본 붓: 둥근 붓 느낌, 끝이 둥글고 soft
-        muralCanvas.strokeWeight(8 * brushSize);
-        let r = red(currentColor);
-        let g = green(currentColor);
-        let b = blue(currentColor);
-        // currentColor의 현재 알파값(페이드 중인 값)을 가져옴
-        //let currentAlpha = alpha(currentColor)*0.3;
-        // currentColor에 이미 페이드된 알파값이 적용되어 있으므로 그대로 사용
-        muralCanvas.stroke(r,g,b, 50);
-        muralCanvas.line(x, y, pX, pY);
-        // 끝에 둥근 붓 느낌
-        muralCanvas.noStroke();
-        // currentColor에 이미 페이드된 알파값이 적용되어 있으므로 그대로 사용
-        muralCanvas.fill(r, g, b, 50);
-        muralCanvas.ellipse(x, y, 8 * brushSize, 8 * brushSize);
-        muralCanvas.ellipse(pX, pY, 8 * brushSize, 8 * brushSize);
-      }
-    },
-    {
-      name: '스프레이',
-      music: 'spray',
-      // 스프레이는 투명도를 변경하지 않음 (기존 150 유지)
-      color: color(100, 255, 100, 150),
-      draw: function(x, y, pX, pY, speed) {
-        let spraySize = 20 * brushSize; // 분사 범위만 brushSize에 비례
-        muralCanvas.noStroke();
-        let dotCount = floor(map(brushSize, 0.5, 6.0, 6, 24));
-        for (let i = 0; i < dotCount; i++) {
-          let offsetX = random(-spraySize, spraySize);
-          let offsetY = random(-spraySize, spraySize);
-          let d = dist(0, 0, offsetX, offsetY);
-          if (d < spraySize) {
-            // 스프레이의 알파는 랜덤값을 유지 (50~120)
-            muralCanvas.fill(red(currentColor), green(currentColor), blue(currentColor), random(50, 120));
-            muralCanvas.ellipse(x + offsetX, y + offsetY, random(2, 5), random(2, 5)); // brushSize와 무관하게 고정
-          }
-        }
-      }
-    },
     {
       name: '물감붓',
       music: 'paint',
@@ -673,6 +627,27 @@ function setup() {
             muralCanvas.fill(r, g, b, currentAlpha * (alphaFactor / 180) * random(0.7, 1.2));
             muralCanvas.ellipse(0, 0, w2, h2);
             muralCanvas.pop();
+          }
+        }
+      }
+    },
+    {
+      name: '스프레이',
+      music: 'spray',
+      // 스프레이는 투명도를 변경하지 않음 (기존 150 유지)
+      color: color(100, 255, 100, 150),
+      draw: function(x, y, pX, pY, speed) {
+        let spraySize = 20 * brushSize; // 분사 범위만 brushSize에 비례
+        muralCanvas.noStroke();
+        let dotCount = floor(map(brushSize, 0.5, 6.0, 6, 24));
+        for (let i = 0; i < dotCount; i++) {
+          let offsetX = random(-spraySize, spraySize);
+          let offsetY = random(-spraySize, spraySize);
+          let d = dist(0, 0, offsetX, offsetY);
+          if (d < spraySize) {
+            // 스프레이의 알파는 랜덤값을 유지 (50~120)
+            muralCanvas.fill(red(currentColor), green(currentColor), blue(currentColor), random(50, 120));
+            muralCanvas.ellipse(x + offsetX, y + offsetY, random(2, 5), random(2, 5)); // brushSize와 무관하게 고정
           }
         }
       }
