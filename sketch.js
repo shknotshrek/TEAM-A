@@ -725,7 +725,7 @@ function setup() {
         content: "REFURBISH",
         x: width / 2,
         y: 410,
-        size: 150,
+        size: 200,
         color: [197,191,159,255],
         align: "center"
       },
