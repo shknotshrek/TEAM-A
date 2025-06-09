@@ -8,8 +8,34 @@ const sculptureModule = {
     isModelReady: false,
     isGenerating: false,
     generatedSculptureImg: null,
-    generatedSculptureText: ""
+    generatedSculptureText: "",
+    quizIndex: 0,
+    quizAnswered: false
 };
+
+const quizQuestions = [
+    {
+        question: "공업지대였던 성수동은 현재도 그때의 흔적을 품은 건물들이 곳곳에 자리하고 있습니다.\n현재는 갤러리 겸 카페로 쓰이고 있는 성수동의 대표 핫플레이스 '대림창고'도 그러한데요.\n대림창고가 처음 지어졌을 당시 건물의 용도는 무엇이었을까요?",
+        options: ["정미소", "자동차 공업사", "구두 공장"],
+        correct: 0
+    },
+    {
+        question: "서울시는 뚝섬 개발 사업의 일환으로 중랑천과 한강 사이에 대규모 녹지인 서울숲을 조성했습니다.\n지금 여러분이 조각을 만들고 있는 장소의 모델이 바로 개발 전 서울숲이기도 하죠.\n서울숲이 개발을 마치고 개원된 해는 언제일까요?",
+        options: ["2003년", "2005년", "2008년"],
+        correct: 1
+    },
+    {
+        question: "성수동은 스페셜티 커피의 성지로도 유명합니다. 국내의 여러 실력 있는 바리스타가 운영하는 카페들에 더해,\n해외의 브랜드가 국내 1호 매점을 내는 곳으로도 종종 선택되는 곳입니다.\n그 중 지난 2019년 미국과 일본에서 선풍적인 인기를 끌었던 한 체인이 성수에 국내 1호점을 낸다는 소식이 들려왔는데요.\n모든 고객에게 시간을 들여 핸드드립 커피를 내려 준다는 철칙과 특징적인 푸른색의 로고로\n커피 마니아들이 사랑하는 브랜드로 자리잡은 이 체인의 이름은 무엇일까요?",
+        options: ["스타벅스", "블루 보틀", "팀 홀튼"],
+        correct: 1
+    },
+    {
+        question: "현재 성수동의 중심이 되는 지역은 성수동2가 남쪽 2호선 성수역 부근입니다.\n그 중 OOO길은 대림창고나 디올 플래그십 스토어 등 현재 성수동의 분위기를 형성하는 데 일조한 가게들이 모여 있는,\n그야말로 성수동의 핵심과도 같은 곳입니다. 과거 조선 시대 군사들의 훈련 상태를 점검하는 시설이 있었다는 점에서\n현재의 이름을 갖게 된 이 길의 이름은 무엇일까요?",
+        options: ["경리단(經理團)길", "서순라(西巡邏)길", "연무장(演武場)길"],
+        correct: 2
+    }
+];
+
 
 /**
  * 조각상 기능에 필요한 요소(웹캠, ml5 모델)를 초기 설정하는 함수.
@@ -76,15 +102,19 @@ function drawSculpturePoseScreen() {
 function drawSculptureResultScreen() {
     // 생성 중일 때 로딩 메시지 표시는 기존과 동일
     if (sculptureModule.isGenerating) {
-        fill(0, 0, 0, 150);
-        noStroke();
-        rectMode(CENTER);
-        rect(width/2, height - 100, 600, 50, 10);
+        drawQuizScreen();
+        return;
         
-        fill(255);
-        textAlign(CENTER, CENTER);
-        textSize(24);
-        text("당신의 포즈로 조각상을 만들고 있습니다...", width / 2, height - 100);
+        
+        // fill(0, 0, 0, 150);
+        // noStroke();
+        // rectMode(CENTER);
+        // rect(width/2, height - 100, 600, 50, 10);
+        
+        // fill(255);
+        // textAlign(CENTER, CENTER);
+        // textSize(24);
+        // text("당신의 포즈로 조각상을 만들고 있습니다...", width / 2, height - 100);
     }
 
     // 조각상 이미지 그리는 부분은 기존과 동일
@@ -297,4 +327,52 @@ function removeBlackBackground(sourceImg) {
     // 7. 픽셀 변경 작업을 완료하고, 배경이 제거된 새 캔버스를 반환합니다.
     transparentCanvas.updatePixels();
     return transparentCanvas;
+}
+
+
+function drawQuizScreen() {
+    sculptureModule.currentScreen = "quiz";
+    background(0, 0, 0, 150); // 반투명 배경
+    fill(255);
+    textAlign(CENTER, CENTER);
+    textSize(28);
+    text("퀴즈 타임!", width / 2, 100);
+
+    const currentQuiz = quizQuestions[sculptureModule.quizIndex];
+    textSize(20);
+    text(currentQuiz.question, width / 2, 180);
+    rectMode(CENTER)
+
+    for (let i = 0; i < currentQuiz.options.length; i++) {
+        const y = 280 + i * 50;
+        fill(50);
+        rect(width / 2, y, 300, 40, 10);
+
+        fill(255);
+        text(currentQuiz.options[i], width / 2, y);
+    }
+
+    if (sculptureModule.quizAnswered) {
+        fill(255);
+        textSize(40);
+        text("정답을 맞혔어요! 조각상 생성이 완료되면 결과가 표시됩니다.", width / 2, height - 100);
+    }
+}
+
+function mousePressed() {
+    if (sculptureModule.currentScreen === "quiz" && !sculptureModule.quizAnswered) {
+        const currentQuiz = quizQuestions[sculptureModule.quizIndex];
+        for (let i = 0; i < currentQuiz.options.length; i++) {
+            const y = 280 + i * 50;
+            if (mouseY > y - 20 && mouseY < y + 20 &&
+                mouseX > width / 2 - 150 && mouseX < width / 2 + 150) {
+                if (i === currentQuiz.correct) {
+                    sculptureModule.quizAnswered = true;
+                } else {
+                    // 오답일 경우 다음 퀴즈로
+                    sculptureModule.quizIndex = (sculptureModule.quizIndex + 1) % quizQuestions.length;
+                }
+            }
+        }
+    }
 }
