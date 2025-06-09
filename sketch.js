@@ -725,7 +725,7 @@ function setup() {
         content: "REFURBISH",
         x: width / 2,
         y: 410,
-        size: 200,
+        size: 150,
         color: [197,191,159,255],
         align: "center"
       },
@@ -1769,9 +1769,9 @@ function draw() {
   }
 
 
-  textSize(30);
-  text(`x-coordinate: ${mouseX}`, 100, 318);
-  text(`y-coordinate: ${mouseY}`, 100, 390);
+  // textSize(30);
+  // text(`x-coordinate: ${mouseX}`, 100, 318);
+  // text(`y-coordinate: ${mouseY}`, 100, 390);
 
   if ( // 지도 부분 흰 글씨 안보여서 파란색으로 표시
     currentKey === "screen3"   ||
