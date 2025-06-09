@@ -772,16 +772,16 @@ function setup() {
       "screen4" : {
         content: "첫 번째 스테이지: 인프라 도입",
         x: width / 2,
-        y: 850,
-        size: 28,
+        y: 800,
+        size: 40,
         color: [255, 255, 255],
         align: "center"
       },
       "screen4-1" : {
         content: "첫 번째 장소: 연무장길",
         x: width / 2,
-        y: 850,
-        size: 28,
+        y: 800,
+        size: 40,
         color: [255, 255, 255],
         align: "center"
       },
@@ -1013,8 +1013,8 @@ function setup() {
       "screen10": {
         content: "두 번째 스테이지: 공공예술 도입_벽화",
         x: width / 2,
-        y: height / 2,
-        size: 28,
+        y: 800,
+        size: 40,
         color: [255, 255, 255],
         align: "center"
       },
@@ -1022,8 +1022,8 @@ function setup() {
       "screen10-1": {
         content: "두 번째 장소, 뚝섬역 사거리",
         x: width / 2,
-        y: 850,
-        size: 28,
+        y: 800,
+        size: 40,
         color: [255, 255, 255],
         align: "center"
       },
@@ -1067,8 +1067,8 @@ function setup() {
       "screen15": {
         content: "세 번째 스테이지: 공공예술 도입_조각",
         x: width / 2,
-        y: height / 2,
-        size: 28,
+        y: 800,
+        size: 40,
         color: [255, 255, 255],
         align: "center"
       },
@@ -1076,8 +1076,8 @@ function setup() {
       "screen15-1": {
         content: "세 번째 장소, 중랑천 유역 녹지",
         x: width / 2,
-        y: 850,
-        size: 28,
+        y: 800,
+        size: 40,
         color: [255, 255, 255],
         align: "center"
       },
@@ -1756,14 +1756,14 @@ function draw() {
       tint(255); // 초기화
       fill(255);
       textAlign(CENTER);
-      textSize(24);
+      textSize(28);
       text("두 번째 스테이지의 첫 번째 미션,", width / 2, 850);
     } else if (isFadedIn) {
       image(muralImage, width / 2, height / 2, width, height);
       image(images["screen11-3"], images["screen11-3"].width / 2 / 2, height - images["screen11-3"].height / 2 / 2, images["screen11-3"].width / 2, images["screen11-3"].height / 2);
       fill(255);
       textAlign(CENTER);
-      textSize(22);
+      textSize(28);
       text("벽화 그리기 미션을 훌륭하게 완수했어!\n어딘가 으스스했던 과거와 비교해 보니, 몰라보게 달라졌다!", width / 2, 850);
     }
   }
