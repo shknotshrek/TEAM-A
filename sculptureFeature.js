@@ -52,6 +52,11 @@ function drawSculpturePoseScreen() {
     if (sculptureModule.isModelReady && sculptureModule.poses.length > 0) {
         // 배경은 sketch.js에서 이미 그렸으므로, 스켈레톤만 그립니다.
         drawPoseSkeleton();
+        fill(255, 255, 255, 200);
+        noStroke();
+        textAlign(CENTER, CENTER);
+        textSize(24);
+        text("포즈를 잡고, 스페이스 바를 눌러서 조각을 만들어 보자!", width / 2, height -200);
     } else {
         // 모델 로딩 중 텍스트
         fill(255, 255, 255, 200);
