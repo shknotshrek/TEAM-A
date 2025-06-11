@@ -945,8 +945,8 @@ function setup() {
       },
       "screen7-2-2-1": {
         content: "사람들이 북커버가 탐이 나서 책을 더 많이 구매하네. \n게다가 인근 공장과 협업하니, 지역 상생 효과까지 있잖아? \n\n 서점이 지역 공장과 독자들을 잇는 징검다리가 되었어!",
-        x: 440,
-        y: 830,
+        x: width/2,
+        y: 200,
         size: 28,
         color: [255,255,255],
         align: "center"
@@ -1117,7 +1117,7 @@ function setup() {
       },
 
       "screen17": {
-        content: "세 번째 스테이지, 조각품 만들기 미션을 훌륭하게 완수했어. \n\n 텅 비어 있었던 과거와 달리 조각들 덕분에 숲에 생기발랄한 분위기가 감도네!",
+        content: "세 번째 스테이지, 조각품 만들기 미션을 훌륭하게 완수했어. \n\n 텅 비어 있었던 과거와 달리 조각들 덕분에 숲에 생기가 도네!",
         x: width / 2,
         y: height/2,
         size: 28,
@@ -1144,7 +1144,7 @@ function setup() {
       },
 
       "screen20": {
-        content: "성수동이 오늘의 모습을 갖추기까지 거쳤던 긴 여정을 체험하면서, \n\n 비단 성수동만이 아닌 다른 익명적인 낙후 공간의 \n\n색다른 가능성을 상상해 보는 기회가 되었기를 바라며,",
+        content: "성수동이 오늘의 모습을 갖추기까지 거쳤던 긴 여정을 체험하면서, \n\n 비단 성수동만이 아닌 다른 익명적인 낙후 공간이 가진 \n\n색다른 가능성을 상상해 보는 기회가 되었기를 바라며,",
         x: width / 2,
         y: height/2,
         size: 28,
@@ -1781,8 +1781,8 @@ function draw() {
         */
 
         if (isHovered && currentKey !== "screen1" && c.label) {
-          let paddingX = 3;
-          let paddingY = 3;
+          let paddingX = 5;
+          let paddingY = 10;
           textSize(24);
           textAlign(CENTER, CENTER);
         
