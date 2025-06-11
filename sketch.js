@@ -1144,7 +1144,7 @@ function setup() {
       },
 
       "screen20": {
-        content: "성수동이 오늘의 모습을 갖추기까지 거쳤던 긴 여정을 체험하면서, \n\n 비단 성수동만이 아닌 다른 익명적인 낙후 공간이 가진 \n\n색다른 가능성을 상상해 보는 기회가 되었기를 바라며,",
+        content: "성수동이 오늘의 모습을 갖추기까지 거쳤던 긴 여정을 체험하면서, \n\n 성수동뿐만 아니라 다양한 익명적인 낙후 공간이 가진 \n\n색다른 가능성을 상상해 보는 기회가 되었기를 바라며,",
         x: width / 2,
         y: height/2,
         size: 28,
@@ -2203,13 +2203,13 @@ function drawMural() {
   // rect(muralCanvas.width, 0, sidebarWidth, height);
 
   fill(255);
-  textSize(14);
+  textSize(24);
   textAlign(LEFT, TOP);
   text(`선택: ${selectedBrush.name}`, muralCanvas.width + buttonMargin, height - 60);
-  text("마우스를 드래그하여 그림을 그리세요.", 10, height - 30);
+  text("마우스를 드래그하여 그림을 그려 보자. \n (붓의 굵기와 종류를 바꿔 보자!)", 10, height - 70);
 
   fill(255, 255, 0);
-  textSize(18);
+  textSize(24);
   textAlign(CENTER, CENTER);
   if (currentStage === 1 && !showComparison) {
     text("붓을 들어 골목길의 활기를 되찾아 보자!", muralCanvas.width / 2, 30);
