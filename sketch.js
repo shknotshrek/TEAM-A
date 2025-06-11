@@ -1781,8 +1781,8 @@ function draw() {
         */
 
         if (isHovered && currentKey !== "screen1" && c.label) {
-          let paddingX = 5;
-          let paddingY = 10;
+          let paddingX = 3;
+          let paddingY = 3;
           textSize(24);
           textAlign(CENTER, CENTER);
         
