@@ -246,6 +246,19 @@ let fadeAmount = 0;      // 페이드 투명도
   // 아이콘 로드
 
   let choices = {
+    "screen1": [
+      {
+        x: 745, y: 828,
+        w: 300,
+        h: 230,  // ← 직접 이미지 비율에 맞춰 수정
+        img: null,
+        imgPath: "visual assets/screen1-optionBeige.png",
+        hoverImg: null,
+        hoverImgPath: "visual assets/screen1-optionYellow.png",
+        next: "screen2"
+      }
+    ],
+
     "screen7": [
       {
         x: 280, y: 760,
@@ -1745,6 +1758,7 @@ function draw() {
       image(iconToShow, c.x, c.y, c.w, c.h);
   
       // 🔍 마우스오버 시 텍스트 박스도 같이 표시
+      /*
       if (isHovered) {
         let paddingX = 5;
         let paddingY = 10;
@@ -1764,10 +1778,28 @@ function draw() {
         // 🎨 텍스트 색상
         fill(197, 191, 159, 255); // RGBA 색상
         text(c.label, mouseX, mouseY - 60);
+        */
+
+        if (isHovered && currentKey !== "screen1" && c.label) {
+          let paddingX = 5;
+          let paddingY = 10;
+          textSize(24);
+          textAlign(CENTER, CENTER);
+        
+          let labelWidth = textWidth(c.label);
+          let boxW = labelWidth + paddingX * 2;
+          let boxH = textAscent() + textDescent() + paddingY * 3.7;
+        
+          rectMode(CENTER);
+          fill(0, 150);
+          noStroke();
+          rect(mouseX, mouseY - 60, boxW, boxH, 5);
+        
+          fill(197, 191, 159, 255);
+          text(c.label, mouseX, mouseY - 60);
       }
     }
   }
-  
 
   if (currentKey === "screen11-2") {               // 완성된 벽화 표시
     cursor()
@@ -1930,16 +1962,6 @@ function mousePressed() {
         redraw();
         return;
       }
-    }
-  }
-
-  if (currentKey === "screen1") {
-    if (mouseX >= 560 && mouseX <= 930 &&
-        mouseY >= 776 && mouseY <= 881) {
-      screenHistory.push(currentKey);
-      currentKey = "screen2";
-      redraw();
-      return;
     }
   }
 
