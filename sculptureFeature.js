@@ -55,8 +55,8 @@ function drawSculpturePoseScreen() {
         fill(255, 255, 255, 200);
         noStroke();
         textAlign(CENTER, CENTER);
-        textSize(24);
-        text("포즈를 잡고, 스페이스 바를 눌러서 조각을 만들어 보자!", width / 2, height -200);
+        textSize(28);
+        text("포즈를 잡고, 스페이스 바를 눌러서 조각을 만들어 보자!", width / 2, height -100);
     } else {
         // 모델 로딩 중 텍스트
         fill(255, 255, 255, 200);
