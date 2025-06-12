@@ -20,7 +20,7 @@ let initialMuralImage;
 
 let brushes = [];
 let selectedBrush;
-const BRUSH_COUNT = 4;
+const BRUSH_COUNT = 3;
 let brushButtons = [];
 let resetButton;
 let completeButton;
@@ -165,6 +165,11 @@ let fadeAmount = 0;      // 페이드 투명도
     "screen15-4" : "screen15-5",
     "screen15-5": "screen15-pose", // screen15-5 다음은 새로운 포즈 화면으로
    "screen15-pose": "screen16",  // 포즈 화면 다음이 결과 화면이 됩니다.
+   "screen16" : "screen17",
+    "screen17" : "screen18",
+    "screen18" : "screen19",
+    "screen19" : "screen20",
+    "screen20" : "screen21",
   };
   
 
@@ -232,12 +237,30 @@ let fadeAmount = 0;      // 페이드 투명도
     "screen15-3.png",
     "screen15-4.png",
     "screen15-5.png",
-    "screen16.png"
+    "screen16.png",
+    "screen17.png",
+    "screen18.png",
+    "screen19.png",
+    "screen20.png",
+    "screen21.png"
   ];
 
   // 아이콘 로드
 
   let choices = {
+    "screen1": [
+      {
+        x: 745, y: 828,
+        w: 300,
+        h: 230,  // ← 직접 이미지 비율에 맞춰 수정
+        img: null,
+        imgPath: "visual assets/screen1-optionBeige.png",
+        hoverImg: null,
+        hoverImgPath: "visual assets/screen1-optionYellow.png",
+        next: "screen2"
+      }
+    ],
+
     "screen7": [
       {
         x: 280, y: 760,
@@ -278,7 +301,7 @@ let fadeAmount = 0;      // 페이드 투명도
         img: null,
         imgPath: "visual assets/screen7-1icon1.png",
         hoverImg: null,
-        hoverImgPath: "visual assets/screen7-1icon1.png",
+        hoverImgPath: "visual assets/screen7-1icon1MO.png",
         next: "screen7-1-1",
         label: "낮에는 카페, 밤에는 \n칵테일 바로 혼합 운영"
       },
@@ -288,7 +311,7 @@ let fadeAmount = 0;      // 페이드 투명도
         img: null,
         imgPath: "visual assets/screen7-1icon2.png",
         hoverImg: null,
-        hoverImgPath: "visual assets/screen7-1icon2.png",
+        hoverImgPath: "visual assets/screen7-1icon2MO.png",
         next: "screen7-1-2",
         label: "카페에 책 보급을 통해 북카페로 운영"
       }
@@ -301,7 +324,7 @@ let fadeAmount = 0;      // 페이드 투명도
         img: null,
         imgPath: "visual assets/screen7-1-1icon1.png",
         hoverImg: null,
-        hoverImgPath: "visual assets/screen7-1-1icon1.png",
+        hoverImgPath: "visual assets/screen7-1-1icon1MO.png",
         next: "screen7-1-1-1",
         label: "매주 주말 라이브 재즈 공연 호스팅"
       },
@@ -311,7 +334,7 @@ let fadeAmount = 0;      // 페이드 투명도
         img: null,
         imgPath: "visual assets/screen7-1-1icon2.png",
         hoverImg: null,
-        hoverImgPath: "visual assets/screen7-1-1icon2.png",
+        hoverImgPath: "visual assets/screen7-1-1icon2MO.png",
         next: "screen7-1-1-2",
         label: "하이엔드 스피커 구비하여 뮤직바로 운영"
       }
@@ -324,7 +347,7 @@ let fadeAmount = 0;      // 페이드 투명도
         img: null,
         imgPath: "visual assets/screen7-1-2icon1.png",
         hoverImg: null,
-        hoverImgPath: "visual assets/screen7-1-2icon1.png",
+        hoverImgPath: "visual assets/screen7-1-2icon1MO.png",
         next: "screen7-1-2-1",
         label: "회화, 디자인, 사진 관련 희귀 예술 서적 구비 \n (음료 구매 시 무료 열람 가능)"
       },
@@ -334,7 +357,7 @@ let fadeAmount = 0;      // 페이드 투명도
         img: null,
         imgPath: "visual assets/screen7-1-2icon2.png",
         hoverImg: null,
-        hoverImgPath: "visual assets/screen7-1-2icon2.png",
+        hoverImgPath: "visual assets/screen7-1-2icon2MO.png",
         next: "screen7-1-2-2",
         label: "인기 만화 시리즈 대여섯 편 전권 구비 \n(음료 구매 시 무료 열람 가능)"
       }
@@ -347,7 +370,7 @@ let fadeAmount = 0;      // 페이드 투명도
         img: null,
         imgPath: "visual assets/screen7-2icon1.png",
         hoverImg: null,
-        hoverImgPath: "visual assets/screen7-2icon1.png",
+        hoverImgPath: "visual assets/screen7-2icon1MO.png",
         next: "screen7-2-1",
         label: "매주 주말 작가 초청 북토크 운영"
       },
@@ -357,7 +380,7 @@ let fadeAmount = 0;      // 페이드 투명도
         img: null,
         imgPath: "visual assets/screen7-2icon2.png",
         hoverImg: null,
-        hoverImgPath: "visual assets/screen7-2icon2.png",
+        hoverImgPath: "visual assets/screen7-2icon2MO.png",
         next: "screen7-2-2",
         label: "문구 편집샵으로 동시 운영"
       }
@@ -370,7 +393,7 @@ let fadeAmount = 0;      // 페이드 투명도
         img: null,
         imgPath: "visual assets/screen7-2-1icon1.png",
         hoverImg: null,
-        hoverImgPath: "visual assets/screen7-2-1icon1.png",
+        hoverImgPath: "visual assets/screen7-2-1icon1MO.png",
         next: "screen7-2-1-1",
         label: "강연 후 한 달 동안 작가 추천 노트가 담긴 서적 10선 DP, \n할인된 가격에 판매"
       },
@@ -380,7 +403,7 @@ let fadeAmount = 0;      // 페이드 투명도
         img: null,
         imgPath: "visual assets/screen7-2-1icon2.png",
         hoverImg: null,
-        hoverImgPath: "visual assets/screen7-2-1icon2.png",
+        hoverImgPath: "visual assets/screen7-2-1icon2MO.png",
         next: "screen7-2-1-2",
         label: "신청자를 받아 작가와 함께하는 문예창작 원데이 클래스 운영, \n추후 서점에 결과물 전시"
       }
@@ -393,7 +416,7 @@ let fadeAmount = 0;      // 페이드 투명도
         img: null,
         imgPath: "visual assets/screen7-2-2icon1.png",
         hoverImg: null,
-        hoverImgPath: "visual assets/screen7-2-2icon1.png",
+        hoverImgPath: "visual assets/screen7-2-2icon1MO.png",
         next: "screen7-2-2-1",
         label: "도서 구매 시, 인근 가죽 공장과 협업하여 \n책 사이즈에 맞는 가죽 북커버 제작 클래스 참여 가능"
       },
@@ -403,7 +426,7 @@ let fadeAmount = 0;      // 페이드 투명도
         img: null,
         imgPath: "visual assets/screen7-2-2icon2.png",
         hoverImg: null,
-        hoverImgPath: "visual assets/screen7-2-2icon2.png",
+        hoverImgPath: "visual assets/screen7-2-2icon2MO.png",
         next: "screen7-2-2-2",
         label: "매달 책과 어울리는 문구 큐레이션 묶음을 새로 런칭 후 판매"
       }
@@ -416,7 +439,7 @@ let fadeAmount = 0;      // 페이드 투명도
         img: null,
         imgPath: "visual assets/screen7-3icon1.png",
         hoverImg: null,
-        hoverImgPath: "visual assets/screen7-3icon1.png",
+        hoverImgPath: "visual assets/screen7-3icon1MO.png",
         next: "screen7-3-1",
         label: "인근 봉제공장과 협동하여 \n의류 구매자 대상으로 빈티지 작업복 리폼 클래스 운영"
       },
@@ -426,7 +449,7 @@ let fadeAmount = 0;      // 페이드 투명도
         img: null,
         imgPath: "visual assets/screen7-3icon2.png",
         hoverImg: null,
-        hoverImgPath: "visual assets/screen7-3icon2.png",
+        hoverImgPath: "visual assets/screen7-3icon2MO.png",
         next: "screen7-3-2",
         label: "맞춤형 테일러링 서비스 기반 수제 의류 판매"
       }
@@ -439,7 +462,7 @@ let fadeAmount = 0;      // 페이드 투명도
         img: null,
         imgPath: "visual assets/screen7-3-1icon1.png",
         hoverImg: null,
-        hoverImgPath: "visual assets/screen7-3-1icon1.png",
+        hoverImgPath: "visual assets/screen7-3-1icon1MO.png",
         next: "screen7-3-1-1",
         label: "베스트 작업복 리폼작 선정 후 \n작가 이름 병기하여 정식 라인업 출시"
       },
@@ -449,7 +472,7 @@ let fadeAmount = 0;      // 페이드 투명도
         img: null,
         imgPath: "visual assets/screen7-3-1icon2.png",
         hoverImg: null,
-        hoverImgPath: "visual assets/screen7-3-1icon2.png",
+        hoverImgPath: "visual assets/screen7-3-1icon2MO.png",
         next: "screen7-3-1-2",
         label: "매달 작업복 리폼작을 활용하여 모델 런웨이 개최"
       }
@@ -462,7 +485,7 @@ let fadeAmount = 0;      // 페이드 투명도
         img: null,
         imgPath: "visual assets/screen7-3-2icon1.png",
         hoverImg: null,
-        hoverImgPath: "visual assets/screen7-3-2icon1.png",
+        hoverImgPath: "visual assets/screen7-3-2icon1MO.png",
         next: "screen7-3-2-1",
         label: "서울 주요 대학가에 이동식 테일러링 부스 설치하여 매장 홍보"
       },
@@ -472,7 +495,7 @@ let fadeAmount = 0;      // 페이드 투명도
         img: null,
         imgPath: "visual assets/screen7-3-2icon2.png",
         hoverImg: null,
-        hoverImgPath: "visual assets/screen7-3-2icon2.png",
+        hoverImgPath: "visual assets/screen7-3-2icon2MO.png",
         next: "screen7-3-2-2",
         label: "라디오에서 사연 응모를 받아 \n사연 기반 의류 제작"
       }
@@ -542,7 +565,6 @@ let fadeAmount = 0;      // 페이드 투명도
     brushCursors['물감붓'] = loadImage('visual assets/screen13icon4.png');
     brushCursors['마커펜'] = loadImage('visual assets/screen13icon2.png');
     brushCursors['스프레이'] = loadImage('visual assets/screen13icon3.png');
-    brushCursors['기본 붓'] = loadImage('visual assets/screen13icon1.png');
 
   };
   
@@ -585,50 +607,18 @@ function setup() {
 
   brushes = [
     {
-      name: '기본 붓',
-      music: 'basic',
-      color: color(255, 100, 100, 200),
-      draw: function(x, y, pX, pY, speed) {
-        // 기본 붓: 둥근 붓 느낌, 끝이 둥글고 soft
-        muralCanvas.strokeWeight(8 * brushSize);
-        muralCanvas.stroke(currentColor);
-        muralCanvas.line(x, y, pX, pY);
-        // 끝에 둥근 붓 느낌
-        muralCanvas.noStroke();
-        muralCanvas.fill(currentColor);
-        muralCanvas.ellipse(x, y, 8 * brushSize, 8 * brushSize);
-        muralCanvas.ellipse(pX, pY, 8 * brushSize, 8 * brushSize);
-      }
-    },
-    {
-      name: '스프레이',
-      music: 'spray',
-      color: color(100, 255, 100, 150),
-      draw: function(x, y, pX, pY, speed) {
-        let spraySize = 20 * brushSize; // 분사 범위만 brushSize에 비례
-        muralCanvas.noStroke();
-        let dotCount = floor(map(brushSize, 0.5, 6.0, 6, 24));
-        for (let i = 0; i < dotCount; i++) {
-          let offsetX = random(-spraySize, spraySize);
-          let offsetY = random(-spraySize, spraySize);
-          let d = dist(0, 0, offsetX, offsetY);
-          if (d < spraySize) {
-            muralCanvas.fill(red(currentColor), green(currentColor), blue(currentColor), random(50, 120));
-            muralCanvas.ellipse(x + offsetX, y + offsetY, random(2, 5), random(2, 5)); // brushSize와 무관하게 고정
-          }
-        }
-      }
-    },
-    {
       name: '물감붓',
       music: 'paint',
-      color: color(100, 100, 255, 180),
+      // '물감붓'의 초기 알파값을 180에서 90으로 절반으로 낮춤
+      color: color(100, 100, 255, 90),
       draw: function(x, y, pX, pY, speed) {
         // 물감붓: brushSize가 작을 때도 자연스러운 번짐 효과
         muralCanvas.noStroke();
         let r = red(currentColor);
         let g = green(currentColor);
         let b = blue(currentColor);
+        // currentColor의 현재 알파값(페이드 중인 값)을 가져옴
+        let currentAlpha = alpha(currentColor);
 
         let len = dist(x, y, pX, pY);
         // brushSize가 작을수록 steps를 더 늘림
@@ -639,13 +629,14 @@ function setup() {
           let iy = lerp(y, pY, t);
           let angle = atan2(y - pY, x - pX) + random(-0.5, 0.5);
 
-          // 중심부 진한 타원
+          // 중심부 진한 타원: 기존 알파 40을 현재 알파에 비례하여 조정
           let w1 = Math.max(8, brushSize * random(10, 18));
           let h1 = Math.max(5, brushSize * random(6, 14));
           muralCanvas.push();
           muralCanvas.translate(ix, iy);
           muralCanvas.rotate(angle);
-          muralCanvas.fill(r, g, b, 40 * random(0.8, 1.2));
+          // (40 / 180)은 물감붓의 원래 기본 알파 180에 대한 40의 비율
+          muralCanvas.fill(r, g, b, currentAlpha * (40 / 180) * random(0.8, 1.2));
           muralCanvas.ellipse(0, 0, w1, h1);
           muralCanvas.pop();
 
@@ -657,8 +648,9 @@ function setup() {
             muralCanvas.translate(ix + random(-8, 8), iy + random(-8, 8));
             muralCanvas.rotate(angle + random(-0.3, 0.3));
             // brushSize가 작을수록 알파값을 더 높임
-            let alpha = lerp(18, 10, constrain(brushSize / 2, 0, 1));
-            muralCanvas.fill(r, g, b, alpha * random(0.7, 1.2));
+            let alphaFactor = lerp(18, 10, constrain(brushSize / 2, 0, 1));
+            // 기존 알파값에 대한 비율을 현재 알파에 곱함
+            muralCanvas.fill(r, g, b, currentAlpha * (alphaFactor / 180) * random(0.7, 1.2));
             muralCanvas.ellipse(0, 0, w2, h2);
             muralCanvas.pop();
           }
@@ -666,15 +658,38 @@ function setup() {
       }
     },
     {
+      name: '스프레이',
+      music: 'spray',
+      // 스프레이는 투명도를 변경하지 않음 (기존 150 유지)
+      color: color(100, 255, 100, 150),
+      draw: function(x, y, pX, pY, speed) {
+        let spraySize = 20 * brushSize; // 분사 범위만 brushSize에 비례
+        muralCanvas.noStroke();
+        let dotCount = floor(map(brushSize, 0.5, 6.0, 6, 24));
+        for (let i = 0; i < dotCount; i++) {
+          let offsetX = random(-spraySize, spraySize);
+          let offsetY = random(-spraySize, spraySize);
+          let d = dist(0, 0, offsetX, offsetY);
+          if (d < spraySize) {
+            // 스프레이의 알파는 랜덤값을 유지 (50~120)
+            muralCanvas.fill(red(currentColor), green(currentColor), blue(currentColor), random(50, 120));
+            muralCanvas.ellipse(x + offsetX, y + offsetY, random(2, 5), random(2, 5)); // brushSize와 무관하게 고정
+          }
+        }
+      }
+    },
+    {
       name: '마커펜',
       music: 'marker',
-      color: color(255, 255, 100, 100),
+      // '마커펜'의 초기 알파값을 100에서 50으로 절반으로 낮춤
+      color: color(255, 255, 100, 50),
       draw: function(x, y, pX, pY, speed) {
         // 마커펜: 선분 전체에 네모 단면 반복, 잉크 번짐 효과
         let thick = 16 * brushSize;
         let len = dist(x, y, pX, pY);
         let steps = max(1, floor(len / (thick * 0.7)));
         muralCanvas.noStroke();
+        // currentColor에 이미 페이드된 알파값이 적용되어 있으므로 그대로 사용
         muralCanvas.fill(currentColor);
         muralCanvas.rectMode(CENTER);
         for (let i = 0; i <= steps; i++) {
@@ -682,9 +697,11 @@ function setup() {
           let ix = lerp(x, pX, t);
           let iy = lerp(y, pY, t);
           muralCanvas.rect(ix, iy, thick, thick * 0.7, 2);
-          // 잉크 번짐 효과
-          muralCanvas.fill(red(currentColor), green(currentColor), blue(currentColor), 40);
+          // 잉크 번짐 효과: 기존 알파 40을 현재 알파에 비례하여 조정
+          // (40 / 100)은 마커펜의 원래 기본 알파 100에 대한 40의 비율
+          muralCanvas.fill(red(currentColor), green(currentColor), blue(currentColor), alpha(currentColor) * (40 / 100));
           muralCanvas.rect(ix, iy, thick * 1.4, thick * 1.1, 4);
+          // currentColor에 이미 페이드된 알파값이 적용되어 있으므로 그대로 사용
           muralCanvas.fill(currentColor);
         }
         muralCanvas.rectMode(CORNER);
@@ -756,16 +773,16 @@ function setup() {
       "screen4" : {
         content: "첫 번째 스테이지: 인프라 도입",
         x: width / 2,
-        y: 850,
-        size: 28,
+        y: 800,
+        size: 40,
         color: [255, 255, 255],
         align: "center"
       },
       "screen4-1" : {
         content: "첫 번째 장소: 연무장길",
         x: width / 2,
-        y: 850,
-        size: 28,
+        y: 800,
+        size: 40,
         color: [255, 255, 255],
         align: "center"
       },
@@ -916,7 +933,7 @@ function setup() {
       "screen7-2-1-1": {
         content: "작가 추천작을 구경하기 위해 서점을 찾는 사람들이 늘었어! 할인된 가격에 판매하니 구매도 크게 증가했는걸? \n\n 작가와 독자가 장기간 소통하는 특별한 장소가 탄생했어!",
         x: width / 2,
-        y: 850,
+        y: 200,
         size: 28,
         color: [255, 255, 255],
         align: "center"
@@ -924,15 +941,15 @@ function setup() {
       "screen7-2-1-2": {
         content: "참여형 클래스에 더해 결과물 전시까지 운영하니, 자연스럽게 클래스 참여자 지인들의 추가 방문도 증가했어. \n\n 작가의 이야기에서 독자의 이야기로 나아가는 멋진 문학 공간이 탄생했어!",
         x: width / 2,
-        y: 850,
+        y: 200,
         size: 28,
         color: [255, 255, 255],
         align: "center"
       },
       "screen7-2-2-1": {
         content: "사람들이 북커버가 탐이 나서 책을 더 많이 구매하네. \n게다가 인근 공장과 협업하니, 지역 상생 효과까지 있잖아? \n\n 서점이 지역 공장과 독자들을 잇는 징검다리가 되었어!",
-        x: 440,
-        y: 830,
+        x: width/2,
+        y: 200,
         size: 28,
         color: [255,255,255],
         align: "center"
@@ -940,7 +957,7 @@ function setup() {
       "screen7-2-2-2": {
         content: "공들여 큐레이션을 했더니 매달 사람들이 구매를 위해 줄을 설 정도야! \n\n 책 내용을 되새길 수 있는 문구류를 판매하는 특별한 서점이 되었어!",
         x: width / 2,
-        y: 850,
+        y: 200,
         size: 28,
         color: [255, 255, 255],
         align: "center"
@@ -997,8 +1014,8 @@ function setup() {
       "screen10": {
         content: "두 번째 스테이지: 공공예술 도입_벽화",
         x: width / 2,
-        y: height / 2,
-        size: 28,
+        y: 800,
+        size: 40,
         color: [255, 255, 255],
         align: "center"
       },
@@ -1006,8 +1023,8 @@ function setup() {
       "screen10-1": {
         content: "두 번째 장소, 뚝섬역 사거리",
         x: width / 2,
-        y: 850,
-        size: 28,
+        y: 800,
+        size: 40,
         color: [255, 255, 255],
         align: "center"
       },
@@ -1051,8 +1068,8 @@ function setup() {
       "screen15": {
         content: "세 번째 스테이지: 공공예술 도입_조각",
         x: width / 2,
-        y: height / 2,
-        size: 28,
+        y: 800,
+        size: 40,
         color: [255, 255, 255],
         align: "center"
       },
@@ -1060,8 +1077,8 @@ function setup() {
       "screen15-1": {
         content: "세 번째 장소, 중랑천 유역 녹지",
         x: width / 2,
-        y: 850,
-        size: 28,
+        y: 800,
+        size: 40,
         color: [255, 255, 255],
         align: "center"
       },
@@ -1098,6 +1115,51 @@ function setup() {
         x: width / 2,
         y: 850,
         size: 28,
+        color: [255, 255, 255],
+        align: "center"
+      },
+
+      "screen17": {
+        content: "세 번째 스테이지, 조각품 만들기 미션을 훌륭하게 완수했어. \n\n 텅 비어 있었던 과거와 달리 조각들 덕분에 숲에 생기가 도네!",
+        x: width / 2,
+        y: height/2,
+        size: 28,
+        color: [255, 255, 255],
+        align: "center"
+      },
+
+      "screen18": {
+        content: "이렇게 성수동 재생(Refurbish) 사업의 모든 단계가 마무리되었다. \n\n 낡은 공간을 새롭게 재해석하고, 빈 공간에 창의적인 숨결을 불어넣으면서 \n\n당신은 무엇을 느꼈는가?",
+        x: width / 2,
+        y: height/2,
+        size: 28,
+        color: [255, 255, 255],
+        align: "center"
+      },
+
+      "screen19": {
+        content: "수도권 과밀화 및 지방소멸이 사회문제로 대두하고 있는 현재, \n\n 낙후된 공간에 대한 재평가와, 재생을 위한 창의적인 아이디어가 더욱 절실해졌다.",
+        x: width / 2,
+        y: height/2,
+        size: 28,
+        color: [255, 255, 255],
+        align: "center"
+      },
+
+      "screen20": {
+        content: "성수동이 오늘의 모습을 갖추기까지 거쳤던 긴 여정을 체험하면서, \n\n 성수동뿐만 아니라 다양한 익명적인 낙후 공간이 가진 \n\n색다른 가능성을 상상해 보는 기회가 되었기를 바라며,",
+        x: width / 2,
+        y: height/2,
+        size: 28,
+        color: [255, 255, 255],
+        align: "center"
+      },
+
+      "screen21": {
+        content: "THE END",
+        x: width-300,
+        y: height/2,
+        size: 100,
         color: [255, 255, 255],
         align: "center"
       },
@@ -1558,7 +1620,7 @@ function draw() {
 
   // 엔딩 음원
   if (
-    ["screen8", "screen11-2", "screen16"].includes(currentKey)
+    ["screen8", "screen11-2", "screen17","screen18","screen19","screen20", "screen21"].includes(currentKey)
     && !stage1endMusicStarted
   ) {
     stage1endMusic.loop(); // 반복 재생
@@ -1567,7 +1629,7 @@ function draw() {
 
   // 👉 다른 화면으로 넘어가면 멈추고 플래그 리셋
   if (
-    !["screen8", "screen11-2", "screen16"].includes(currentKey)
+    !["screen8", "screen11-2", "screen17","screen18","screen19","screen20", "screen21"].includes(currentKey)
     && stage1endMusicStarted
   ) {
     stage1endMusic.stop();
@@ -1719,6 +1781,7 @@ function draw() {
       image(iconToShow, c.x, c.y, c.w, c.h);
   
       // 🔍 마우스오버 시 텍스트 박스도 같이 표시
+      /*
       if (isHovered) {
         let paddingX = 5;
         let paddingY = 10;
@@ -1738,10 +1801,28 @@ function draw() {
         // 🎨 텍스트 색상
         fill(197, 191, 159, 255); // RGBA 색상
         text(c.label, mouseX, mouseY - 60);
+        */
+
+        if (isHovered && currentKey !== "screen1" && c.label) {
+          let paddingX = 5;
+          let paddingY = 10;
+          textSize(24);
+          textAlign(CENTER, CENTER);
+        
+          let labelWidth = textWidth(c.label);
+          let boxW = labelWidth + paddingX * 2;
+          let boxH = textAscent() + textDescent() + paddingY * 3.7;
+        
+          rectMode(CENTER);
+          fill(0, 150);
+          noStroke();
+          rect(mouseX, mouseY - 60, boxW, boxH, 5);
+        
+          fill(197, 191, 159, 255);
+          text(c.label, mouseX, mouseY - 60);
       }
     }
   }
-  
 
   if (currentKey === "screen11-2") {               // 완성된 벽화 표시
     cursor()
@@ -1760,22 +1841,22 @@ function draw() {
       tint(255); // 초기화
       fill(255);
       textAlign(CENTER);
-      textSize(24);
+      textSize(28);
       text("두 번째 스테이지의 첫 번째 미션,", width / 2, 850);
     } else if (isFadedIn) {
       image(muralImage, width / 2, height / 2, width, height);
       image(images["screen11-3"], images["screen11-3"].width / 2 / 2, height - images["screen11-3"].height / 2 / 2, images["screen11-3"].width / 2, images["screen11-3"].height / 2);
       fill(255);
       textAlign(CENTER);
-      textSize(22);
+      textSize(28);
       text("벽화 그리기 미션을 훌륭하게 완수했어!\n어딘가 으스스했던 과거와 비교해 보니, 몰라보게 달라졌다!", width / 2, 850);
     }
   }
 
 
-  textSize(30);
-  text(`x-coordinate: ${mouseX}`, 100, 318);
-  text(`y-coordinate: ${mouseY}`, 100, 390);
+  // textSize(30);
+  // text(`x-coordinate: ${mouseX}`, 100, 318);
+  // text(`y-coordinate: ${mouseY}`, 100, 390);
 
   if ( // 지도 부분 흰 글씨 안보여서 파란색으로 표시
     currentKey === "screen3"   ||
@@ -1915,16 +1996,6 @@ function mousePressed() {
     }
   }
 
-  if (currentKey === "screen1") {
-    if (mouseX >= 560 && mouseX <= 930 &&
-        mouseY >= 776 && mouseY <= 881) {
-      screenHistory.push(currentKey);
-      currentKey = "screen2";
-      redraw();
-      return;
-    }
-  }
-
   let next = storyMap[currentKey];
 
   if (typeof next === 'object') {
@@ -1979,7 +2050,12 @@ function initializeMuralCanvas() {
 function drawLineSmooth(brush, x1, y1, x2, y2, speed) {
   // 점 간 간격을 더 촘촘하게 하여 자연스러운 선이 되도록 개선
   const distance = dist(x1, y1, x2, y2);
-  const steps = max(2, floor(distance / 0.8)); // 더 촘촘하게
+  let steps;
+  if (selectedBrush.name === '물감붓') {
+    steps = max(2, floor(distance / 10)); // 스프레이일 때
+  } else {
+    steps = max(2, floor(distance / 0.8)); // 다른 붓일 때
+  }
   for (let i = 1; i <= steps; i++) { // i=1부터 시작
     let t = i / steps;
     let x = lerp(x1, x2, t);
@@ -2069,7 +2145,8 @@ function createColorButtons(startY) {
     btn.style('background-color', `rgb(${red(brushColors[i])},${green(brushColors[i])},${blue(brushColors[i])})`);
     btn.style('border', '2px solid #fff');
     btn.mousePressed(() => {
-      currentColor = brushColors[i];
+      let baseColor = brushColors[i];
+      currentColor = color(red(baseColor), green(baseColor), blue(baseColor), 150);
     });
     colorButtons.push(btn);
   }
@@ -2157,13 +2234,13 @@ function drawMural() {
   // rect(muralCanvas.width, 0, sidebarWidth, height);
 
   fill(255);
-  textSize(14);
+  textSize(24);
   textAlign(LEFT, TOP);
   text(`선택: ${selectedBrush.name}`, muralCanvas.width + buttonMargin, height - 60);
-  text("마우스를 드래그하여 그림을 그리세요.", 10, height - 30);
+  text("마우스를 드래그하여 그림을 그려 보자. \n (붓의 굵기와 종류를 바꿔 보자!)", 10, height - 70);
 
   fill(255, 255, 0);
-  textSize(18);
+  textSize(24);
   textAlign(CENTER, CENTER);
   if (currentStage === 1 && !showComparison) {
     text("붓을 들어 골목길의 활기를 되찾아 보자!", muralCanvas.width / 2, 30);
@@ -2176,11 +2253,11 @@ function drawMural() {
   // 브러시 크기 슬라이더 그리기 (색상 버튼 아래)
   let sliderTop = getNextY() + 60; // 색상 버튼과 충분히 띄움
   sliderY = sliderTop + 30;        // 텍스트와 핸들이 겹치지 않게 더 아래로
-  sliderbarx= sliderX + (sliderX+sliderW)/2;
+  sliderbar_x= sliderX + sliderW/2;
 
   // 슬라이더 바
   fill(180);
-  rect(sliderbarx, sliderY, sliderW, sliderH, 4);
+  rect(sliderbar_x, sliderY, sliderW, sliderH, 4);
 
   // 핸들 위치 계산
   handleX = sliderX + map(brushSize, 0.5, 6.0, 0, sliderW);
