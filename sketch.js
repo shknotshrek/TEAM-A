@@ -2050,18 +2050,22 @@ function createBrushButtons() {
     btn.position(muralCanvas.width + buttonMargin, startY);
     btn.size(sidebarWidth - 2 * buttonMargin, buttonHeight);
     btn.mousePressed(() => {
-       // 음악 정지
+      // 음악 정지
       if (currentMusic && currentMusic.isPlaying()) {
         currentMusic.stop();
       }
       musicStarted = false;
       selectedBrush = brush;
-      // 모든 브러시 버튼의 테두리 색상 초기화
+      // 모든 브러시 버튼의 스타일 초기화
       for (let b of brushButtons) {
-        if (b) b.style('border', 'none');
+        if (b) {
+          b.style('background-color', '');
+          b.style('color', '');
+        }
       }
-      // 선택된 브러시 버튼의 테두리 색상을 노란색으로 변경
-      btn.style('border', '2px solid #FFD700');
+      // 선택된 브러시 버튼의 스타일 변경
+      btn.style('background-color', '#000000');
+      btn.style('color', '#FFFFFF');
     });
     brushButtons.push(btn);
     startY += buttonHeight + buttonMargin;
@@ -2085,9 +2089,10 @@ function createControlButtons() {
 
   completeButton = createButton('벽화 완성!');
   completeButton.position(muralCanvas.width + buttonMargin, height - 100);
-  completeButton.size(sidebarWidth - 2 * buttonMargin, buttonHeight);
-  completeButton.style('background-color', '#4A90E2'); // 파란색으로 변경
-  completeButton.style('color', 'white'); // 텍스트 색상을 흰색으로 변경
+  completeButton.size(sidebarWidth - 2 * buttonMargin, buttonHeight * 2); // 버튼 높이를 두 배로 증가
+  completeButton.style('background-color', '#4A90E2');
+  completeButton.style('color', 'white');
+  completeButton.style('font-size', '20px'); // 텍스트 크기도 키워서 가독성 향상
   completeButton.mousePressed(() => {
     // 음악 정지
     if (currentMusic && currentMusic.isPlaying()) {
