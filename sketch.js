@@ -11,6 +11,7 @@ const hintScreens = [
   "screen7-2", "screen7-2-1", "screen7-2-2",
   "screen7-3", "screen7-3-1", "screen7-3-2"
 ];
+let screenEnterTime = 0;  // 각 화면에 진입한 시간
 
 // 벽화 파트 변수
 
@@ -1770,6 +1771,9 @@ function draw() {
   }
   // 선택지 아이콘 표시
   
+  let elapsed = millis() - screenEnterTime;
+  let shouldTwinkle = (elapsed > 7000);  // 7초 지난 경우
+
   if (choices[currentKey]) {
     for (let c of choices[currentKey]) {
       let isHovered = (
@@ -1780,6 +1784,52 @@ function draw() {
       let iconToShow = isHovered ? c.hoverImg : c.img;
       image(iconToShow, c.x, c.y, c.w, c.h);
   
+      // if (shouldTwinkle && !isHovered && currentKey !== "screen1" && currentKey !== "screen7") {
+      //  let alpha = 128 + 127 * sin(millis() / 300);
+      //  push();
+      //  translate(c.x, c.y);
+      //  noFill();
+      //  stroke(255, 255, 0, alpha);
+      //  strokeWeight(4);
+      //  ellipse(0, 0, c.w * 1.1, c.h * 1.1);
+      //  pop();
+      // }
+
+      
+      if (shouldTwinkle && !isHovered && currentKey !== "screen1") {
+        push();
+        translate(c.x, c.y);
+      
+        let pulse = 0.8 + 0.2 * sin(millis() / 300);  // 반짝임 크기 변화
+        let glowAlpha = 80 + 50 * sin(millis() / 200);  // 알파값 진동
+      
+        noStroke();
+        for (let i = 0; i < 5; i++) {
+          fill(255, 255, 200, glowAlpha / (i + 1));
+          ellipse(0, 0, c.w * (1.2 + i * 0.15) * pulse, c.h * (1.2 + i * 0.15) * pulse);
+        }
+      
+        pop();
+  
+      // 라벨 텍스트
+      if (isHovered && currentKey !== "screen1" && c.label) {
+        let paddingX = 5;
+        let paddingY = 10;
+        textSize(24);
+        textAlign(CENTER, CENTER);
+  
+        let labelWidth = textWidth(c.label);
+        let boxW = labelWidth + paddingX * 2;
+        let boxH = textAscent() + textDescent() + paddingY * 3.7;
+  
+        rectMode(CENTER);
+        fill(0, 150);
+        noStroke();
+        rect(mouseX, mouseY - 60, boxW, boxH, 5);
+  
+        fill(197, 191, 159, 255);
+        text(c.label, mouseX, mouseY - 60);
+      }
       // 🔍 마우스오버 시 텍스트 박스도 같이 표시
       /*
       if (isHovered) {
@@ -1883,7 +1933,7 @@ function draw() {
   text("Press R to restart", 30,972);
   
 }
-
+}
 
 function keyPressed() {
 
@@ -1963,7 +2013,10 @@ function keyPressed() {
   //   }
   // }
 
-
+function enterNewScreen(newKey) {
+  currentKey = newKey;
+  screenEnterTime = millis();  // 화면 진입 시각 기록
+}
 
 function mousePressed() {
 
@@ -1990,6 +2043,7 @@ function mousePressed() {
           mouseY >= c.y - c.h / 2 && mouseY <= c.y + c.h / 2) {
         screenHistory.push(currentKey);
         currentKey = c.next;
+        enterNewScreen(c.next);
         redraw();
         return;
       }
