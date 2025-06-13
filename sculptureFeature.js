@@ -98,7 +98,7 @@ function drawSculptureResultScreen() {
         imageMode(CENTER);
         const imgHeight = 550;
         const imgY = height / 2;
-        image(sculptureModule.generatedSculptureImg, width / 2, imgY, 450, imgHeight);
+        image(sculptureModule.generatedSculptureImg, width / 5, height*4/5, 450, imgHeight);
         pop();
     
         // '박물관 명패' 스타일로 작품 제목 표시
