@@ -584,8 +584,8 @@ function setup() {
     color('#f05454'), color('#f77d4d'), color('#f5c951'), color('#c9ffb3'),
     color('#a4cf38'), color('#57ba5e'), color('#57ba96'), color('#1d6332'),
     // Bottom row (8 colors)
-    color('#86ebd5'), color('#57baaf'), color('#86d0eb'), color('#6481ed'),
-    color('#575bba'), color('#c1b3ff'), color('#9f64ed'), color('#f5b3ff')
+    color('#86ebd5'), color('#86d0eb'), color('#575bba'), color('#c1b3ff'), 
+    color('#9f64ed'), color('#f5b3ff'), color('#000000'), color('#ffffff')
   ];
 
   currentColor = brushColors[0]; // 기본값으로 첫 번째 색상
