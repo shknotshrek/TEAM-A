@@ -2173,16 +2173,19 @@ function createControlButtons() {
   });
 
   completeButton = createButton('벽화 완성!');
-  completeButton.position(muralCanvas.width + buttonMargin, startY + buttonHeight + buttonMargin);
-  completeButton.size(sidebarWidth - 2 * buttonMargin, buttonHeight);
+  completeButton.position(muralCanvas.width + buttonMargin, height - 100);
+  completeButton.size(sidebarWidth - 2 * buttonMargin, buttonHeight * 2); // 버튼 높이를 두 배로 증가
+  completeButton.style('background-color', '#4A90E2');
+  completeButton.style('color', 'white');
+  completeButton.style('font-size', '20px'); // 텍스트 크기도 키워서 가독성 향상
   completeButton.mousePressed(() => {
     // 음악 정지
     if (currentMusic && currentMusic.isPlaying()) {
       currentMusic.stop();
     }
     musicStarted = false;
-    muralImage = muralCanvas.get();  // ← 여기서 이미지 저장
-    currentKey = "screen11-2";       // ← 바로 다음 화면으로 이동
+    muralImage = muralCanvas.get();
+    currentKey = "screen11-2";
   });
 }
 
@@ -2202,7 +2205,7 @@ function createColorButtons(startY) {
     let btn = createButton('');
     btn.position(
       muralCanvas.width + buttonMargin + col * (btnSize + gap),
-      startY + row * (btnSize + gap)
+      startY + row * (btnSize + gap) // 간격을 제거하여 바로 아래에 위치
     );
     btn.size(btnSize, btnSize);
     btn.style('border-radius', '50%');
@@ -2218,13 +2221,13 @@ function createColorButtons(startY) {
 
 function getNextY() {
   let maxY = 0;
-  for (let btn of [...brushButtons, resetButton, completeButton]) {
+  for (let btn of [...brushButtons, resetButton]) {
     if (btn) {
       let y = btn.position().y;
       if (y > maxY) maxY = y;
     }
   }
-  return maxY + buttonHeight + buttonMargin;
+  return maxY + buttonHeight + 8; // buttonMargin 제거하여 바로 아래에 위치하도록 수정
 }
 
 function updateButtonPositions() {
