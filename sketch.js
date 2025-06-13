@@ -2123,14 +2123,15 @@ function drawLineSmooth(brush, x1, y1, x2, y2, speed) {
 
 
 function createBrushButtons() {
+  // 기존 브러시 버튼 제거
   for (let btn of brushButtons) {
-    btn.remove();
+    if (btn) btn.remove();
   }
   brushButtons = [];
 
   let startY = buttonMargin;
-  for (let i = 0; i < BRUSH_COUNT; i++) {
-    let btn = createButton(brushes[i].name);
+  for (let brush of brushes) {
+    let btn = createButton(brush.name);
     btn.position(muralCanvas.width + buttonMargin, startY);
     btn.size(sidebarWidth - 2 * buttonMargin, buttonHeight);
     btn.mousePressed(() => {
@@ -2139,8 +2140,17 @@ function createBrushButtons() {
         currentMusic.stop();
       }
       musicStarted = false;
-      selectedBrush = brushes[i];
-      console.log(`선택된 브러시: ${selectedBrush.name}`);
+      selectedBrush = brush;
+      // 모든 브러시 버튼의 스타일 초기화
+      for (let b of brushButtons) {
+        if (b) {
+          b.style('background-color', '');
+          b.style('color', '');
+        }
+      }
+      // 선택된 브러시 버튼의 스타일 변경
+      btn.style('background-color', '#000000');
+      btn.style('color', '#FFFFFF');
     });
     brushButtons.push(btn);
     startY += buttonHeight + buttonMargin;
