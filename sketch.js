@@ -2038,24 +2038,30 @@ function drawLineSmooth(brush, x1, y1, x2, y2, speed) {
 
 
 function createBrushButtons() {
+  // 기존 브러시 버튼 제거
   for (let btn of brushButtons) {
-    btn.remove();
+    if (btn) btn.remove();
   }
   brushButtons = [];
 
   let startY = buttonMargin;
-  for (let i = 0; i < BRUSH_COUNT; i++) {
-    let btn = createButton(brushes[i].name);
+  for (let brush of brushes) {
+    let btn = createButton(brush.name);
     btn.position(muralCanvas.width + buttonMargin, startY);
     btn.size(sidebarWidth - 2 * buttonMargin, buttonHeight);
     btn.mousePressed(() => {
-      // 음악 정지
+       // 음악 정지
       if (currentMusic && currentMusic.isPlaying()) {
         currentMusic.stop();
       }
       musicStarted = false;
-      selectedBrush = brushes[i];
-      console.log(`선택된 브러시: ${selectedBrush.name}`);
+      selectedBrush = brush;
+      // 모든 브러시 버튼의 테두리 색상 초기화
+      for (let b of brushButtons) {
+        if (b) b.style('border', 'none');
+      }
+      // 선택된 브러시 버튼의 테두리 색상을 노란색으로 변경
+      btn.style('border', '2px solid #FFD700');
     });
     brushButtons.push(btn);
     startY += buttonHeight + buttonMargin;
@@ -2078,16 +2084,18 @@ function createControlButtons() {
   });
 
   completeButton = createButton('벽화 완성!');
-  completeButton.position(muralCanvas.width + buttonMargin, startY + buttonHeight + buttonMargin);
+  completeButton.position(muralCanvas.width + buttonMargin, height - 100);
   completeButton.size(sidebarWidth - 2 * buttonMargin, buttonHeight);
+  completeButton.style('background-color', '#4A90E2'); // 파란색으로 변경
+  completeButton.style('color', 'white'); // 텍스트 색상을 흰색으로 변경
   completeButton.mousePressed(() => {
     // 음악 정지
     if (currentMusic && currentMusic.isPlaying()) {
       currentMusic.stop();
     }
     musicStarted = false;
-    muralImage = muralCanvas.get();  // ← 여기서 이미지 저장
-    currentKey = "screen11-2";       // ← 바로 다음 화면으로 이동
+    muralImage = muralCanvas.get();
+    currentKey = "screen11-2";
   });
 }
 
@@ -2107,7 +2115,7 @@ function createColorButtons(startY) {
     let btn = createButton('');
     btn.position(
       muralCanvas.width + buttonMargin + col * (btnSize + gap),
-      startY + row * (btnSize + gap)
+      startY + row * (btnSize + gap) // 간격을 제거하여 바로 아래에 위치
     );
     btn.size(btnSize, btnSize);
     btn.style('border-radius', '50%');
@@ -2123,13 +2131,13 @@ function createColorButtons(startY) {
 
 function getNextY() {
   let maxY = 0;
-  for (let btn of [...brushButtons, resetButton, completeButton]) {
+  for (let btn of [...brushButtons, resetButton]) {
     if (btn) {
       let y = btn.position().y;
       if (y > maxY) maxY = y;
     }
   }
-  return maxY + buttonHeight + buttonMargin;
+  return maxY + buttonHeight + 8; // buttonMargin 제거하여 바로 아래에 위치하도록 수정
 }
 
 function updateButtonPositions() {
@@ -2222,7 +2230,7 @@ function drawMural() {
   // 브러시 크기 슬라이더 그리기 (색상 버튼 아래)
   let sliderTop = getNextY() + 60; // 색상 버튼과 충분히 띄움
   sliderY = sliderTop + 30;        // 텍스트와 핸들이 겹치지 않게 더 아래로
-  sliderbar_x= sliderX + sliderW/2;
+  sliderbar_x = sliderX + sliderW/2;
 
   // 슬라이더 바
   fill(180);
