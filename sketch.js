@@ -1995,6 +1995,7 @@ function draw() {
   pop();
 }
 
+// sketch.js 파일에서 기존 keyPressed 함수를 지우고 아래 내용으로 완전히 교체해주세요.
 
 // function keyPressed() {
 
@@ -2007,6 +2008,8 @@ function draw() {
     //     return; // ← 더 내려가지 않고 종료
     // }
 
+
+   
     // /* ───────── 2) R 키로 처음으로 ───────── */
     // if (key === 'r' || key === 'R') {
     //     currentKey = "screen1";
@@ -2028,12 +2031,14 @@ function draw() {
     //     return; // ← 공통 키 처리로 내려가지 않음
     // }
 
+
     // /* ───────── 4) 스페이스바 처리 ───────── */
     // if (key === ' ') {
     //     // screen13과 screen1에서는 스페이스바 무시
     //     if (currentKey === 'screen13' || currentKey === 'screen1') {
     //         return;
     //     }
+
 
         // // [변경] screen15-pose에서만 특별한 동작을 하도록 수정
         // if (currentKey === 'screen15-pose') {
@@ -2052,6 +2057,7 @@ function draw() {
         //     redraw();
         // }
     
+
 
   // // 텍스트 페이드인 효과 유
   // if (key === ' ') {

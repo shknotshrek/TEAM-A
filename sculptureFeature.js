@@ -8,6 +8,7 @@ const sculptureModule = {
     poses: [],
     isModelReady: false,
     isGenerating: false,
+    generationFailed: false, // ◀◀◀ 이 줄을 추가하세요.
     generatedSculptureImg: null,
     generatedSculptureText: ""
 };
@@ -16,6 +17,9 @@ const sculptureModule = {
  * 조각상 기능에 필요한 요소(웹캠, ml5 모델)를 초기 설정하는 함수.
  */
 function setupSculptureFeature() {
+     if (sculptureModule.video) {
+        sculptureModule.video.remove();
+    }
       sculptureModule.webcamCanvas = createGraphics(700, 500); 
     sculptureModule.video = createCapture(VIDEO, () => {
         console.log("✅ Video capture ready.");
@@ -70,79 +74,10 @@ function drawSculpturePoseScreen() {
     text("포즈를 잡고, 스페이스 바를 눌러서 조각을 만들어 보자!", width / 2, height - 100);
 }
 
-    
-
-/**
- * screen16에서 생성된 조각상 결과를 그리는 함수.
- */
-/**
- * screen16에서 생성된 조각상 결과를 그리는 함수.
- * (위치 조정 및 '박물관 명패' 스타일 적용)
- */
-/**
- * screen16에서 생성된 조각상 결과를 그리는 함수.
- * (텍스트 크기 및 위치 조정)
- */
-function drawSculptureResultScreen() {
-    // 생성 중일 때 로딩 메시지 표시는 기존과 동일
-    if (sculptureModule.isGenerating) {
-        fill(0, 0, 0, 150);
-        noStroke();
-        rectMode(CENTER);
-        rect(width/2, height - 100, 600, 50, 10);
-        
-        fill(255);
-        textAlign(CENTER, CENTER);
-        textSize(24);
-        text("당신의 포즈로 조각상을 만들고 있습니다...", width / 2, height - 100);
-    }
-
-    // 조각상 이미지 그리는 부분은 기존과 동일
-    if (sculptureModule.generatedSculptureImg) {
-        push();
-        imageMode(CENTER);
-        const imgHeight = 550;
-        const imgY = height / 2;
-        image(sculptureModule.generatedSculptureImg, width/2, height/2, 450, imgHeight);
-        pop();
-    
-        // '박물관 명패' 스타일로 작품 제목 표시
-        if (sculptureModule.generatedSculptureText) {
-            // [변경] 텍스트 크기를 더 작게 설정
-            textSize(20); 
-
-            // [변경] 명패 위치를 화면 맨 아래로 이동 (Press R to restart 위에 표시되도록)
-            const plaqueY = height - 45; 
-
-            const textW = textWidth(sculptureModule.generatedSculptureText);
-            const plaqueW = textW + 40; // 패딩을 살짝 줄임
-            const plaqueH = 35;       // 높이를 줄임
-
-            // 명패 배경 그리기
-            fill(0, 0, 0, 180);
-            noStroke();
-            rectMode(CENTER);
-            rect(width / 2, plaqueY, plaqueW, plaqueH, 5);
-
-            // 작품 제목 텍스트 그리기
-            fill(255);
-            textAlign(CENTER, CENTER);
-            textStyle(BOLD);
-            text(sculptureModule.generatedSculptureText, width / 2, plaqueY);
-            textStyle(NORMAL);
-        }
-    }
-}
-/**
- * 포즈를 캡처하고, image-to-image 생성을 위해 Gemini API 요청을 시작합니다.
- */
- /**
- * 포즈를 캡처하고, image-to-image 생성을 위해 Gemini API 요청을 시작합니다.
- * (프롬프트 수정: 투명 배경 + 짧은 제목 요청)
- */
 async function capturePoseAndGenerateSculpture() {
     console.log("📸 포즈 캡처 및 Image-to-Image 생성 시작!");
     sculptureModule.isGenerating = true;
+    sculptureModule.generationFailed = false; // ◀ 1. 새로운 시도를 하므로 실패 상태를 초기화합니다.
     
     // [변경] 메인 캔버스 대신 '숨겨진 캔버스'의 이미지를 캡처합니다.
     const capturedImageDataURL = aiVisionCanvas.get().canvas.toDataURL("image/png");
@@ -212,12 +147,60 @@ async function capturePoseAndGenerateSculpture() {
 
     } catch (error) {
         console.error("❌ Gemini API 호출 실패:", error);
-        sculptureModule.generatedSculptureText = "이미지 생성에 실패했습니다. 콘솔을 확인해주세요.";
+        sculptureModule.generatedSculptureText = "이미지 생성에 실패했습니다. Back버튼을 누르고 다시 시도해주세요.";
+        sculptureModule.generationFailed = true; 
     } finally {
         sculptureModule.isGenerating = false;
     }
 }
 
+
+/**
+ * screen16에서 생성된 조각상 결과를 그리는 함수.
+ */
+/**
+ * screen16에서 생성된 조각상 결과를 그리는 함수.
+ * (위치 조정 및 '박물관 명패' 스타일 적용)
+ */
+/**
+ * screen16에서 생성된 조각상 결과를 그리는 함수.
+ * (텍스트 크기 및 위치 조정)
+ */
+// sculptureFeature.js 파일에서 이 함수를 찾아 아래 내용으로 교체해주세요.
+
+// sculptureFeature.js 파일에서 이 함수를 찾아 아래 내용으로 교체해주세요.
+
+function drawSculptureResultScreen() {
+    if (sculptureModule.isGenerating) {
+        // 1. 생성 중일 때 -> "생성 중..." 메시지 표시
+        fill(0, 0, 0, 150);
+        rectMode(CENTER);
+        rect(width/2, height - 100, 600, 50, 10);
+        fill(255);
+        textAlign(CENTER, CENTER);
+        textSize(24);
+        text("당신의 포즈로 조각상을 만들고 있습니다...", width / 2, height - 100);
+
+    } else if (sculptureModule.generationFailed) {
+        // 2. 생성이 끝났는데 '실패' 상태일 때 -> 실패 메시지 표시
+        fill(255, 100, 100);
+        textAlign(CENTER, CENTER);
+        textSize(28);
+        text("조각상 생성에 실패했습니다.BACKSPACE를 눌러 돌아가서 다시 시도해주세요.", width / 2, height / 2+200);
+
+    } else if (sculptureModule.generatedSculptureImg) {
+        // 3. 생성이 끝났고, 실패하지도 않았고, 이미지가 있을 때 -> 성공 결과 표시
+        push();
+        imageMode(CENTER);
+        const imgHeight = 550;
+        image(sculptureModule.generatedSculptureImg, width / 2, height / 2, 450, imgHeight);
+        pop();
+    
+        if (sculptureModule.generatedSculptureText) {
+            // ... (제목 표시하는 기존 코드) ...
+        }
+    }
+}
 // 감지된 포즈의 골격을 그리는 헬퍼 함수 이제 필요없어서 지움
 
 
@@ -260,4 +243,11 @@ function removeBlackBackground(sourceImg) {
     // 7. 픽셀 변경 작업을 완료하고, 배경이 제거된 새 캔버스를 반환합니다.
     transparentCanvas.updatePixels();
     return transparentCanvas;
+}
+
+function resetSculptureData() {
+  sculptureModule.generatedSculptureImg = null;
+  sculptureModule.generatedSculptureText = "";
+  sculptureModule.generationFailed = false; // API 호출 실패 상태도 함께 초기화합니다.
+  console.log("이전 조각상 데이터가 초기화되었습니다.");
 }
