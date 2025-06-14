@@ -52,3 +52,10 @@ GitHub Desktop 앱을 켭니다.
 
 우측 상단의 Push origin 버튼을 클릭합니다.
 이 버튼을 누르면 합치기가 완료된 내 브랜치가 온라인 저장소로 업로드됩니다.
+
+[navigationButtons] instructions
+제가 만든 앞으로가기 뒤로가기 버튼 내용은 전부 navigationButtons.js 라는 파일에 들어가 있는데, 이 파일 안에서 mousePressed나 keyPressed를 구현하고 있어요.
+그리고 sketch의 draw()에서 navigationButtons를 호출하고 있구요.
+sketch에서 mousePressed나 keyPressed를 지운 이유는 여러 파일에서 동일한 함수가 중복 호출되면 오류가 생기기 때문입니다.
+그래서 만약 mousePressed나 keyPressed 조작하셔야 되는 분들은 navigationButtons 안에 있는 함수를 보셔야 해요! 
+r을 눌러서 초기화하는 내용도 마찬가지로 navigationButtons 안에 있습니다.
