@@ -8,30 +8,6 @@ let nextImg, backImg;
 const BTN_SIZE = 100;          // px – adjust if your assets differ
 const NAV_PADDING = 24;       // distance from screen edges
 
-// function preload() {
-//   // path may differ ‑ place your PNGs in the sketch “assets/” folder
-//   nextImg = loadImage('visual assets/next.png');
-//   backImg = loadImage('visual assets/back.png');
-// }
-
-// function drawNavigationButtons() {
-//   if (!shouldShowNav()) return;
-
-//   const backPos = {x: NAV_PADDING, y: height - BTN_SIZE - NAV_PADDING};
-//   const nextPos = {x: width - BTN_SIZE - NAV_PADDING, y: backPos.y};
-
-//   imageMode(CORNER);
-
-//   // Back button only if history exists
-//   if (screenHistory.length > 0) {
-//     image(backImg, backPos.x, backPos.y, BTN_SIZE, BTN_SIZE);
-//   }
-
-//   // Next button only if a next screen is defined
-//   if (hasNextScreen()) {
-//     image(nextImg, nextPos.x, nextPos.y, BTN_SIZE, BTN_SIZE);
-//   }
-// }
 
 // navigationButtons.js
 function drawNavigationButtons() {
@@ -59,65 +35,12 @@ function shouldShowNav() {
   return !['screen1', 'screen7', 'screen7-1', 'screen7-1-1', 'screen7-1-2', 
   'screen7-2', 'screen7-2-1', 'screen7-2-2', 
   'screen7-3', 'screen7-3-1', 'screen7-3-2', 
-  'screen13', 'screen15-5', 'screen21'].includes(currentKey);
+  'screen21'].includes(currentKey);
 }
 
 function hasNextScreen() {
   return storyMap[currentKey] !== undefined;
 }
-
-// function mousePressed() {
-  // console.log('▶ nav mousePressed fired', mouseX, mouseY, 'currentKey=', currentKey);
-  // /* ───────── 1) Special case for screen11‑2 (fade interaction) ───────── */
-  // if (currentKey === 'screen11-2') {
-  //   if (!isFading && !isFadedIn) {
-  //     fadeAmount = 0;
-  //     isFading = true;
-  //   } else if (isFadedIn) {
-  //     screenHistory.push(currentKey);
-  //     currentKey = 'screen14';
-  //     redraw();
-  //   }
-  //   return;
-  // }
-
-  // if (!shouldShowNav()) return;
-
-  // const backPos = {x: NAV_PADDING, y: height - BTN_SIZE - NAV_PADDING};
-  // const nextPos = {x: width - BTN_SIZE - NAV_PADDING, y: backPos.y};
-
-  // // ---------- Back button
-  // const overBack = screenHistory.length > 0 &&
-  //                  mouseX >= backPos.x && mouseX <= backPos.x + BTN_SIZE &&
-  //                  mouseY >= backPos.y && mouseY <= backPos.y + BTN_SIZE;
-  // if (overBack) {
-  //   currentKey = screenHistory.pop();
-  //   redraw();
-  //   return;
-  // }
-
-  // // ---------- Next button
-  // const overNext = hasNextScreen() &&
-  //                  mouseX >= nextPos.x && mouseX <= nextPos.x + BTN_SIZE &&
-  //                  mouseY >= nextPos.y && mouseY <= nextPos.y + BTN_SIZE;
-  // if (overNext) {
-  //   // screen15‑pose invokes API before moving on
-  //   if (currentKey === 'screen15-pose') {
-  //     screenHistory.push(currentKey);
-  //     currentKey = storyMap[currentKey];
-  //     capturePoseAndGenerateSculpture();
-  //     redraw();
-  //     return;
-  //   }
-
-  //   let next = storyMap[currentKey];
-  //   if (typeof next === 'string') {
-  //     screenHistory.push(currentKey);
-  //     currentKey = next;
-  //     redraw();
-  //   }
-  // }
-// }
 
 function mousePressed() {
 
@@ -170,58 +93,51 @@ function mousePressed() {
     redraw();
   }
 
-  // ─── 그 다음에 네비 버튼 로직 (기존 코드 그대로) ───
   console.log('▶ nav mousePressed fired', mouseX, mouseY, 'currentKey=', currentKey);
-  /* ───────── 1) Special case for screen11‑2 (fade interaction) ───────── */
-  if (currentKey === 'screen11-2') {
+
+  // — 1) 네비용 좌표 계산 —
+  const backPos = { x: NAV_PADDING,                     y: height - BTN_SIZE - NAV_PADDING };
+  const nextPos = { x: width  - BTN_SIZE - NAV_PADDING, y: backPos.y };
+  const overNext = hasNextScreen()
+                && mouseX >= nextPos.x && mouseX <= nextPos.x + BTN_SIZE
+                && mouseY >= nextPos.y && mouseY <= nextPos.y + BTN_SIZE;
+
+  // — 2) screen11-2 Special case: Next 버튼 클릭 시에만 —
+  if (currentKey === 'screen11-2' && overNext) {
+    // 첫 클릭 → 페이드 시작
     if (!isFading && !isFadedIn) {
       fadeAmount = 0;
-      isFading = true;
-    } else if (isFadedIn) {
+      isFading   = true;
+      loop();   // 페이드 애니메이션을 위해 draw()를 다시 돌려 줍니다
+      return;     // 여기서 빠져나와야 Back/Next 일반 처리 안 탄다
+    }
+    // 두 번째 클릭(페이드 완료 시) → 다음 화면으로
+    if (isFadedIn) {
       screenHistory.push(currentKey);
-      currentKey = 'screen14';
+      currentKey = storyMap[currentKey] || 'screen14';
       redraw();
     }
     return;
   }
 
-  if (!shouldShowNav()) return;
-
-  const backPos = {x: NAV_PADDING, y: height - BTN_SIZE - NAV_PADDING};
-  const nextPos = {x: width - BTN_SIZE - NAV_PADDING, y: backPos.y};
-
-  // ---------- Back button
-  const overBack = screenHistory.length > 0 &&
-                   mouseX >= backPos.x && mouseX <= backPos.x + BTN_SIZE &&
-                   mouseY >= backPos.y && mouseY <= backPos.y + BTN_SIZE;
+  // — 3) Back 버튼 처리(기존 로직) —
+  const overBack = screenHistory.length > 0
+                && mouseX >= backPos.x && mouseX <= backPos.x + BTN_SIZE
+                && mouseY >= backPos.y && mouseY <= backPos.y + BTN_SIZE;
   if (overBack) {
     currentKey = screenHistory.pop();
     redraw();
     return;
   }
 
-  // ---------- Next button
-  const overNext = hasNextScreen() &&
-                   mouseX >= nextPos.x && mouseX <= nextPos.x + BTN_SIZE &&
-                   mouseY >= nextPos.y && mouseY <= nextPos.y + BTN_SIZE;
+  // — 4) Next 버튼 일반 처리(11-2가 아닐 때) —
   if (overNext) {
-    // screen15‑pose invokes API before moving on
-    if (currentKey === 'screen15-pose') {
-      screenHistory.push(currentKey);
-      currentKey = storyMap[currentKey];
-      capturePoseAndGenerateSculpture();
-      redraw();
-      return;
-    }
-
-    let next = storyMap[currentKey];
-    if (typeof next === 'string') {
-      screenHistory.push(currentKey);
-      currentKey = next;
-      redraw();
-    }
+    // screen15-pose 특수 처리 등…
+    screenHistory.push(currentKey);
+    currentKey = storyMap[currentKey];
+    redraw();
   }
-}
+  }
 
 
 // Call this near the end of your draw() routine AFTER you render the current screen

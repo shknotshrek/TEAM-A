@@ -1868,39 +1868,76 @@ function draw() {
   pop();
 
 
-  if (currentKey === "screen11-2") {               // 완성된 벽화 표시
-    cursor()
-    background(0); // 화면 초기화
-    image(images["screen11-2"], width / 2, height / 2, width, height);
+  // if (currentKey === "screen11-2") {               // 완성된 벽화 표시
+  //   cursor()
+  //   background(0); // 화면 초기화
+  //   image(images["screen11-2"], width / 2, height / 2, width, height);
 
+  //   if (isFading) {
+  //     tint(255, fadeAmount);
+  //     image(muralImage, width / 2, height / 2, width, height);
+  //     fadeAmount += 3.5;
+  //     if (fadeAmount >= 255) {
+  //       fadeAmount = 255;
+  //       isFading = false;
+  //       isFadedIn = true;
+  //   }
+  //     tint(255); // 초기화
+  //     fill(255);
+  //     textAlign(CENTER);
+  //     textSize(28);
+  //     text("두 번째 스테이지의 첫 번째 미션,", width / 2, 850);
+  //   } else if (isFadedIn) {
+  //     image(muralImage, width / 2, height / 2, width, height);
+  //     image(images["screen11-3"], images["screen11-3"].width / 2 / 2, height - images["screen11-3"].height / 2 / 2, images["screen11-3"].width / 2, images["screen11-3"].height / 2);
+  //     fill(255);
+  //     textAlign(CENTER);
+  //     textSize(28);
+  //     text("벽화 그리기 미션을 훌륭하게 완수했어!\n어딘가 으스스했던 과거와 비교해 보니, 몰라보게 달라졌다!", width / 2, 850);
+  //   }
+  // }
+
+  if (currentKey === "screen11-2") {
+    cursor();
+    background(0);
+    image(images["screen11-2"], width/2, height/2, width, height);
+  
     if (isFading) {
       tint(255, fadeAmount);
-      image(muralImage, width / 2, height / 2, width, height);
+      image(muralImage, width/2, height/2, width, height);
+      
       fadeAmount += 3.5;
       if (fadeAmount >= 255) {
-        fadeAmount = 255;
-        isFading = false;
-        isFadedIn = true;
+        fadeAmount  = 255;
+        isFading    = false;
+        isFadedIn   = true;
+        noLoop();
+      }
+  
+      tint(255);
+      fill(255);
+      textAlign(CENTER);
+      textSize(28);
+      text("두 번째 스테이지의 첫 번째 미션,", width/2, 850);
+  
+      // return;  // draw() 나머지 로직 스킵
     }
-      tint(255); // 초기화
+    
+    if (isFadedIn) {
+      // 페이드 완료 후에 보여 줄 레이아웃
+      image(muralImage, width/2, height/2, width, height);
+      image(images["screen11-3"], images["screen11-3"].width/4, height - images["screen11-3"].height/4,
+            images["screen11-3"].width/2, images["screen11-3"].height/2);
       fill(255);
       textAlign(CENTER);
       textSize(28);
-      text("두 번째 스테이지의 첫 번째 미션,", width / 2, 850);
-    } else if (isFadedIn) {
-      image(muralImage, width / 2, height / 2, width, height);
-      image(images["screen11-3"], images["screen11-3"].width / 2 / 2, height - images["screen11-3"].height / 2 / 2, images["screen11-3"].width / 2, images["screen11-3"].height / 2);
-      fill(255);
-      textAlign(CENTER);
-      textSize(28);
-      text("벽화 그리기 미션을 훌륭하게 완수했어!\n어딘가 으스스했던 과거와 비교해 보니, 몰라보게 달라졌다!", width / 2, 850);
+      text("벽화 그리기 미션을 훌륭하게 완수했어!\n어딘가 으스스했던 과거와 비교해 보니, 몰라보게 달라졌다!",
+           width/2, 850);
+      drawNavigationButtons();
+      return;
     }
   }
-
-
-  // textSize(30);
-  // text(`x-coordinate: ${mouseX}`, 100, 318);
-  // text(`y-coordinate: ${mouseY}`, 100, 390);
+  
 
   if ( // 지도 부분 흰 글씨 안보여서 파란색으로 표시
     currentKey === "screen3"   ||
@@ -1915,7 +1952,7 @@ function draw() {
     fill(255);
   }
   
-  textSize(20);
+  textSize(25);
   
   textAlign(LEFT, TOP);
   
@@ -2161,15 +2198,40 @@ function createControlButtons() {
   completeButton = createButton('벽화 완성!');
   completeButton.position(muralCanvas.width + buttonMargin, startY + buttonHeight + buttonMargin);
   completeButton.size(sidebarWidth - 2 * buttonMargin, buttonHeight);
+  // completeButton.mousePressed(() => {
+  //   // 음악 정지
+  //   if (currentMusic && currentMusic.isPlaying()) {
+  //     currentMusic.stop();
+  //   }
+  //   musicStarted = false;
+  //   muralImage = muralCanvas.get();  // ← 여기서 이미지 저장
+  //   currentKey = "screen11-2";       // ← 바로 다음 화면으로 이동
+  // });
   completeButton.mousePressed(() => {
-    // 음악 정지
+    // 1) 음악 정지 & 캔버스 저장
     if (currentMusic && currentMusic.isPlaying()) {
       currentMusic.stop();
     }
     musicStarted = false;
-    muralImage = muralCanvas.get();  // ← 여기서 이미지 저장
-    currentKey = "screen11-2";       // ← 바로 다음 화면으로 이동
+    muralImage = muralCanvas.get();
+  
+    // 2) 화면 히스토리에 현재 추가 (뒤로가기용)
+    screenHistory.push(currentKey);
+  
+    // 3) 다음 화면으로 전환
+    currentKey = "screen11-2";
+  
+    // 4) 벽화완성 버튼 & reset 버튼 숨기기
+    completeButton.hide();
+    resetButton.hide();
+  
+    // 5) 캔버스용 내비 버튼이 보이도록, 기본 커서 복원
+    cursor();     // noCursor()를 썼다면 반드시 이걸로 복원
+  
+    // 6) draw() 한 번 강제 호출
+    redraw();
   });
+  
 }
 
 function createColorButtons(startY) {
