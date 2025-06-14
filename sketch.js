@@ -1168,7 +1168,7 @@ function setup() {
       },
     } 
     setupSculptureFeature(); // 조각상 기능 초기화
-    noLoop();
+    // noLoop();
 }
 
 function draw() {
@@ -1842,6 +1842,16 @@ function draw() {
           mouseX >= c.x - c.w/2 && mouseX <= c.x + c.w/2 &&
           mouseY >= c.y - c.h/2 && mouseY <= c.y + c.h/2
         );
+              // ─── 디버그 로그 ───
+        if (isHovered) {
+          console.log("★ hover 감지! ▶ hoverImg =", c.hoverImgPath);
+        }
+
+          // (2) 매 프레임 항상 찍히게
+        console.log(
+          `mouse=(${mouseX},${mouseY}) ── choice at (${c.x},${c.y},${c.w},${c.h}) ── hovered? ${isHovered}`
+        );
+
         let iconToShow = isHovered ? c.hoverImg : c.img;
         image(iconToShow, c.x, c.y, c.w, c.h);
         
@@ -1962,7 +1972,7 @@ function draw() {
   push();           // 변환 상태 저장
     resetMatrix();  // 네비만 쓰는 좌표계로 리셋
     drawNavigationButtons();
-  pop();  
+  pop();
 }
 
 

@@ -108,16 +108,16 @@ function mousePressed() {
     if (!isFading && !isFadedIn) {
       fadeAmount = 0;
       isFading   = true;
-      loop();   // 페이드 애니메이션을 위해 draw()를 다시 돌려 줍니다
+      // loop();   // 페이드 애니메이션을 위해 draw()를 다시 돌려 줍니다
       return;     // 여기서 빠져나와야 Back/Next 일반 처리 안 탄다
     }
     // 두 번째 클릭(페이드 완료 시) → 다음 화면으로
     if (isFadedIn) {
       screenHistory.push(currentKey);
       currentKey = storyMap[currentKey] || 'screen14';
-      redraw();
+      // redraw();
+      return;
     }
-    return;
   }
 
   // — 3) Back 버튼 처리(기존 로직) —
