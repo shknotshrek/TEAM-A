@@ -1770,7 +1770,7 @@ function draw() {
     fill(173, 216, 230); // 연파랑 (light blue)
     textSize(25);
     textAlign(CENTER, TOP);
-    text("Hint: 방 안에 사용할 만한 도구는 없을까? 물체들에 마우스를 올려보자.", width / 2, 30);
+    text("Hint: 방 안에는 도구 2개가 숨겨져 있다. 물체들에 마우스를 올려보자.", width / 2, 30);
   }
   // // 선택지 아이콘 표시
   // if (choices[currentKey]) {
