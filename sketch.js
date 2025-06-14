@@ -1860,7 +1860,7 @@ function draw() {
         image(iconToShow, c.x, c.y, c.w, c.h);
         
             // ✨ shining effect 추가: screen1 제외 + hover 아닐 때
-        if (shouldTwinkle && !isHovered && currentKey !== "screen1") {
+        if (shouldTwinkle && !isHovered && currentKey !== "screen1" && currentKey !== "screen7") {
         push();
         translate(c.x, c.y);
 
