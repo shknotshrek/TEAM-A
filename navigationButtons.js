@@ -10,8 +10,8 @@ const NAV_PADDING = 24;       // distance from screen edges
 
 function preload() {
   // path may differ ‑ place your PNGs in the sketch “assets/” folder
-  nextImg = loadImage('assets/next.png');
-  backImg = loadImage('assets/back.png');
+  nextImg = loadImage('visual assets/next.png');
+  backImg = loadImage('visual assets/back.png');
 }
 
 function drawNavigationButtons() {
@@ -35,7 +35,10 @@ function drawNavigationButtons() {
 
 function shouldShowNav() {
   // Hide nav on introductory or kiosk‑style hold screens
-  return !['screen1', 'screen13'].includes(currentKey);
+  return !['screen1', 'screen7-intro', 'screen7-1', 'screen7-1-1', 'screen7-1-1-1', 'screen7-1-1-2', 'screen7-1-2', 'screen7-1-2-1', 'screen7-1-2-2',
+  'screen7-2', 'screen7-2-1', 'screen7-2-1-1', 'screen7-2-1-2', 'screen7-2-2', 'screen7-2-2-1', 'screen7-2-2-2',
+  'screen7-3', 'screen7-3-1', 'screen7-3-1-1', 'screen7-3-1-2', 'screen7-3-2', 'screen7-3-2-1', 'screen7-3-2-1+', 'screen7-3-2-2', 
+  'screen13', 'screen15-5', 'screen21'].includes(currentKey);
 }
 
 function hasNextScreen() {

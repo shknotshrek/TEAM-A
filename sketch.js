@@ -1881,7 +1881,8 @@ function draw() {
 
   textAlign(LEFT, BOTTOM);
   text("Press R to restart", 30,972);
-  
+
+  drawNavigationButtons();
 }
 
 
@@ -1941,7 +1942,6 @@ function keyPressed() {
             redraw();
         }
     }
-    drawNavigationButtons();
 }
   // // 텍스트 페이드인 효과 유
   // if (key === ' ') {
