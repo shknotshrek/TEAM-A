@@ -77,6 +77,7 @@ function mousePressed() {
         // return;
         screenHistory.push(currentKey);
         currentKey = c.next;
+        enterNewScreen(c.next);
         if (c.next === 'screen15-pose') {
           loop();
         }

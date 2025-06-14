@@ -11,6 +11,7 @@ const hintScreens = [
   "screen7-2", "screen7-2-1", "screen7-2-2",
   "screen7-3", "screen7-3-1", "screen7-3-2"
 ];
+let screenEnterTime = 0;  // 각 화면에 진입한 시간
 
 // 벽화 파트 변수
 
@@ -1836,6 +1837,9 @@ function draw() {
     resetMatrix();        // 메인 transform 날림
     imageMode(CENTER);    // c.x,c.y가 중앙 기준
 
+    let elapsed = millis() - screenEnterTime;
+    let shouldTwinkle = (elapsed > 10000);  // 10초 이상 경과한 경우
+
     if (choices[currentKey]) {
       for (let c of choices[currentKey]) {
         let isHovered = (
@@ -1855,6 +1859,22 @@ function draw() {
         let iconToShow = isHovered ? c.hoverImg : c.img;
         image(iconToShow, c.x, c.y, c.w, c.h);
         
+            // ✨ shining effect 추가: screen1 제외 + hover 아닐 때
+        if (shouldTwinkle && !isHovered && currentKey !== "screen1" && currentKey !== "screen7") {
+        push();
+        translate(c.x, c.y);
+
+        let pulse = 0.95 + 0.05 * sin(millis() / 300);  // 크기 진동 (적게)
+        let glowAlpha = 30 + 20 * sin(millis() / 200);  // 알파값 낮게
+
+        noStroke();
+        for (let i = 0; i < 2; i++) {
+          fill(255, 255, 180, glowAlpha / (i + 1));
+          ellipse(0, 0, c.w * (1.05 + i * 0.1) * pulse, c.h * (1.05 + i * 0.1) * pulse);
+        }
+
+        pop();
+      }
         // 툴팁 텍스트도 그대로 여기 안에서 그리면 됩니다.
         if (isHovered && currentKey !== "screen1" && c.label) {
           let paddingX = 5, paddingY = 10;
@@ -2108,6 +2128,10 @@ function draw() {
 //   }
 
 // }
+function enterNewScreen(newKey) {
+  currentKey = newKey;
+  screenEnterTime = millis();  // 화면 진입 시각 기록
+}
 
 function mouseDragged(){
   if (currentKey === "screen13") {
