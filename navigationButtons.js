@@ -8,11 +8,11 @@ let nextImg, backImg;
 const BTN_SIZE = 64;          // px – adjust if your assets differ
 const NAV_PADDING = 24;       // distance from screen edges
 
-function preload() {
-  // path may differ ‑ place your PNGs in the sketch “assets/” folder
-  nextImg = loadImage('visual assets/next.png');
-  backImg = loadImage('visual assets/back.png');
-}
+// function preload() {
+//   // path may differ ‑ place your PNGs in the sketch “assets/” folder
+//   nextImg = loadImage('visual assets/next.png');
+//   backImg = loadImage('visual assets/back.png');
+// }
 
 function drawNavigationButtons() {
   if (!shouldShowNav()) return;
@@ -108,4 +108,21 @@ function keyPressed() {
     screenHistory = [];
     redraw();
   }
+
+  // [변경] screen15-pose에서만 특별한 동작을 하도록 수정
+  if (currentKey === 'screen15-pose') {
+    screenHistory.push(currentKey);
+    currentKey = storyMap[currentKey];      // storyMap에 따라 'screen16'으로 전환
+    capturePoseAndGenerateSculpture();      // API 호출 시작
+    redraw();
+    return; // 여기서 종료해야 다른 로직을 타지 않습니다.
+}
+
+// [변경 없음] screen15-5를 포함한 나머지 모든 일반 화면은 이 로직을 따름
+let next = storyMap[currentKey];
+if (typeof next === 'string') {
+    screenHistory.push(currentKey);
+    currentKey = next;
+    redraw();
+}
 }

@@ -505,6 +505,9 @@ let fadeAmount = 0;      // 페이드 투명도
   
 
   function preload() {
+    nextImg = loadImage('visual assets/next.png');
+    backImg = loadImage('visual assets/back.png');
+    
     customFont = loadFont('font assets/YES24MyoungjoR.otf');
     // 1단계: 배경 이미지 로딩 (로딩 안 된 이미지 체크)
     for (let name of fileNames) {
@@ -1886,63 +1889,63 @@ function draw() {
 }
 
 
-function keyPressed() {
+// function keyPressed() {
 
-    /* ───────── 1) BACKSPACE : 언제 눌러도 먼저 처리 ───────── */
-    if (keyCode === BACKSPACE) {
-        if (screenHistory.length > 0) {
-            currentKey = screenHistory.pop();
-            redraw();
-        }
-        return; // ← 더 내려가지 않고 종료
-    }
+    // /* ───────── 1) BACKSPACE : 언제 눌러도 먼저 처리 ───────── */
+    // if (keyCode === BACKSPACE) {
+    //     if (screenHistory.length > 0) {
+    //         currentKey = screenHistory.pop();
+    //         redraw();
+    //     }
+    //     return; // ← 더 내려가지 않고 종료
+    // }
 
-    /* ───────── 2) R 키로 처음으로 ───────── */
-    if (key === 'r' || key === 'R') {
-        currentKey = "screen1";
-        screenHistory = [];
-        redraw();
-        return;
-    }
+    // /* ───────── 2) R 키로 처음으로 ───────── */
+    // if (key === 'r' || key === 'R') {
+    //     currentKey = "screen1";
+    //     screenHistory = [];
+    //     redraw();
+    //     return;
+    // }
 
-    /* ───────── 3) screen11-2 특수 처리 ───────── */
-    if (currentKey === "screen11-2") {
-        if (!isFading && !isFadedIn) {
-            fadeAmount = 0;
-            isFading = true;
-        } else if (isFadedIn) {
-            screenHistory.push(currentKey);
-            currentKey = "screen14";
-            redraw();
-        }
-        return; // ← 공통 키 처리로 내려가지 않음
-    }
+    // /* ───────── 3) screen11-2 특수 처리 ───────── */
+    // if (currentKey === "screen11-2") {
+    //     if (!isFading && !isFadedIn) {
+    //         fadeAmount = 0;
+    //         isFading = true;
+    //     } else if (isFadedIn) {
+    //         screenHistory.push(currentKey);
+    //         currentKey = "screen14";
+    //         redraw();
+    //     }
+    //     return; // ← 공통 키 처리로 내려가지 않음
+    // }
 
-    /* ───────── 4) 스페이스바 처리 ───────── */
-    if (key === ' ') {
-        // screen13과 screen1에서는 스페이스바 무시
-        if (currentKey === 'screen13' || currentKey === 'screen1') {
-            return;
-        }
+    // /* ───────── 4) 스페이스바 처리 ───────── */
+    // if (key === ' ') {
+    //     // screen13과 screen1에서는 스페이스바 무시
+    //     if (currentKey === 'screen13' || currentKey === 'screen1') {
+    //         return;
+    //     }
 
-        // [변경] screen15-pose에서만 특별한 동작을 하도록 수정
-        if (currentKey === 'screen15-pose') {
-            screenHistory.push(currentKey);
-            currentKey = storyMap[currentKey];      // storyMap에 따라 'screen16'으로 전환
-            capturePoseAndGenerateSculpture();      // API 호출 시작
-            redraw();
-            return; // 여기서 종료해야 다른 로직을 타지 않습니다.
-        }
+        // // [변경] screen15-pose에서만 특별한 동작을 하도록 수정
+        // if (currentKey === 'screen15-pose') {
+        //     screenHistory.push(currentKey);
+        //     currentKey = storyMap[currentKey];      // storyMap에 따라 'screen16'으로 전환
+        //     capturePoseAndGenerateSculpture();      // API 호출 시작
+        //     redraw();
+        //     return; // 여기서 종료해야 다른 로직을 타지 않습니다.
+        // }
 
-        // [변경 없음] screen15-5를 포함한 나머지 모든 일반 화면은 이 로직을 따름
-        let next = storyMap[currentKey];
-        if (typeof next === 'string') {
-            screenHistory.push(currentKey);
-            currentKey = next;
-            redraw();
-        }
-    }
-}
+        // // [변경 없음] screen15-5를 포함한 나머지 모든 일반 화면은 이 로직을 따름
+        // let next = storyMap[currentKey];
+        // if (typeof next === 'string') {
+        //     screenHistory.push(currentKey);
+        //     currentKey = next;
+        //     redraw();
+        // }
+    
+
   // // 텍스트 페이드인 효과 유
   // if (key === ' ') {
   //   let next = storyMap[currentKey];
