@@ -1884,6 +1884,7 @@ function draw() {
   
 }
 
+// sketch.js 파일에서 기존 keyPressed 함수를 지우고 아래 내용으로 완전히 교체해주세요.
 
 function keyPressed() {
 
@@ -1900,6 +1901,8 @@ function keyPressed() {
     if (key === 'r' || key === 'R') {
         currentKey = "screen1";
         screenHistory = [];
+         resetSculptureData(); // ◀◀◀ 여기에 조각상 초기화 함수를 호출합니다.
+         setupSculptureFeature(); 
         redraw();
         return;
     }
@@ -1918,7 +1921,16 @@ function keyPressed() {
     }
 
     /* ───────── 4) 스페이스바 처리 ───────── */
-    if (key === ' ') {
+    // key === ' ' 보다 keyCode === 32 로 확인하는 것이 더 안정적입니다.
+    if (keyCode === 32) { // ◀◀◀ 이 부분을 수정하면 더 좋습니다.
+
+        // ▼▼▼ 여기에 '생성 중 잠금' 로직을 가장 먼저 추가합니다. ▼▼▼
+        if (sculptureModule.isGenerating) {
+            console.log("조각상 생성 중에는 화면을 넘길 수 없습니다.");
+            return; // 생성 중이면 여기서 함수를 즉시 종료
+        }
+        // ▲▲▲ 여기까지 추가 ▲▲▲
+
         // screen13과 screen1에서는 스페이스바 무시
         if (currentKey === 'screen13' || currentKey === 'screen1') {
             return;
@@ -1936,12 +1948,19 @@ function keyPressed() {
         // [변경 없음] screen15-5를 포함한 나머지 모든 일반 화면은 이 로직을 따름
         let next = storyMap[currentKey];
         if (typeof next === 'string') {
+          if (next === 'screen15-pose' && sculptureModule.video) {
+    sculptureModule.video.elt.play(); // ◀◀◀ 이 코드가 바로 '깨우기' 명령입니다.
+    console.log("웹캠 스트림을 다시 활성화합니다.");
+}
             screenHistory.push(currentKey);
             currentKey = next;
             redraw();
         }
     }
 }
+
+
+
   // // 텍스트 페이드인 효과 유
   // if (key === ' ') {
   //   let next = storyMap[currentKey];
