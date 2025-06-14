@@ -505,6 +505,9 @@ let fadeAmount = 0;      // 페이드 투명도
   
 
   function preload() {
+    nextImg = loadImage('visual assets/next.png');
+    backImg = loadImage('visual assets/back.png');
+
     customFont = loadFont('font assets/YES24MyoungjoR.otf');
     // 1단계: 배경 이미지 로딩 (로딩 안 된 이미지 체크)
     for (let name of fileNames) {
@@ -1165,9 +1168,12 @@ function setup() {
       },
     } 
     setupSculptureFeature(); // 조각상 기능 초기화
+    // noLoop();
 }
 
 function draw() {
+  // background(255);  // ← 지우려면 clear() 대신 background를 권장
+  // resetMatrix();
 
   // 제목 인트로 음원
   if (
@@ -1768,95 +1774,180 @@ function draw() {
     textAlign(CENTER, TOP);
     text("Hint: 방 안에 사용할 만한 도구는 없을까? 물체들에 마우스를 올려보자.", width / 2, 30);
   }
-  // 선택지 아이콘 표시
+  // // 선택지 아이콘 표시
+  // if (choices[currentKey]) {
+  //   for (let c of choices[currentKey]) {
+  //     let isHovered = (
+  //       mouseX >= c.x - c.w / 2 && mouseX <= c.x + c.w / 2 &&
+  //       mouseY >= c.y - c.h / 2 && mouseY <= c.y + c.h / 2
+  //     );
   
-  if (choices[currentKey]) {
-    for (let c of choices[currentKey]) {
-      let isHovered = (
-        mouseX >= c.x - c.w / 2 && mouseX <= c.x + c.w / 2 &&
-        mouseY >= c.y - c.h / 2 && mouseY <= c.y + c.h / 2
-      );
+  //     let iconToShow = isHovered ? c.hoverImg : c.img;
+  //     image(iconToShow, c.x, c.y, c.w, c.h);
   
-      let iconToShow = isHovered ? c.hoverImg : c.img;
-      image(iconToShow, c.x, c.y, c.w, c.h);
+  //     // 🔍 마우스오버 시 텍스트 박스도 같이 표시
+  //     /*
+  //     if (isHovered) {
+  //       let paddingX = 5;
+  //       let paddingY = 10;
+  //       textSize(24);
+  //       textAlign(CENTER, CENTER);
   
-      // 🔍 마우스오버 시 텍스트 박스도 같이 표시
-      /*
-      if (isHovered) {
-        let paddingX = 5;
-        let paddingY = 10;
-        textSize(24);
-        textAlign(CENTER, CENTER);
+  //       let labelWidth = textWidth(c.label);
+  //       let boxW = labelWidth + paddingX * 2;
+  //       let boxH = textAscent() + textDescent() + paddingY * 3.7;
   
-        let labelWidth = textWidth(c.label);
-        let boxW = labelWidth + paddingX * 2;
-        let boxH = textAscent() + textDescent() + paddingY * 3.7;
+  //       // 📦 텍스트 박스 배경
+  //       rectMode(CENTER);
+  //       fill(0); // 검정 배경
+  //       noStroke();
+  //       rect(mouseX, mouseY - 60, boxW, boxH, 5);
   
-        // 📦 텍스트 박스 배경
-        rectMode(CENTER);
-        fill(0); // 검정 배경
-        noStroke();
-        rect(mouseX, mouseY - 60, boxW, boxH, 5);
-  
-        // 🎨 텍스트 색상
-        fill(197, 191, 159, 255); // RGBA 색상
-        text(c.label, mouseX, mouseY - 60);
-        */
+  //       // 🎨 텍스트 색상
+  //       fill(197, 191, 159, 255); // RGBA 색상
+  //       text(c.label, mouseX, mouseY - 60);
+  //       */
 
+  //       if (isHovered && currentKey !== "screen1" && c.label) {
+  //         let paddingX = 5;
+  //         let paddingY = 10;
+  //         textSize(24);
+  //         textAlign(CENTER, CENTER);
+        
+  //         let labelWidth = textWidth(c.label);
+  //         let boxW = labelWidth + paddingX * 2;
+  //         let boxH = textAscent() + textDescent() + paddingY * 3.7;
+        
+  //         rectMode(CENTER);
+  //         fill(0, 150);
+  //         noStroke();
+  //         rect(mouseX, mouseY - 60, boxW, boxH, 5);
+        
+  //         fill(197, 191, 159, 255);
+  //         text(c.label, mouseX, mouseY - 60);
+  //     }
+  //   }
+  // }
+
+  // draw() 안에서, drawCurrentScreen()과 drawNavigationButtons() 사이에 넣기
+
+  // ─── 2) 선택지 아이콘만 절대 좌표계로 다시 그리기 ───
+  push();
+    resetMatrix();        // 메인 transform 날림
+    imageMode(CENTER);    // c.x,c.y가 중앙 기준
+
+    if (choices[currentKey]) {
+      for (let c of choices[currentKey]) {
+        let isHovered = (
+          mouseX >= c.x - c.w/2 && mouseX <= c.x + c.w/2 &&
+          mouseY >= c.y - c.h/2 && mouseY <= c.y + c.h/2
+        );
+              // ─── 디버그 로그 ───
+        if (isHovered) {
+          console.log("★ hover 감지! ▶ hoverImg =", c.hoverImgPath);
+        }
+
+          // (2) 매 프레임 항상 찍히게
+        console.log(
+          `mouse=(${mouseX},${mouseY}) ── choice at (${c.x},${c.y},${c.w},${c.h}) ── hovered? ${isHovered}`
+        );
+
+        let iconToShow = isHovered ? c.hoverImg : c.img;
+        image(iconToShow, c.x, c.y, c.w, c.h);
+        
+        // 툴팁 텍스트도 그대로 여기 안에서 그리면 됩니다.
         if (isHovered && currentKey !== "screen1" && c.label) {
-          let paddingX = 5;
-          let paddingY = 10;
+          let paddingX = 5, paddingY = 10;
           textSize(24);
           textAlign(CENTER, CENTER);
-        
           let labelWidth = textWidth(c.label);
-          let boxW = labelWidth + paddingX * 2;
-          let boxH = textAscent() + textDescent() + paddingY * 3.7;
-        
-          rectMode(CENTER);
-          fill(0, 150);
-          noStroke();
-          rect(mouseX, mouseY - 60, boxW, boxH, 5);
-        
-          fill(197, 191, 159, 255);
-          text(c.label, mouseX, mouseY - 60);
+          let boxW = labelWidth + paddingX*2;
+          let boxH = textAscent() + textDescent() + paddingY*3.7;
+
+          push();
+            rectMode(CENTER);
+            fill(0,150);
+            noStroke();
+            rect(mouseX, mouseY - 60, boxW, boxH, 5);
+            fill(197,191,159,255);
+            text(c.label, mouseX, mouseY - 60);
+          pop();
+        }
       }
     }
-  }
+  pop();
 
-  if (currentKey === "screen11-2") {               // 완성된 벽화 표시
-    cursor()
-    background(0); // 화면 초기화
-    image(images["screen11-2"], width / 2, height / 2, width, height);
 
+  // if (currentKey === "screen11-2") {               // 완성된 벽화 표시
+  //   cursor()
+  //   background(0); // 화면 초기화
+  //   image(images["screen11-2"], width / 2, height / 2, width, height);
+
+  //   if (isFading) {
+  //     tint(255, fadeAmount);
+  //     image(muralImage, width / 2, height / 2, width, height);
+  //     fadeAmount += 3.5;
+  //     if (fadeAmount >= 255) {
+  //       fadeAmount = 255;
+  //       isFading = false;
+  //       isFadedIn = true;
+  //   }
+  //     tint(255); // 초기화
+  //     fill(255);
+  //     textAlign(CENTER);
+  //     textSize(28);
+  //     text("두 번째 스테이지의 첫 번째 미션,", width / 2, 850);
+  //   } else if (isFadedIn) {
+  //     image(muralImage, width / 2, height / 2, width, height);
+  //     image(images["screen11-3"], images["screen11-3"].width / 2 / 2, height - images["screen11-3"].height / 2 / 2, images["screen11-3"].width / 2, images["screen11-3"].height / 2);
+  //     fill(255);
+  //     textAlign(CENTER);
+  //     textSize(28);
+  //     text("벽화 그리기 미션을 훌륭하게 완수했어!\n어딘가 으스스했던 과거와 비교해 보니, 몰라보게 달라졌다!", width / 2, 850);
+  //   }
+  // }
+
+  if (currentKey === "screen11-2") {
+    cursor();
+    background(0);
+    image(images["screen11-2"], width/2, height/2, width, height);
+  
     if (isFading) {
       tint(255, fadeAmount);
-      image(muralImage, width / 2, height / 2, width, height);
+      image(muralImage, width/2, height/2, width, height);
+      
       fadeAmount += 3.5;
       if (fadeAmount >= 255) {
-        fadeAmount = 255;
-        isFading = false;
-        isFadedIn = true;
+        fadeAmount  = 255;
+        isFading    = false;
+        isFadedIn   = true;
+        noLoop();
+      }
+  
+      tint(255);
+      fill(255);
+      textAlign(CENTER);
+      textSize(28);
+      text("두 번째 스테이지의 첫 번째 미션,", width/2, 850);
+  
+      // return;  // draw() 나머지 로직 스킵
     }
-      tint(255); // 초기화
+    
+    if (isFadedIn) {
+      // 페이드 완료 후에 보여 줄 레이아웃
+      image(muralImage, width/2, height/2, width, height);
+      image(images["screen11-3"], images["screen11-3"].width/4, height - images["screen11-3"].height/4,
+            images["screen11-3"].width/2, images["screen11-3"].height/2);
       fill(255);
       textAlign(CENTER);
       textSize(28);
-      text("두 번째 스테이지의 첫 번째 미션,", width / 2, 850);
-    } else if (isFadedIn) {
-      image(muralImage, width / 2, height / 2, width, height);
-      image(images["screen11-3"], images["screen11-3"].width / 2 / 2, height - images["screen11-3"].height / 2 / 2, images["screen11-3"].width / 2, images["screen11-3"].height / 2);
-      fill(255);
-      textAlign(CENTER);
-      textSize(28);
-      text("벽화 그리기 미션을 훌륭하게 완수했어!\n어딘가 으스스했던 과거와 비교해 보니, 몰라보게 달라졌다!", width / 2, 850);
+      text("벽화 그리기 미션을 훌륭하게 완수했어!\n어딘가 으스스했던 과거와 비교해 보니, 몰라보게 달라졌다!",
+           width/2, 850);
+      drawNavigationButtons();
+      return;
     }
   }
-
-
-  // textSize(30);
-  // text(`x-coordinate: ${mouseX}`, 100, 318);
-  // text(`y-coordinate: ${mouseY}`, 100, 390);
+  
 
   if ( // 지도 부분 흰 글씨 안보여서 파란색으로 표시
     currentKey === "screen3"   ||
@@ -1871,94 +1962,81 @@ function draw() {
     fill(255);
   }
   
-  textSize(20);
-  textAlign(RIGHT, TOP);
-  textStyle(BOLD);
-  text("Press SPACE to proceed", width - 30, 10);
+  textSize(25);
   
   textAlign(LEFT, TOP);
-  text("Press BACKSPACE to go back", 30, 10);
-
-  textAlign(LEFT, BOTTOM);
-  text("Press R to restart", 30,972);
   
+  text("Press R to restart", 30,10);
+
+  console.log('drawNavigationButtons?');    
+  push();           // 변환 상태 저장
+    resetMatrix();  // 네비만 쓰는 좌표계로 리셋
+    drawNavigationButtons();
+  pop();
 }
 
 // sketch.js 파일에서 기존 keyPressed 함수를 지우고 아래 내용으로 완전히 교체해주세요.
 
-function keyPressed() {
+// function keyPressed() {
 
-    /* ───────── 1) BACKSPACE : 언제 눌러도 먼저 처리 ───────── */
-    if (keyCode === BACKSPACE) {
-        if (screenHistory.length > 0) {
-            currentKey = screenHistory.pop();
-            redraw();
-        }
-        return; // ← 더 내려가지 않고 종료
-    }
+    // /* ───────── 1) BACKSPACE : 언제 눌러도 먼저 처리 ───────── */
+    // if (keyCode === BACKSPACE) {
+    //     if (screenHistory.length > 0) {
+    //         currentKey = screenHistory.pop();
+    //         redraw();
+    //     }
+    //     return; // ← 더 내려가지 않고 종료
+    // }
 
-    /* ───────── 2) R 키로 처음으로 ───────── */
-    if (key === 'r' || key === 'R') {
-        currentKey = "screen1";
-        screenHistory = [];
-         resetSculptureData(); // ◀◀◀ 여기에 조각상 초기화 함수를 호출합니다.
-         setupSculptureFeature(); 
-        redraw();
-        return;
-    }
 
-    /* ───────── 3) screen11-2 특수 처리 ───────── */
-    if (currentKey === "screen11-2") {
-        if (!isFading && !isFadedIn) {
-            fadeAmount = 0;
-            isFading = true;
-        } else if (isFadedIn) {
-            screenHistory.push(currentKey);
-            currentKey = "screen14";
-            redraw();
-        }
-        return; // ← 공통 키 처리로 내려가지 않음
-    }
+   
+    // /* ───────── 2) R 키로 처음으로 ───────── */
+    // if (key === 'r' || key === 'R') {
+    //     currentKey = "screen1";
+    //     screenHistory = [];
+    //     redraw();
+    //     return;
+    // }
 
-    /* ───────── 4) 스페이스바 처리 ───────── */
-    // key === ' ' 보다 keyCode === 32 로 확인하는 것이 더 안정적입니다.
-    if (keyCode === 32) { // ◀◀◀ 이 부분을 수정하면 더 좋습니다.
+    // /* ───────── 3) screen11-2 특수 처리 ───────── */
+    // if (currentKey === "screen11-2") {
+    //     if (!isFading && !isFadedIn) {
+    //         fadeAmount = 0;
+    //         isFading = true;
+    //     } else if (isFadedIn) {
+    //         screenHistory.push(currentKey);
+    //         currentKey = "screen14";
+    //         redraw();
+    //     }
+    //     return; // ← 공통 키 처리로 내려가지 않음
+    // }
 
-        // ▼▼▼ 여기에 '생성 중 잠금' 로직을 가장 먼저 추가합니다. ▼▼▼
-        if (sculptureModule.isGenerating) {
-            console.log("조각상 생성 중에는 화면을 넘길 수 없습니다.");
-            return; // 생성 중이면 여기서 함수를 즉시 종료
-        }
-        // ▲▲▲ 여기까지 추가 ▲▲▲
 
-        // screen13과 screen1에서는 스페이스바 무시
-        if (currentKey === 'screen13' || currentKey === 'screen1') {
-            return;
-        }
+    // /* ───────── 4) 스페이스바 처리 ───────── */
+    // if (key === ' ') {
+    //     // screen13과 screen1에서는 스페이스바 무시
+    //     if (currentKey === 'screen13' || currentKey === 'screen1') {
+    //         return;
+    //     }
 
-        // [변경] screen15-pose에서만 특별한 동작을 하도록 수정
-        if (currentKey === 'screen15-pose') {
-            screenHistory.push(currentKey);
-            currentKey = storyMap[currentKey];      // storyMap에 따라 'screen16'으로 전환
-            capturePoseAndGenerateSculpture();      // API 호출 시작
-            redraw();
-            return; // 여기서 종료해야 다른 로직을 타지 않습니다.
-        }
 
-        // [변경 없음] screen15-5를 포함한 나머지 모든 일반 화면은 이 로직을 따름
-        let next = storyMap[currentKey];
-        if (typeof next === 'string') {
-          if (next === 'screen15-pose' && sculptureModule.video) {
-    sculptureModule.video.elt.play(); // ◀◀◀ 이 코드가 바로 '깨우기' 명령입니다.
-    console.log("웹캠 스트림을 다시 활성화합니다.");
-}
-            screenHistory.push(currentKey);
-            currentKey = next;
-            redraw();
-        }
-    }
-}
+        // // [변경] screen15-pose에서만 특별한 동작을 하도록 수정
+        // if (currentKey === 'screen15-pose') {
+        //     screenHistory.push(currentKey);
+        //     currentKey = storyMap[currentKey];      // storyMap에 따라 'screen16'으로 전환
+        //     capturePoseAndGenerateSculpture();      // API 호출 시작
+        //     redraw();
+        //     return; // 여기서 종료해야 다른 로직을 타지 않습니다.
+        // }
 
+        // // [변경 없음] screen15-5를 포함한 나머지 모든 일반 화면은 이 로직을 따름
+        // let next = storyMap[currentKey];
+        // if (typeof next === 'string') {
+        //     screenHistory.push(currentKey);
+        //     currentKey = next;
+        //     redraw();
+        // }
+    
 
 
   // // 텍스트 페이드인 효과 유
@@ -1984,52 +2062,58 @@ function keyPressed() {
 
 
 
-function mousePressed() {
+// function mousePressed() {
 
-  if (currentKey === "screen13") {
-    let d = dist(mouseX, mouseY, handleX, sliderY + sliderH / 2);
-    if (d < 18) draggingHandle = true;
-    if (!draggingHandle && mouseX > 0 && mouseX < muralCanvas.width && mouseY > 0 && mouseY < muralCanvas.height) {
-      selectedBrush.draw(mouseX, mouseY, mouseX, mouseY, 0);
-      // 음악 재생
-      if (!musicStarted && selectedBrush.music && musicAssets[selectedBrush.music]) {
-        currentMusic = musicAssets[selectedBrush.music];
-        let v = map(brushSize, 0.5, 6.0, 0.1, 1.0);
-        currentMusic.setVolume(v);
-        currentMusic.loop();
-        musicStarted = true;
-      }
-    }
-    
-  }
+//   // ─── 1) screen13 드로잉 처리 ───
+//   if (currentKey === "screen13") {
+//     let d = dist(mouseX, mouseY, handleX, sliderY + sliderH / 2);
+//     if (d < 18) draggingHandle = true;
+//     if (!draggingHandle &&
+//         mouseX > 0 && mouseX < muralCanvas.width &&
+//         mouseY > 0 && mouseY < muralCanvas.height) {
+//       selectedBrush.draw(mouseX, mouseY, mouseX, mouseY, 0);
+//       // 음악 재생
+//       if (!musicStarted &&
+//           selectedBrush.music &&
+//           musicAssets[selectedBrush.music]) {
+//         currentMusic = musicAssets[selectedBrush.music];
+//         let v = map(brushSize, 0.5, 6.0, 0.1, 1.0);
+//         currentMusic.setVolume(v);
+//         currentMusic.loop();
+//         musicStarted = true;
+//       }
+//     }
+//     // 그렸으면 여기서 리턴하면 네비 로직 안 탑니다
+//     return;
+//   }
 
-  if (choices[currentKey]) {
-    for (let c of choices[currentKey]) {
-      if (mouseX >= c.x - c.w / 2 && mouseX <= c.x + c.w / 2 &&
-          mouseY >= c.y - c.h / 2 && mouseY <= c.y + c.h / 2) {
-        screenHistory.push(currentKey);
-        currentKey = c.next;
-        redraw();
-        return;
-      }
-    }
-  }
+//   if (choices[currentKey]) {
+//     for (let c of choices[currentKey]) {
+//       if (mouseX >= c.x - c.w / 2 && mouseX <= c.x + c.w / 2 &&
+//           mouseY >= c.y - c.h / 2 && mouseY <= c.y + c.h / 2) {
+//         screenHistory.push(currentKey);
+//         currentKey = c.next;
+//         redraw();
+//         return;
+//       }
+//     }
+//   }
 
-  let next = storyMap[currentKey];
+//   let next = storyMap[currentKey];
 
-  if (typeof next === 'object') {
-    screenHistory.push(currentKey);
-    if (mouseX < width / 3) {
-      currentKey = next["A"];
-    } else if (mouseX < 2 * width / 3) {
-      currentKey = next["B"];
-    } else {
-      currentKey = next["C"];
-    }
-    redraw();
-  }
+//   if (typeof next === 'object') {
+//     screenHistory.push(currentKey);
+//     if (mouseX < width / 3) {
+//       currentKey = next["A"];
+//     } else if (mouseX < 2 * width / 3) {
+//       currentKey = next["B"];
+//     } else {
+//       currentKey = next["C"];
+//     }
+//     redraw();
+//   }
 
-}
+// }
 
 function mouseDragged(){
   if (currentKey === "screen13") {
@@ -2144,14 +2228,30 @@ function createControlButtons() {
   completeButton.style('color', 'white');
   completeButton.style('font-size', '20px'); // 텍스트 크기도 키워서 가독성 향상
   completeButton.mousePressed(() => {
-    // 음악 정지
+    // 1) 음악 정지 & 캔버스 저장
     if (currentMusic && currentMusic.isPlaying()) {
       currentMusic.stop();
     }
     musicStarted = false;
     muralImage = muralCanvas.get();
+  
+    // 2) 화면 히스토리에 현재 추가 (뒤로가기용)
+    screenHistory.push(currentKey);
+  
+    // 3) 다음 화면으로 전환
     currentKey = "screen11-2";
+  
+    // 4) 벽화완성 버튼 & reset 버튼 숨기기
+    completeButton.hide();
+    resetButton.hide();
+  
+    // 5) 캔버스용 내비 버튼이 보이도록, 기본 커서 복원
+    cursor();     // noCursor()를 썼다면 반드시 이걸로 복원
+  
+    // 6) draw() 한 번 강제 호출
+    redraw();
   });
+  
 }
 
 function createColorButtons(startY) {
