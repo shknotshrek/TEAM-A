@@ -11,7 +11,6 @@ const hintScreens = [
   "screen7-2", "screen7-2-1", "screen7-2-2",
   "screen7-3", "screen7-3-1", "screen7-3-2"
 ];
-let screenEnterTime = 0;  // 각 화면에 진입한 시간
 
 // 벽화 파트 변수
 
@@ -584,8 +583,8 @@ function setup() {
     color('#f05454'), color('#f77d4d'), color('#f5c951'), color('#c9ffb3'),
     color('#a4cf38'), color('#57ba5e'), color('#57ba96'), color('#1d6332'),
     // Bottom row (8 colors)
-    color('#86ebd5'), color('#86d0eb'), color('#575bba'), color('#c1b3ff'), 
-    color('#9f64ed'), color('#f5b3ff'), color('#000000'), color('#ffffff')
+    color('#86ebd5'), color('#57baaf'), color('#86d0eb'), color('#6481ed'),
+    color('#575bba'), color('#c1b3ff'), color('#9f64ed'), color('#f5b3ff')
   ];
 
   currentColor = brushColors[0]; // 기본값으로 첫 번째 색상
@@ -1771,9 +1770,6 @@ function draw() {
   }
   // 선택지 아이콘 표시
   
-  let elapsed = millis() - screenEnterTime;
-  let shouldTwinkle = (elapsed > 7000);  // 7초 지난 경우
-
   if (choices[currentKey]) {
     for (let c of choices[currentKey]) {
       let isHovered = (
@@ -1784,52 +1780,6 @@ function draw() {
       let iconToShow = isHovered ? c.hoverImg : c.img;
       image(iconToShow, c.x, c.y, c.w, c.h);
   
-      // if (shouldTwinkle && !isHovered && currentKey !== "screen1" && currentKey !== "screen7") {
-      //  let alpha = 128 + 127 * sin(millis() / 300);
-      //  push();
-      //  translate(c.x, c.y);
-      //  noFill();
-      //  stroke(255, 255, 0, alpha);
-      //  strokeWeight(4);
-      //  ellipse(0, 0, c.w * 1.1, c.h * 1.1);
-      //  pop();
-      // }
-
-      
-      if (shouldTwinkle && !isHovered && currentKey !== "screen1") {
-        push();
-        translate(c.x, c.y);
-      
-        let pulse = 0.8 + 0.2 * sin(millis() / 300);  // 반짝임 크기 변화
-        let glowAlpha = 80 + 50 * sin(millis() / 200);  // 알파값 진동
-      
-        noStroke();
-        for (let i = 0; i < 5; i++) {
-          fill(255, 255, 200, glowAlpha / (i + 1));
-          ellipse(0, 0, c.w * (1.2 + i * 0.15) * pulse, c.h * (1.2 + i * 0.15) * pulse);
-        }
-      
-        pop();
-  
-      // 라벨 텍스트
-      if (isHovered && currentKey !== "screen1" && c.label) {
-        let paddingX = 5;
-        let paddingY = 10;
-        textSize(24);
-        textAlign(CENTER, CENTER);
-  
-        let labelWidth = textWidth(c.label);
-        let boxW = labelWidth + paddingX * 2;
-        let boxH = textAscent() + textDescent() + paddingY * 3.7;
-  
-        rectMode(CENTER);
-        fill(0, 150);
-        noStroke();
-        rect(mouseX, mouseY - 60, boxW, boxH, 5);
-  
-        fill(197, 191, 159, 255);
-        text(c.label, mouseX, mouseY - 60);
-      }
       // 🔍 마우스오버 시 텍스트 박스도 같이 표시
       /*
       if (isHovered) {
@@ -1933,7 +1883,7 @@ function draw() {
   text("Press R to restart", 30,972);
   
 }
-}
+
 
 function keyPressed() {
 
@@ -2013,10 +1963,7 @@ function keyPressed() {
   //   }
   // }
 
-function enterNewScreen(newKey) {
-  currentKey = newKey;
-  screenEnterTime = millis();  // 화면 진입 시각 기록
-}
+
 
 function mousePressed() {
 
@@ -2043,7 +1990,6 @@ function mousePressed() {
           mouseY >= c.y - c.h / 2 && mouseY <= c.y + c.h / 2) {
         screenHistory.push(currentKey);
         currentKey = c.next;
-        enterNewScreen(c.next);
         redraw();
         return;
       }
@@ -2123,15 +2069,14 @@ function drawLineSmooth(brush, x1, y1, x2, y2, speed) {
 
 
 function createBrushButtons() {
-  // 기존 브러시 버튼 제거
   for (let btn of brushButtons) {
-    if (btn) btn.remove();
+    btn.remove();
   }
   brushButtons = [];
 
   let startY = buttonMargin;
-  for (let brush of brushes) {
-    let btn = createButton(brush.name);
+  for (let i = 0; i < BRUSH_COUNT; i++) {
+    let btn = createButton(brushes[i].name);
     btn.position(muralCanvas.width + buttonMargin, startY);
     btn.size(sidebarWidth - 2 * buttonMargin, buttonHeight);
     btn.mousePressed(() => {
@@ -2140,17 +2085,8 @@ function createBrushButtons() {
         currentMusic.stop();
       }
       musicStarted = false;
-      selectedBrush = brush;
-      // 모든 브러시 버튼의 스타일 초기화
-      for (let b of brushButtons) {
-        if (b) {
-          b.style('background-color', '');
-          b.style('color', '');
-        }
-      }
-      // 선택된 브러시 버튼의 스타일 변경
-      btn.style('background-color', '#000000');
-      btn.style('color', '#FFFFFF');
+      selectedBrush = brushes[i];
+      console.log(`선택된 브러시: ${selectedBrush.name}`);
     });
     brushButtons.push(btn);
     startY += buttonHeight + buttonMargin;
@@ -2173,19 +2109,16 @@ function createControlButtons() {
   });
 
   completeButton = createButton('벽화 완성!');
-  completeButton.position(muralCanvas.width + buttonMargin, height - 100);
-  completeButton.size(sidebarWidth - 2 * buttonMargin, buttonHeight * 2); // 버튼 높이를 두 배로 증가
-  completeButton.style('background-color', '#4A90E2');
-  completeButton.style('color', 'white');
-  completeButton.style('font-size', '20px'); // 텍스트 크기도 키워서 가독성 향상
+  completeButton.position(muralCanvas.width + buttonMargin, startY + buttonHeight + buttonMargin);
+  completeButton.size(sidebarWidth - 2 * buttonMargin, buttonHeight);
   completeButton.mousePressed(() => {
     // 음악 정지
     if (currentMusic && currentMusic.isPlaying()) {
       currentMusic.stop();
     }
     musicStarted = false;
-    muralImage = muralCanvas.get();
-    currentKey = "screen11-2";
+    muralImage = muralCanvas.get();  // ← 여기서 이미지 저장
+    currentKey = "screen11-2";       // ← 바로 다음 화면으로 이동
   });
 }
 
@@ -2205,7 +2138,7 @@ function createColorButtons(startY) {
     let btn = createButton('');
     btn.position(
       muralCanvas.width + buttonMargin + col * (btnSize + gap),
-      startY + row * (btnSize + gap) // 간격을 제거하여 바로 아래에 위치
+      startY + row * (btnSize + gap)
     );
     btn.size(btnSize, btnSize);
     btn.style('border-radius', '50%');
@@ -2221,13 +2154,13 @@ function createColorButtons(startY) {
 
 function getNextY() {
   let maxY = 0;
-  for (let btn of [...brushButtons, resetButton]) {
+  for (let btn of [...brushButtons, resetButton, completeButton]) {
     if (btn) {
       let y = btn.position().y;
       if (y > maxY) maxY = y;
     }
   }
-  return maxY + buttonHeight + 8; // buttonMargin 제거하여 바로 아래에 위치하도록 수정
+  return maxY + buttonHeight + buttonMargin;
 }
 
 function updateButtonPositions() {
@@ -2320,7 +2253,7 @@ function drawMural() {
   // 브러시 크기 슬라이더 그리기 (색상 버튼 아래)
   let sliderTop = getNextY() + 60; // 색상 버튼과 충분히 띄움
   sliderY = sliderTop + 30;        // 텍스트와 핸들이 겹치지 않게 더 아래로
-  sliderbar_x= sliderX;
+  sliderbar_x= sliderX + sliderW/2;
 
   // 슬라이더 바
   fill(180);
