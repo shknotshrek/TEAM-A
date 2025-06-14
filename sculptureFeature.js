@@ -147,7 +147,7 @@ async function capturePoseAndGenerateSculpture() {
 
     } catch (error) {
         console.error("❌ Gemini API 호출 실패:", error);
-        sculptureModule.generatedSculptureText = "이미지 생성에 실패했습니다. Backspace를 누르고 다시 시도해주세요.";
+        sculptureModule.generatedSculptureText = "이미지 생성에 실패했습니다. Back버튼을 누르고 다시 시도해주세요.";
         sculptureModule.generationFailed = true; 
     } finally {
         sculptureModule.isGenerating = false;
