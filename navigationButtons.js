@@ -35,7 +35,7 @@ function shouldShowNav() {
   return !['screen1', 'screen7', 'screen7-1', 'screen7-1-1', 'screen7-1-2', 
   'screen7-2', 'screen7-2-1', 'screen7-2-2', 
   'screen7-3', 'screen7-3-1', 'screen7-3-2', 
-  'screen21'].includes(currentKey);
+  'screen15-pose', 'screen21'].includes(currentKey);
 }
 
 function hasNextScreen() {
