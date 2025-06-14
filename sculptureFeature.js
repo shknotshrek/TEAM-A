@@ -3,6 +3,7 @@
 // 조각상 기능 관련 모든 변수를 담는 객체
 const sculptureModule = {
     video: null,
+     webcamCanvas: null, // ◀◀◀ 이 줄을 추가하세요. (pixelCanvas는 삭제)
     poseNet: null,
     poses: [],
     isModelReady: false,
@@ -15,18 +16,19 @@ const sculptureModule = {
  * 조각상 기능에 필요한 요소(웹캠, ml5 모델)를 초기 설정하는 함수.
  */
 function setupSculptureFeature() {
+      sculptureModule.webcamCanvas = createGraphics(700, 500); 
     sculptureModule.video = createCapture(VIDEO, () => {
         console.log("✅ Video capture ready.");
         sculptureModule.video.size(width, height);
         
-        sculptureModule.poseNet = ml5.poseNet(sculptureModule.video, () => {
-            console.log('✅ PoseNet Model Ready');
-            sculptureModule.isModelReady = true;
-        });
+        //sculptureModule.poseNet = ml5.poseNet(sculptureModule.video, () => {
+           // console.log('✅ PoseNet Model Ready');
+          //  sculptureModule.isModelReady = true;
+        //});
 
-        sculptureModule.poseNet.on('pose', (results) => {
-            sculptureModule.poses = results;
-        });
+        //sculptureModule.poseNet.on('pose', (results) => {
+          //  sculptureModule.poses = results;
+      //  });
     });
     
     sculptureModule.video.hide();
@@ -37,35 +39,38 @@ function setupSculptureFeature() {
  * screen15-pose에서 필요한 모든 그리기를 처리하는 함수.
  * (숨겨진 캔버스에 웹캠 영상을, 메인 캔버스에 스켈레톤을 그림)
  */
-function drawSculpturePoseScreen() {
-    // --- 1. 숨겨진 캔버스에 AI 제출용 영상 그리기 ---
-    if (sculptureModule.video.elt.readyState >= 2) {
-        aiVisionCanvas.push();
-        // 거울 모드로 좌우 반전하여 숨겨진 캔버스에 그리기
-        aiVisionCanvas.translate(width, 0);
-        aiVisionCanvas.scale(-1, 1);
-        aiVisionCanvas.image(sculptureModule.video, 0, 0, width, height);
-        aiVisionCanvas.pop();
-    }
 
-    // --- 2. 메인 캔버스에 사용자가 볼 내용 그리기 ---
-    if (sculptureModule.isModelReady && sculptureModule.poses.length > 0) {
-        // 배경은 sketch.js에서 이미 그렸으므로, 스켈레톤만 그립니다.
-        drawPoseSkeleton();
-        fill(255, 255, 255, 200);
-        noStroke();
-        textAlign(CENTER, CENTER);
-        textSize(28);
-        text("포즈를 잡고, 스페이스 바를 눌러서 조각을 만들어 보자!", width / 2, height -100);
-    } else {
-        // 모델 로딩 중 텍스트
-        fill(255, 255, 255, 200);
-        noStroke();
-        textAlign(CENTER, CENTER);
-        textSize(24);
-        text("카메라와 모델을 준비 중입니다...", width / 2, height / 2);
-    }
+
+function drawSculpturePoseScreen() {
+    // --- 1. 변수 설정 (나중에 크기/위치 조절하기 편하도록) ---
+    const camWidth = 700;
+    const camHeight = 500;
+    const camCanvas = sculptureModule.webcamCanvas; // 미니 캔버스
+    const camVideo = sculptureModule.video;     // 웹캠 영상
+
+    // --- 2. 보이지 않는 '미니 캔버스'에 웹캠 영상을 그리고 필터 적용 ---
+    camCanvas.push();
+    camCanvas.translate(camWidth, 0); // 좌우 반전을 위해 너비만큼 이동
+    camCanvas.scale(-1, 1);           // 좌우 반전
+    camCanvas.image(camVideo, 0, 0, camWidth, camHeight); // 미니 캔버스에 웹캠 그리기
+    camCanvas.pop();
+    
+    // Threshold 필터를 미니 캔버스에만 적용 (0.5는 흑/백의 기준점)
+    camCanvas.filter(THRESHOLD, 0.4);
+
+    // --- 3. 필터가 적용된 '미니 캔버스'를 메인 화면에 그리기 ---
+    // image() 함수로 원하는 위치에 미니 캔버스를 통째로 그립니다.
+    image(camCanvas, width / 2, height / 2 + 80);
+
+    // --- 4. 안내 텍스트 그리기 (기존과 동일) ---
+    fill(255);
+    noStroke();
+    textAlign(CENTER, CENTER);
+    textSize(28);
+    text("포즈를 잡고, 스페이스 바를 눌러서 조각을 만들어 보자!", width / 2, height - 100);
 }
+
+    
 
 /**
  * screen16에서 생성된 조각상 결과를 그리는 함수.
@@ -98,7 +103,7 @@ function drawSculptureResultScreen() {
         imageMode(CENTER);
         const imgHeight = 550;
         const imgY = height / 2;
-        image(sculptureModule.generatedSculptureImg, width / 5, height*4/5, 450, imgHeight);
+        image(sculptureModule.generatedSculptureImg, width/2, height/2, 450, imgHeight);
         pop();
     
         // '박물관 명패' 스타일로 작품 제목 표시
@@ -213,55 +218,8 @@ async function capturePoseAndGenerateSculpture() {
     }
 }
 
-// 감지된 포즈의 골격을 그리는 헬퍼 함수
-function drawPoseSkeleton() {
-    push(); // 새로운 그리기 스타일을 적용하기 위해 push()로 시작
+// 감지된 포즈의 골격을 그리는 헬퍼 함수 이제 필요없어서 지움
 
-    // --- 네온 글로우(빛 번짐) 효과 설정 ---
-    const neonColor = color(0, 255, 255); // 밝은 청록색 (Cyan)
-    drawingContext.shadowBlur = 15;      // 빛 번짐의 정도
-    drawingContext.shadowColor = neonColor; // 빛 번짐의 색상
-
-    // --- 뼈대(선) 그리기 ---
-    stroke(neonColor);
-    strokeWeight(6); // 선 굵기를 굵게
-
-    for (let i = 0; i < sculptureModule.poses.length; i++) {
-        let skeleton = sculptureModule.poses[i].skeleton;
-        for (let j = 0; j < skeleton.length; j++) {
-            let partA = skeleton[j][0].position;
-            let partB = skeleton[j][1].position;
-            
-            // 거울 모드에 맞게 x좌표를 반전
-            let flippedX1 = width - partA.x;
-            let flippedX2 = width - partB.x;
-
-            line(flippedX1, partA.y, flippedX2, partB.y);
-        }
-    }
-
-    // --- 관절(점) 그리기 ---
-    noStroke(); // 점에는 테두리가 없도록
-    for (let i = 0; i < sculptureModule.poses.length; i++) {
-        let keypoints = sculptureModule.poses[i].pose.keypoints;
-        for (let j = 0; j < keypoints.length; j++) {
-            let keypoint = keypoints[j];
-            if (keypoint.score > 0.3) { // 인식 점수가 0.3 이상인 점만 표시
-                let flippedX = width - keypoint.position.x;
-                
-                // 1. 바깥쪽의 퍼지는 빛 효과 (반투명)
-                fill(0, 255, 255, 100);
-                ellipse(flippedX, keypoint.position.y, 24, 24);
-
-                // 2. 안쪽의 선명한 점 (불투명)
-                fill(neonColor);
-                ellipse(flippedX, keypoint.position.y, 10, 10);
-            }
-        }
-    }
-
-    pop(); // 다른 곳에 영향을 주지 않도록 스타일 초기화
-}
 
 /**
  * p5.Image 객체를 입력받아, 검은색에 가까운 픽셀을 투명하게 만드는 함수
