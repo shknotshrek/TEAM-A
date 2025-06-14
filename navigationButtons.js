@@ -71,8 +71,15 @@ function mousePressed() {
     for (let c of choices[currentKey]) {
       if (mouseX >= c.x - c.w / 2 && mouseX <= c.x + c.w / 2 &&
           mouseY >= c.y - c.h / 2 && mouseY <= c.y + c.h / 2) {
+        // screenHistory.push(currentKey);
+        // currentKey = c.next;
+        // redraw();
+        // return;
         screenHistory.push(currentKey);
         currentKey = c.next;
+        if (c.next === 'screen15-pose') {
+          loop();
+        }
         redraw();
         return;
       }
@@ -131,13 +138,23 @@ function mousePressed() {
   }
 
   // — 4) Next 버튼 일반 처리(11-2가 아닐 때) —
+  // if (overNext) {
+  //   // screen15-pose 특수 처리 등…
+  //   screenHistory.push(currentKey);
+  //   currentKey = storyMap[currentKey];
+  //   redraw();
+  // }
+
   if (overNext) {
-    // screen15-pose 특수 처리 등…
     screenHistory.push(currentKey);
     currentKey = storyMap[currentKey];
+    if (currentKey === 'screen15-pose') {
+      loop();
+    }
     redraw();
   }
-  }
+  
+}
 
 
 // Call this near the end of your draw() routine AFTER you render the current screen
@@ -153,7 +170,7 @@ function keyPressed() {
   }
 
   // [변경] screen15-pose에서만 특별한 동작을 하도록 수정
-  if (currentKey === 'screen15-pose') {
+  if (currentKey==='screen15-pose' && keyCode===32) {
     screenHistory.push(currentKey);
     currentKey = storyMap[currentKey];      // storyMap에 따라 'screen16'으로 전환
     capturePoseAndGenerateSculpture();      // API 호출 시작
