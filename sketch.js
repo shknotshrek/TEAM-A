@@ -586,8 +586,8 @@ function setup() {
     color('#f05454'), color('#f77d4d'), color('#f5c951'), color('#c9ffb3'),
     color('#a4cf38'), color('#57ba5e'), color('#57ba96'), color('#1d6332'),
     // Bottom row (8 colors)
-    color('#86ebd5'), color('#57baaf'), color('#86d0eb'), color('#6481ed'),
-    color('#575bba'), color('#c1b3ff'), color('#9f64ed'), color('#f5b3ff')
+    color('#86ebd5'), color('#86d0eb'), color('#575bba'), color('#c1b3ff'), 
+    color('#9f64ed'), color('#f5b3ff'), color('#000000'), color('#ffffff')
   ];
 
   currentColor = brushColors[0]; // 기본값으로 첫 번째 색상
@@ -2166,14 +2166,15 @@ function drawLineSmooth(brush, x1, y1, x2, y2, speed) {
 
 
 function createBrushButtons() {
+  // 기존 브러시 버튼 제거
   for (let btn of brushButtons) {
-    btn.remove();
+    if (btn) btn.remove();
   }
   brushButtons = [];
 
   let startY = buttonMargin;
-  for (let i = 0; i < BRUSH_COUNT; i++) {
-    let btn = createButton(brushes[i].name);
+  for (let brush of brushes) {
+    let btn = createButton(brush.name);
     btn.position(muralCanvas.width + buttonMargin, startY);
     btn.size(sidebarWidth - 2 * buttonMargin, buttonHeight);
     btn.mousePressed(() => {
@@ -2182,8 +2183,17 @@ function createBrushButtons() {
         currentMusic.stop();
       }
       musicStarted = false;
-      selectedBrush = brushes[i];
-      console.log(`선택된 브러시: ${selectedBrush.name}`);
+      selectedBrush = brush;
+      // 모든 브러시 버튼의 스타일 초기화
+      for (let b of brushButtons) {
+        if (b) {
+          b.style('background-color', '');
+          b.style('color', '');
+        }
+      }
+      // 선택된 브러시 버튼의 스타일 변경
+      btn.style('background-color', '#000000');
+      btn.style('color', '#FFFFFF');
     });
     brushButtons.push(btn);
     startY += buttonHeight + buttonMargin;
@@ -2206,17 +2216,11 @@ function createControlButtons() {
   });
 
   completeButton = createButton('벽화 완성!');
-  completeButton.position(muralCanvas.width + buttonMargin, startY + buttonHeight + buttonMargin);
-  completeButton.size(sidebarWidth - 2 * buttonMargin, buttonHeight);
-  // completeButton.mousePressed(() => {
-  //   // 음악 정지
-  //   if (currentMusic && currentMusic.isPlaying()) {
-  //     currentMusic.stop();
-  //   }
-  //   musicStarted = false;
-  //   muralImage = muralCanvas.get();  // ← 여기서 이미지 저장
-  //   currentKey = "screen11-2";       // ← 바로 다음 화면으로 이동
-  // });
+  completeButton.position(muralCanvas.width + buttonMargin, height - 100);
+  completeButton.size(sidebarWidth - 2 * buttonMargin, buttonHeight * 2); // 버튼 높이를 두 배로 증가
+  completeButton.style('background-color', '#4A90E2');
+  completeButton.style('color', 'white');
+  completeButton.style('font-size', '20px'); // 텍스트 크기도 키워서 가독성 향상
   completeButton.mousePressed(() => {
     // 1) 음악 정지 & 캔버스 저장
     if (currentMusic && currentMusic.isPlaying()) {
@@ -2276,13 +2280,13 @@ function createColorButtons(startY) {
 
 function getNextY() {
   let maxY = 0;
-  for (let btn of [...brushButtons, resetButton, completeButton]) {
+  for (let btn of [...brushButtons, resetButton]) {
     if (btn) {
       let y = btn.position().y;
       if (y > maxY) maxY = y;
     }
   }
-  return maxY + buttonHeight + buttonMargin;
+  return maxY + buttonHeight + 8;
 }
 
 function updateButtonPositions() {
