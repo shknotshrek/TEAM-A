@@ -59,3 +59,6 @@ GitHub Desktop 앱을 켭니다.
 sketch에서 mousePressed나 keyPressed를 지운 이유는 여러 파일에서 동일한 함수가 중복 호출되면 오류가 생기기 때문입니다.
 그래서 만약 mousePressed나 keyPressed 조작하셔야 되는 분들은 navigationButtons 안에 있는 함수를 보셔야 해요! 
 r을 눌러서 초기화하는 내용도 마찬가지로 navigationButtons 안에 있습니다.
+참고로, p5에서는 js파일을 따로 분리해 만들더라도 sketch.js에서 정상적으로 호출되기만 하면
+전역변수를 sketch.js와 전부 공유하므로,
+navigationButtons 내부에서 별도 선언 없이 sketch에만 있는 변수 사용 가능하십니다.
