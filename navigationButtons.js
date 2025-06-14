@@ -5,7 +5,7 @@
 // ------------------------------------------------------------
 
 let nextImg, backImg;
-const BTN_SIZE = 64;          // px – adjust if your assets differ
+const BTN_SIZE = 100;          // px – adjust if your assets differ
 const NAV_PADDING = 24;       // distance from screen edges
 
 // function preload() {
@@ -14,30 +14,51 @@ const NAV_PADDING = 24;       // distance from screen edges
 //   backImg = loadImage('visual assets/back.png');
 // }
 
+// function drawNavigationButtons() {
+//   if (!shouldShowNav()) return;
+
+//   const backPos = {x: NAV_PADDING, y: height - BTN_SIZE - NAV_PADDING};
+//   const nextPos = {x: width - BTN_SIZE - NAV_PADDING, y: backPos.y};
+
+//   imageMode(CORNER);
+
+//   // Back button only if history exists
+//   if (screenHistory.length > 0) {
+//     image(backImg, backPos.x, backPos.y, BTN_SIZE, BTN_SIZE);
+//   }
+
+//   // Next button only if a next screen is defined
+//   if (hasNextScreen()) {
+//     image(nextImg, nextPos.x, nextPos.y, BTN_SIZE, BTN_SIZE);
+//   }
+// }
+
+// navigationButtons.js
 function drawNavigationButtons() {
   if (!shouldShowNav()) return;
 
-  const backPos = {x: NAV_PADDING, y: height - BTN_SIZE - NAV_PADDING};
-  const nextPos = {x: width - BTN_SIZE - NAV_PADDING, y: backPos.y};
+  // — 여기에만 matrix/imageMode 변환을 가두자 —
+  push();               
+    resetMatrix();         // 네비만 identity matrix
+    imageMode(CORNER);     // 네비만 corner 모드
 
-  imageMode(CORNER);
+    const backPos = { x: NAV_PADDING, y: height - BTN_SIZE - NAV_PADDING };
+    const nextPos = { x: width  - BTN_SIZE - NAV_PADDING, y: backPos.y };
 
-  // Back button only if history exists
-  if (screenHistory.length > 0) {
-    image(backImg, backPos.x, backPos.y, BTN_SIZE, BTN_SIZE);
-  }
-
-  // Next button only if a next screen is defined
-  if (hasNextScreen()) {
-    image(nextImg, nextPos.x, nextPos.y, BTN_SIZE, BTN_SIZE);
-  }
+    if (screenHistory.length > 0) {
+      image(backImg, backPos.x, backPos.y, BTN_SIZE, BTN_SIZE);
+    }
+    if (hasNextScreen()) {
+      image(nextImg, nextPos.x, nextPos.y, BTN_SIZE, BTN_SIZE);
+    }
+  pop();                
 }
 
 function shouldShowNav() {
   // Hide nav on introductory or kiosk‑style hold screens
-  return !['screen1', 'screen7-intro', 'screen7-1', 'screen7-1-1', 'screen7-1-1-1', 'screen7-1-1-2', 'screen7-1-2', 'screen7-1-2-1', 'screen7-1-2-2',
-  'screen7-2', 'screen7-2-1', 'screen7-2-1-1', 'screen7-2-1-2', 'screen7-2-2', 'screen7-2-2-1', 'screen7-2-2-2',
-  'screen7-3', 'screen7-3-1', 'screen7-3-1-1', 'screen7-3-1-2', 'screen7-3-2', 'screen7-3-2-1', 'screen7-3-2-1+', 'screen7-3-2-2', 
+  return !['screen1', 'screen7', 'screen7-1', 'screen7-1-1', 'screen7-1-2', 
+  'screen7-2', 'screen7-2-1', 'screen7-2-2', 
+  'screen7-3', 'screen7-3-1', 'screen7-3-2', 
   'screen13', 'screen15-5', 'screen21'].includes(currentKey);
 }
 
@@ -45,7 +66,112 @@ function hasNextScreen() {
   return storyMap[currentKey] !== undefined;
 }
 
+// function mousePressed() {
+  // console.log('▶ nav mousePressed fired', mouseX, mouseY, 'currentKey=', currentKey);
+  // /* ───────── 1) Special case for screen11‑2 (fade interaction) ───────── */
+  // if (currentKey === 'screen11-2') {
+  //   if (!isFading && !isFadedIn) {
+  //     fadeAmount = 0;
+  //     isFading = true;
+  //   } else if (isFadedIn) {
+  //     screenHistory.push(currentKey);
+  //     currentKey = 'screen14';
+  //     redraw();
+  //   }
+  //   return;
+  // }
+
+  // if (!shouldShowNav()) return;
+
+  // const backPos = {x: NAV_PADDING, y: height - BTN_SIZE - NAV_PADDING};
+  // const nextPos = {x: width - BTN_SIZE - NAV_PADDING, y: backPos.y};
+
+  // // ---------- Back button
+  // const overBack = screenHistory.length > 0 &&
+  //                  mouseX >= backPos.x && mouseX <= backPos.x + BTN_SIZE &&
+  //                  mouseY >= backPos.y && mouseY <= backPos.y + BTN_SIZE;
+  // if (overBack) {
+  //   currentKey = screenHistory.pop();
+  //   redraw();
+  //   return;
+  // }
+
+  // // ---------- Next button
+  // const overNext = hasNextScreen() &&
+  //                  mouseX >= nextPos.x && mouseX <= nextPos.x + BTN_SIZE &&
+  //                  mouseY >= nextPos.y && mouseY <= nextPos.y + BTN_SIZE;
+  // if (overNext) {
+  //   // screen15‑pose invokes API before moving on
+  //   if (currentKey === 'screen15-pose') {
+  //     screenHistory.push(currentKey);
+  //     currentKey = storyMap[currentKey];
+  //     capturePoseAndGenerateSculpture();
+  //     redraw();
+  //     return;
+  //   }
+
+  //   let next = storyMap[currentKey];
+  //   if (typeof next === 'string') {
+  //     screenHistory.push(currentKey);
+  //     currentKey = next;
+  //     redraw();
+  //   }
+  // }
+// }
+
 function mousePressed() {
+
+  // ─── 1) screen13 드로잉 처리 ───
+  if (currentKey === "screen13") {
+    let d = dist(mouseX, mouseY, handleX, sliderY + sliderH / 2);
+    if (d < 18) draggingHandle = true;
+    if (!draggingHandle &&
+        mouseX > 0 && mouseX < muralCanvas.width &&
+        mouseY > 0 && mouseY < muralCanvas.height) {
+      selectedBrush.draw(mouseX, mouseY, mouseX, mouseY, 0);
+      // 음악 재생
+      if (!musicStarted &&
+          selectedBrush.music &&
+          musicAssets[selectedBrush.music]) {
+        currentMusic = musicAssets[selectedBrush.music];
+        let v = map(brushSize, 0.5, 6.0, 0.1, 1.0);
+        currentMusic.setVolume(v);
+        currentMusic.loop();
+        musicStarted = true;
+      }
+    }
+    // 그렸으면 여기서 리턴하면 네비 로직 안 탑니다
+    return;
+  }
+  
+  if (choices[currentKey]) {
+    for (let c of choices[currentKey]) {
+      if (mouseX >= c.x - c.w / 2 && mouseX <= c.x + c.w / 2 &&
+          mouseY >= c.y - c.h / 2 && mouseY <= c.y + c.h / 2) {
+        screenHistory.push(currentKey);
+        currentKey = c.next;
+        redraw();
+        return;
+      }
+    }
+  }
+
+  let next = storyMap[currentKey];
+
+  if (typeof next === 'object') {
+    screenHistory.push(currentKey);
+    if (mouseX < width / 3) {
+      currentKey = next["A"];
+    } else if (mouseX < 2 * width / 3) {
+      currentKey = next["B"];
+    } else {
+      currentKey = next["C"];
+    }
+    redraw();
+  }
+
+  // ─── 그 다음에 네비 버튼 로직 (기존 코드 그대로) ───
+  console.log('▶ nav mousePressed fired', mouseX, mouseY, 'currentKey=', currentKey);
   /* ───────── 1) Special case for screen11‑2 (fade interaction) ───────── */
   if (currentKey === 'screen11-2') {
     if (!isFading && !isFadedIn) {
@@ -97,6 +223,7 @@ function mousePressed() {
   }
 }
 
+
 // Call this near the end of your draw() routine AFTER you render the current screen
 // so buttons sit on top.
 // drawNavigationButtons();
@@ -116,13 +243,5 @@ function keyPressed() {
     capturePoseAndGenerateSculpture();      // API 호출 시작
     redraw();
     return; // 여기서 종료해야 다른 로직을 타지 않습니다.
-}
-
-// [변경 없음] screen15-5를 포함한 나머지 모든 일반 화면은 이 로직을 따름
-let next = storyMap[currentKey];
-if (typeof next === 'string') {
-    screenHistory.push(currentKey);
-    currentKey = next;
-    redraw();
 }
 }

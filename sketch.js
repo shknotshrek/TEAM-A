@@ -507,7 +507,7 @@ let fadeAmount = 0;      // 페이드 투명도
   function preload() {
     nextImg = loadImage('visual assets/next.png');
     backImg = loadImage('visual assets/back.png');
-    
+
     customFont = loadFont('font assets/YES24MyoungjoR.otf');
     // 1단계: 배경 이미지 로딩 (로딩 안 된 이미지 체크)
     for (let name of fileNames) {
@@ -1168,9 +1168,12 @@ function setup() {
       },
     } 
     setupSculptureFeature(); // 조각상 기능 초기화
+    noLoop();
 }
 
 function draw() {
+  // background(255);  // ← 지우려면 clear() 대신 background를 권장
+  // resetMatrix();
 
   // 제목 인트로 음원
   if (
@@ -1771,61 +1774,99 @@ function draw() {
     textAlign(CENTER, TOP);
     text("Hint: 방 안에 사용할 만한 도구는 없을까? 물체들에 마우스를 올려보자.", width / 2, 30);
   }
-  // 선택지 아이콘 표시
+  // // 선택지 아이콘 표시
+  // if (choices[currentKey]) {
+  //   for (let c of choices[currentKey]) {
+  //     let isHovered = (
+  //       mouseX >= c.x - c.w / 2 && mouseX <= c.x + c.w / 2 &&
+  //       mouseY >= c.y - c.h / 2 && mouseY <= c.y + c.h / 2
+  //     );
   
-  if (choices[currentKey]) {
-    for (let c of choices[currentKey]) {
-      let isHovered = (
-        mouseX >= c.x - c.w / 2 && mouseX <= c.x + c.w / 2 &&
-        mouseY >= c.y - c.h / 2 && mouseY <= c.y + c.h / 2
-      );
+  //     let iconToShow = isHovered ? c.hoverImg : c.img;
+  //     image(iconToShow, c.x, c.y, c.w, c.h);
   
-      let iconToShow = isHovered ? c.hoverImg : c.img;
-      image(iconToShow, c.x, c.y, c.w, c.h);
+  //     // 🔍 마우스오버 시 텍스트 박스도 같이 표시
+  //     /*
+  //     if (isHovered) {
+  //       let paddingX = 5;
+  //       let paddingY = 10;
+  //       textSize(24);
+  //       textAlign(CENTER, CENTER);
   
-      // 🔍 마우스오버 시 텍스트 박스도 같이 표시
-      /*
-      if (isHovered) {
-        let paddingX = 5;
-        let paddingY = 10;
-        textSize(24);
-        textAlign(CENTER, CENTER);
+  //       let labelWidth = textWidth(c.label);
+  //       let boxW = labelWidth + paddingX * 2;
+  //       let boxH = textAscent() + textDescent() + paddingY * 3.7;
   
-        let labelWidth = textWidth(c.label);
-        let boxW = labelWidth + paddingX * 2;
-        let boxH = textAscent() + textDescent() + paddingY * 3.7;
+  //       // 📦 텍스트 박스 배경
+  //       rectMode(CENTER);
+  //       fill(0); // 검정 배경
+  //       noStroke();
+  //       rect(mouseX, mouseY - 60, boxW, boxH, 5);
   
-        // 📦 텍스트 박스 배경
-        rectMode(CENTER);
-        fill(0); // 검정 배경
-        noStroke();
-        rect(mouseX, mouseY - 60, boxW, boxH, 5);
-  
-        // 🎨 텍스트 색상
-        fill(197, 191, 159, 255); // RGBA 색상
-        text(c.label, mouseX, mouseY - 60);
-        */
+  //       // 🎨 텍스트 색상
+  //       fill(197, 191, 159, 255); // RGBA 색상
+  //       text(c.label, mouseX, mouseY - 60);
+  //       */
 
+  //       if (isHovered && currentKey !== "screen1" && c.label) {
+  //         let paddingX = 5;
+  //         let paddingY = 10;
+  //         textSize(24);
+  //         textAlign(CENTER, CENTER);
+        
+  //         let labelWidth = textWidth(c.label);
+  //         let boxW = labelWidth + paddingX * 2;
+  //         let boxH = textAscent() + textDescent() + paddingY * 3.7;
+        
+  //         rectMode(CENTER);
+  //         fill(0, 150);
+  //         noStroke();
+  //         rect(mouseX, mouseY - 60, boxW, boxH, 5);
+        
+  //         fill(197, 191, 159, 255);
+  //         text(c.label, mouseX, mouseY - 60);
+  //     }
+  //   }
+  // }
+
+  // draw() 안에서, drawCurrentScreen()과 drawNavigationButtons() 사이에 넣기
+
+  // ─── 2) 선택지 아이콘만 절대 좌표계로 다시 그리기 ───
+  push();
+    resetMatrix();        // 메인 transform 날림
+    imageMode(CENTER);    // c.x,c.y가 중앙 기준
+
+    if (choices[currentKey]) {
+      for (let c of choices[currentKey]) {
+        let isHovered = (
+          mouseX >= c.x - c.w/2 && mouseX <= c.x + c.w/2 &&
+          mouseY >= c.y - c.h/2 && mouseY <= c.y + c.h/2
+        );
+        let iconToShow = isHovered ? c.hoverImg : c.img;
+        image(iconToShow, c.x, c.y, c.w, c.h);
+        
+        // 툴팁 텍스트도 그대로 여기 안에서 그리면 됩니다.
         if (isHovered && currentKey !== "screen1" && c.label) {
-          let paddingX = 5;
-          let paddingY = 10;
+          let paddingX = 5, paddingY = 10;
           textSize(24);
           textAlign(CENTER, CENTER);
-        
           let labelWidth = textWidth(c.label);
-          let boxW = labelWidth + paddingX * 2;
-          let boxH = textAscent() + textDescent() + paddingY * 3.7;
-        
-          rectMode(CENTER);
-          fill(0, 150);
-          noStroke();
-          rect(mouseX, mouseY - 60, boxW, boxH, 5);
-        
-          fill(197, 191, 159, 255);
-          text(c.label, mouseX, mouseY - 60);
+          let boxW = labelWidth + paddingX*2;
+          let boxH = textAscent() + textDescent() + paddingY*3.7;
+
+          push();
+            rectMode(CENTER);
+            fill(0,150);
+            noStroke();
+            rect(mouseX, mouseY - 60, boxW, boxH, 5);
+            fill(197,191,159,255);
+            text(c.label, mouseX, mouseY - 60);
+          pop();
+        }
       }
     }
-  }
+  pop();
+
 
   if (currentKey === "screen11-2") {               // 완성된 벽화 표시
     cursor()
@@ -1875,17 +1916,16 @@ function draw() {
   }
   
   textSize(20);
-  textAlign(RIGHT, TOP);
-  textStyle(BOLD);
-  text("Press SPACE to proceed", width - 30, 10);
   
   textAlign(LEFT, TOP);
-  text("Press BACKSPACE to go back", 30, 10);
+  
+  text("Press R to restart", 30,10);
 
-  textAlign(LEFT, BOTTOM);
-  text("Press R to restart", 30,972);
-
-  drawNavigationButtons();
+  console.log('drawNavigationButtons?');    
+  push();           // 변환 상태 저장
+    resetMatrix();  // 네비만 쓰는 좌표계로 리셋
+    drawNavigationButtons();
+  pop();  
 }
 
 
@@ -1969,52 +2009,58 @@ function draw() {
 
 
 
-function mousePressed() {
+// function mousePressed() {
 
-  if (currentKey === "screen13") {
-    let d = dist(mouseX, mouseY, handleX, sliderY + sliderH / 2);
-    if (d < 18) draggingHandle = true;
-    if (!draggingHandle && mouseX > 0 && mouseX < muralCanvas.width && mouseY > 0 && mouseY < muralCanvas.height) {
-      selectedBrush.draw(mouseX, mouseY, mouseX, mouseY, 0);
-      // 음악 재생
-      if (!musicStarted && selectedBrush.music && musicAssets[selectedBrush.music]) {
-        currentMusic = musicAssets[selectedBrush.music];
-        let v = map(brushSize, 0.5, 6.0, 0.1, 1.0);
-        currentMusic.setVolume(v);
-        currentMusic.loop();
-        musicStarted = true;
-      }
-    }
-    
-  }
+//   // ─── 1) screen13 드로잉 처리 ───
+//   if (currentKey === "screen13") {
+//     let d = dist(mouseX, mouseY, handleX, sliderY + sliderH / 2);
+//     if (d < 18) draggingHandle = true;
+//     if (!draggingHandle &&
+//         mouseX > 0 && mouseX < muralCanvas.width &&
+//         mouseY > 0 && mouseY < muralCanvas.height) {
+//       selectedBrush.draw(mouseX, mouseY, mouseX, mouseY, 0);
+//       // 음악 재생
+//       if (!musicStarted &&
+//           selectedBrush.music &&
+//           musicAssets[selectedBrush.music]) {
+//         currentMusic = musicAssets[selectedBrush.music];
+//         let v = map(brushSize, 0.5, 6.0, 0.1, 1.0);
+//         currentMusic.setVolume(v);
+//         currentMusic.loop();
+//         musicStarted = true;
+//       }
+//     }
+//     // 그렸으면 여기서 리턴하면 네비 로직 안 탑니다
+//     return;
+//   }
 
-  if (choices[currentKey]) {
-    for (let c of choices[currentKey]) {
-      if (mouseX >= c.x - c.w / 2 && mouseX <= c.x + c.w / 2 &&
-          mouseY >= c.y - c.h / 2 && mouseY <= c.y + c.h / 2) {
-        screenHistory.push(currentKey);
-        currentKey = c.next;
-        redraw();
-        return;
-      }
-    }
-  }
+//   if (choices[currentKey]) {
+//     for (let c of choices[currentKey]) {
+//       if (mouseX >= c.x - c.w / 2 && mouseX <= c.x + c.w / 2 &&
+//           mouseY >= c.y - c.h / 2 && mouseY <= c.y + c.h / 2) {
+//         screenHistory.push(currentKey);
+//         currentKey = c.next;
+//         redraw();
+//         return;
+//       }
+//     }
+//   }
 
-  let next = storyMap[currentKey];
+//   let next = storyMap[currentKey];
 
-  if (typeof next === 'object') {
-    screenHistory.push(currentKey);
-    if (mouseX < width / 3) {
-      currentKey = next["A"];
-    } else if (mouseX < 2 * width / 3) {
-      currentKey = next["B"];
-    } else {
-      currentKey = next["C"];
-    }
-    redraw();
-  }
+//   if (typeof next === 'object') {
+//     screenHistory.push(currentKey);
+//     if (mouseX < width / 3) {
+//       currentKey = next["A"];
+//     } else if (mouseX < 2 * width / 3) {
+//       currentKey = next["B"];
+//     } else {
+//       currentKey = next["C"];
+//     }
+//     redraw();
+//   }
 
-}
+// }
 
 function mouseDragged(){
   if (currentKey === "screen13") {
