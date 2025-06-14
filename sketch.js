@@ -1941,6 +1941,7 @@ function keyPressed() {
             redraw();
         }
     }
+    drawNavigationButtons();
 }
   // // 텍스트 페이드인 효과 유
   // if (key === ' ') {
