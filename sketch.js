@@ -514,14 +514,6 @@ let fadeAmount = 0;      // 페이드 투명도
       () => console.log(`✅ 배경 이미지 로드됨: ${name}`),
       () => console.error(`❌ 배경 이미지 로드 실패: ${name}`));
     }
-
-
-// 3) screen16.png는 따로 한 번만 screen16Background로 로드
-images["screen16Background"] = loadImage(
-  "visual assets/screen16.png",
-  () => console.log("✅ screen16Background 로드됨"),
-  () => console.error("❌ screen16Background 로드 실패")
-);
   
     // 2단계: 선택지 아이콘 이미지 로딩 (로딩 안 된 이미지 체크)
     for (let key in choices) {
