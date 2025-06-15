@@ -1964,6 +1964,14 @@ function draw() {
       return;
     }
   }
+
+  if (currentKey === "screen21") {
+    image(images["screen21"], width/2, height/2, width, height);
+    image(muralImage, width/4, (height/4)*3, width/5, height/5);
+    textSize(100);
+    fill(255);
+    text("THE END", width-300, height/2);
+  }
   
 
   if ( // 지도 부분 흰 글씨 안보여서 파란색으로 표시
