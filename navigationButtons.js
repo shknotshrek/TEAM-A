@@ -111,22 +111,29 @@ function mousePressed() {
                 && mouseY >= nextPos.y && mouseY <= nextPos.y + BTN_SIZE;
 
   // — 2) screen11-2 Special case: Next 버튼 클릭 시에만 —
-  if (currentKey === 'screen11-2' && overNext) {
-    // 첫 클릭 → 페이드 시작
-    if (!isFading && !isFadedIn) {
-      fadeAmount = 0;
-      isFading   = true;
-      // loop();   // 페이드 애니메이션을 위해 draw()를 다시 돌려 줍니다
-      return;     // 여기서 빠져나와야 Back/Next 일반 처리 안 탄다
-    }
-    // 두 번째 클릭(페이드 완료 시) → 다음 화면으로
-    if (isFadedIn) {
-      screenHistory.push(currentKey);
-      currentKey = storyMap[currentKey] || 'screen14';
-      // redraw();
-      return;
-    }
+  // mousePressed() 내부에 이미 있음
+if (currentKey === 'screen11-2' && overNext) {
+  console.log("✔ screen11-2 NEXT 클릭됨", isFadedIn, isFading);
+  
+  // 1) 첫 클릭이면 페이드 시작
+  if (!isFading && !isFadedIn) {
+    fadeAmount = 0;
+    isFading = true;
+    loop();
+    return;  // 🔒 반드시 여기서 종료!
   }
+
+  // 2) 페이드 완료 후 클릭 → 다음 화면
+  if (isFadedIn) {
+    screenHistory.push(currentKey);
+    currentKey = 'screen14';   // ✅ 여기서 확정
+    isFadedIn = false;         // 다음 흐름 위해 리셋
+    redraw();
+    return;  // 🔒 다시 한 번 확실하게 종료!
+  }
+
+  return; // ✅ 그 외 상황도 여기서 반드시 차단
+}
 
   // — 3) Back 버튼 처리(기존 로직) —
   const overBack = screenHistory.length > 0
