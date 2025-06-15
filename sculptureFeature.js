@@ -186,14 +186,14 @@ function drawSculptureResultScreen() {
         fill(255, 100, 100);
         textAlign(CENTER, CENTER);
         textSize(28);
-        text("조각상 생성에 실패했습니다.BACKSPACE를 눌러 돌아가서 다시 시도해주세요.", width / 2, height / 2+200);
+        text("조각상 생성에 실패했습니다. BACK를 눌러 돌아가서 다시 시도해주세요.", width / 2, height / 2+200);
 
     } else if (sculptureModule.generatedSculptureImg) {
         // 3. 생성이 끝났고, 실패하지도 않았고, 이미지가 있을 때 -> 성공 결과 표시
         push();
         imageMode(CENTER);
         const imgHeight = 550;
-        image(sculptureModule.generatedSculptureImg, width / 2, height / 2, 450, imgHeight);
+        image(sculptureModule.generatedSculptureImg, width / 5, height* 4/5, 450, imgHeight);
         pop();
     
         if (sculptureModule.generatedSculptureText) {

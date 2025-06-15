@@ -1664,6 +1664,7 @@ function draw() {
     && !forestMusicStarted
   ) {
     forestMusic.loop(); // 반복 재생
+    forestMusic.setVolume(0.6);
     forestMusicStarted = true;
   }
 
