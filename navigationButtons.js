@@ -67,24 +67,44 @@ function mousePressed() {
     return;
   }
   
+  // if (choices[currentKey]) {
+  //   for (let c of choices[currentKey]) {
+  //     if (mouseX >= c.x - c.w / 2 && mouseX <= c.x + c.w / 2 &&
+  //         mouseY >= c.y - c.h / 2 && mouseY <= c.y + c.h / 2) {
+  //       // screenHistory.push(currentKey);
+  //       // currentKey = c.next;
+  //       // redraw();
+  //       // return;
+  //       screenHistory.push(currentKey);
+  //       currentKey = c.next;
+  //       enterNewScreen(c.next);
+  //       if (c.next === 'screen15-pose') {
+  //         loop();
+  //       }
+  //       redraw();
+  //       return;
+  //     }
+  //   }
+  // }
+
   if (choices[currentKey]) {
+    // 아이콘 중 하나라도 클릭됐는지 검사
     for (let c of choices[currentKey]) {
-      if (mouseX >= c.x - c.w / 2 && mouseX <= c.x + c.w / 2 &&
-          mouseY >= c.y - c.h / 2 && mouseY <= c.y + c.h / 2) {
-        // screenHistory.push(currentKey);
-        // currentKey = c.next;
-        // redraw();
-        // return;
+      if (
+        mouseX >= c.x - c.w/2 && mouseX <= c.x + c.w/2 &&
+        mouseY >= c.y - c.h/2 && mouseY <= c.y + c.h/2
+      ) {
+        // 클릭된 아이콘 처리
         screenHistory.push(currentKey);
         currentKey = c.next;
         enterNewScreen(c.next);
-        if (c.next === 'screen15-pose') {
-          loop();
-        }
+        if (c.next === 'screen15-pose') loop();
         redraw();
-        return;
+        return; // 아이콘 클릭 시에만 여기서 종료
       }
     }
+    // ※ 아이콘 클릭이 아닌 다른 영역 클릭 시에는 아무 동작도 하지 않도록 바로 종료
+    return;
   }
 
   let next = storyMap[currentKey];
