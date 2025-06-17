@@ -2216,6 +2216,7 @@ function createBrushButtons() {
     let btn = createButton(brush.name);
     btn.position(muralCanvas.width + buttonMargin, startY);
     btn.size(sidebarWidth - 2 * buttonMargin, buttonHeight);
+    btn.style('font-size', '18px'); // 텍스트 크기 증가
     btn.mousePressed(() => {
       // 음악 정지
       if (currentMusic && currentMusic.isPlaying()) {
@@ -2245,6 +2246,7 @@ function createControlButtons() {
   resetButton = createButton('다시 그리기 (Reset)');
   resetButton.position(muralCanvas.width + buttonMargin, startY);
   resetButton.size(sidebarWidth - 2 * buttonMargin, buttonHeight);
+  resetButton.style('font-size', '18px'); // 텍스트 크기 증가
   resetButton.mousePressed(() => {
     // 음악 정지
     if (currentMusic && currentMusic.isPlaying()) {
