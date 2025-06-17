@@ -1994,8 +1994,6 @@ function draw() {
   textSize(28);
   
   textAlign(LEFT, TOP);
-  
-  text("Press R to restart", 30,10);
 
   console.log('drawNavigationButtons?');    
   push();           // 변환 상태 저장

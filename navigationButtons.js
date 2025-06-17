@@ -21,7 +21,7 @@ function drawNavigationButtons() {
     const backPos = { x: NAV_PADDING, y: height - BTN_SIZE - NAV_PADDING };
     const nextPos = { x: width  - BTN_SIZE - NAV_PADDING, y: backPos.y };
 
-    if (screenHistory.length > 0) {
+    if (screenHistory.length > 0 && currentKey !== 'screen11-2') {
       image(backImg, backPos.x, backPos.y, BTN_SIZE, BTN_SIZE);
     }
     if (hasNextScreen()) {
@@ -191,11 +191,11 @@ if (currentKey === 'screen11-2' && overNext) {
 
 // Optionally keep R‑for‑reset if you still want a dev shortcut
 function keyPressed() {
-  if (key === 'r' || key === 'R') {
-    currentKey = 'screen1';
-    screenHistory = [];
-    redraw();
-  }
+  // if (key === 'r' || key === 'R') {
+  //   currentKey = 'screen1';
+  //   screenHistory = [];
+  //   redraw();
+  // }
 
   // [변경] screen15-pose에서만 특별한 동작을 하도록 수정
   if (currentKey==='screen15-pose' && keyCode===32) {
