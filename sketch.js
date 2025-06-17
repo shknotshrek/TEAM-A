@@ -11,7 +11,6 @@ const hintScreens = [
   "screen7-2", "screen7-2-1", "screen7-2-2",
   "screen7-3", "screen7-3-1", "screen7-3-2"
 ];
-let screenEnterTime = 0;  // 각 화면에 진입한 시간
 
 // 벽화 파트 변수
 
@@ -95,7 +94,8 @@ let fadeAmount = 0;      // 페이드 투명도
     "screen2-2": "screen2-3",
     "screen2-3": "screen2-4",
     "screen2-4": "screen3",
-    "screen3": "screen4",
+    "screen3": "screen3-1", // 여기 전환이 안됨 why
+    "screen3-1": "screen4",
     "screen4": "screen4-1",
     "screen4-1": "screen4-2",
     "screen4-2": "screen5",
@@ -145,7 +145,8 @@ let fadeAmount = 0;      // 페이드 투명도
     "screen7-3-2-2": "screen8",
 
     "screen8" : "screen9",
-    "screen9" : "screen10",
+    "screen9" : "screen9-1",
+    "screen9-1" : "screen10",
     "screen10" : "screen10-1",
     "screen10-1" : "screen10-2",
     "screen10-2" : "screen11",
@@ -155,7 +156,8 @@ let fadeAmount = 0;      // 페이드 투명도
     "screen12" : "screen13",
     "screen13" : "screen11-2",
     "screen11-2" : "screen14",
-    "screen14" : "screen15",
+    "screen14" : "screen14-1",
+    "screen14-1" : "screen15",
     "screen15" : "screen15-1",
     "screen15-1" : "screen15-2",
     "screen15-2" : "screen15-3",
@@ -503,9 +505,6 @@ let fadeAmount = 0;      // 페이드 투명도
   
 
   function preload() {
-    nextImg = loadImage('visual assets/next.png');
-    backImg = loadImage('visual assets/back.png');
-
     customFont = loadFont('font assets/YES24MyoungjoR.otf');
     // 1단계: 배경 이미지 로딩 (로딩 안 된 이미지 체크)
     for (let name of fileNames) {
@@ -571,9 +570,6 @@ let fadeAmount = 0;      // 페이드 투명도
   
 
 function setup() {
-  // console.log(pixelDensity());
-  // pixelDensity(1);
-  // transparentCanvas.pixelDensity(1);
   createCanvas(1512, 982); // 혹은 windowWidth, windowHeight로 바꿔도 돼
   aiVisionCanvas = createGraphics(1512, 982); // <<< 숨겨진 캔버스 생성
   textFont(customFont);
@@ -738,7 +734,7 @@ function setup() {
         content: "이곳은 19XX년의 성수동. \n\n 한국의 브루클린으로 불리는, 오늘날의 활기찬 성수동과는 사뭇 다르다. \n\n 과거의 성수동은 어떤 모습을 하고 있었고, 어떤 역사를 갖고 있을까?",
         x: width / 2,
         y: height / 2,
-        size: 32,
+        size: 28,
         color: [255, 255, 255],
         align: "center"
       },
@@ -746,7 +742,7 @@ function setup() {
         content: "산업공동화 전후로 가발, 인쇄 등 각종 영세 산업 공장들이 성수동에 모여들었다. \n\n 특히 1967년 금강제화가 금호동으로 옮겨온 후로부터 성수동은 수제화의 대명사가 되었다.",
         x: width / 2,
         y: height / 2,
-        size: 32,
+        size: 28,
         color: [255, 255, 255],
         align: "center"
       },
@@ -754,7 +750,7 @@ function setup() {
         content: "그러나 시간이 지나면서 많은 공장들이 문을 닫았고,\n 성수동은 미국의 러스트 벨트처럼 몰락한 공업지대의 모습을 띠게 되었다. \n\n 당신이 보고 있는 풍경이 바로 그 시점, 19XX년의 성수동이다.",
         x: width / 2,
         y: height / 2,
-        size: 32,
+        size: 28,
         color: [255, 255, 255],
         align: "center"
       },
@@ -762,7 +758,7 @@ function setup() {
         content: "당신은 낡은 공장들이 흩어져 있는 이 황량한 공간을 어떻게 바꿀 것인가? \n\n 현재의 성수동을 모방할 필요는 없다. 오로지 당신의 색채로 과거의 성수동을 새롭게 계획해 보자. \n\n 성수동 재생(Refurbish) 사업, 시작!",
         x: width / 2,
         y: height / 2,
-        size: 32,
+        size: 28,
         color: [255, 255, 255],
         align: "center"
       },
@@ -770,7 +766,7 @@ function setup() {
         content: "당신은 두 가지 방법으로 성수동 계획 사업을 진행하려고 한다. \n\n 게임의 각 스테이지는 각 사업에 해당한다. \n\n\n 첫 번째 스테이지는 인프라 확충. \n\n 낡은 공장 지대에 새로운 인프라를 도입하여 사람들에게 도움이 되는 장소를 만들어 보자. \n\n 두 번째 스테이지는 공공예술 도입. \n\n 비어 있는 공간에 예술을 불어넣어 시민들에게 영감을 주는 장소로 탈바꿈해 보자.",
         x: width / 2,
         y: height / 2,
-        size: 32,
+        size: 28,
         color: [255, 255, 255],
         align: "center"
       },
@@ -794,7 +790,7 @@ function setup() {
         content: "저쪽은 주거 단지인가 보네. 건물이 낡고 협소한 걸 보니, 주로 노동자 1인 가구가 많을 것 같아.",
         x: width / 2,
         y: 850,
-        size: 32,
+        size: 28,
         color: [255, 255, 255],
         align: "center"
       },
@@ -802,7 +798,7 @@ function setup() {
         content: "가죽 공장이다. 아직 영업을 하나 보네. 지갑, 노트 커버 같은 작은 소품들을 만들고 계셔.",
         x: width / 2,
         y: 850,
-        size: 32,
+        size: 28,
         color: [255, 255, 255],
         align: "center"
       },
@@ -810,7 +806,7 @@ function setup() {
         content: "상점이 모여있는 거리야. 이쪽 상점들은 대부분 폐업한 것 같네.",
         x: width / 2,
         y: 850,
-        size: 32,
+        size: 28,
         color: [255, 255, 255],
         align: "center"
       },
@@ -818,7 +814,7 @@ function setup() {
         content: "이 커다란 빌딩은 뭐지? 옛날 공장인가 봐. \n벽이 다 벗겨진 걸 보니, 지금은 사용하지 않는 것 같아.",
         x: width / 2,
         y: 850, // 👈 각 텍스트에 대한 y 위치
-        size: 32,
+        size: 28,
         color: [255, 255, 255],
         align: "center"
       },
@@ -826,7 +822,7 @@ function setup() {
         content: "이 공간을 활용해서 새로운 인프라를 설치할 수 있을 것 같아. \n\n 무엇을 도입하면 좋을까?",
         x: width / 2,
         y: height/2, // 👈 각 텍스트에 대한 y 위치
-        size: 32,
+        size: 28,
         color: [255, 255, 255],
         align: "center"
       },
@@ -834,7 +830,7 @@ function setup() {
         content: "카페를 도입했더니 지역 주민들이 가끔 오가기는 하지만, 장사가 특별히 잘 되지는 않네. \n\n 경쟁력이 부족한 것 같아. \n\n 어떤 추가 전략을 사용해야 할까?",
         x: width / 2,
         y: height/2,
-        size: 32,
+        size: 28,
         color: [255, 255, 255],
         align: "center"
       },
@@ -842,7 +838,7 @@ function setup() {
         content: "독립서점을 도입했더니 사람들이 가끔 오가기는 하지만, 주민들은 독서에 큰 관심을 갖지 않는 것 같아. \n\n 어떤 추가 전략을 사용해야 할까?",
         x: width / 2,
         y: height/2,
-        size: 32,
+        size: 28,
         color: [255, 255, 255],
         align: "center"
       },
@@ -850,7 +846,7 @@ function setup() {
         content: "들여 놓은 옷들은 너무 예쁜데, 주민들의 연령대가 높은 편이라 이런 옷에 대한 수요가 부족한 것 같아. \n\n 어떤 추가 전략을 사용해야 할까?",
         x: width / 2,
         y: 350,
-        size: 32,
+        size: 28,
         color: [255, 255, 255],
         align: "center"
       },
@@ -858,7 +854,7 @@ function setup() {
         content: "낮과 밤이 다른 이 공간에 여러 사람들이 관심을 가져주고 있어! \n 그런데 칵테일 바도 이미 워낙 많아서, 특색이 있어야 할 것 같아. \n\n 어떤 추가 전략을 사용해야 할까?",
         x: width / 2,
         y: height/2-60,
-        size: 32,
+        size: 28,
         color: [255, 255, 255],
         align: "center"
       },
@@ -866,7 +862,7 @@ function setup() {
         content: "북카페로 운영하니 전보다 방문객이 늘었지만, \n근처 주민들은 독서에 큰 관심을 갖지 않는 것 같아. \n\n 책 장르를 전문화해서 아예 외부인 매니아 독자를 끌어들여야겠어. \n\n 어떤 추가 전략을 사용해야 할까?",
         x: 451,
         y: 596,
-        size: 32,
+        size: 28,
         color: [255, 255, 255],
         align: "center"
       },
@@ -874,15 +870,15 @@ function setup() {
         content: "유명 작가가 강연을 한다고 하니, 주민들도 관심을 가져주고 있어! \n 하지만 작가와의 만남이 단발적이라 아쉬워하는 분들이 많네. \n\n 어떤 추가 전략을 사용해야 할까?",
         x: width / 2,
         y: 180,
-        size: 32,
+        size: 28,
         color: [255, 255, 255],
         align: "center"
       },
       "screen7-2-2": {
         content: "예쁜 문구류를 구경하러 오는 주민과 외부인이 증가했어! \n\n 그런데 정작 책에 대한 관심은 오히려 떨어진 것 같네. \n 여기가 책방이에요, 문방구예요?”하고 묻는 분들도 계셨어. \n\n 어떻게 하면 책과 문구류 사이의 연결을 강화할 수 있을까?",
         x: width / 2,
-        y: 300,
-        size: 32,
+        y: 200,
+        size: 28,
         color: [255, 255, 255],
         align: "center"
       },
@@ -890,7 +886,7 @@ function setup() {
         content: "클래스가 주민들을 포함한 여러 방문객들의 큰 호응을 얻었어! \n 게다가 인근 공장과 협업하니, 지역 상생 효과까지 있잖아? \n\n 그런데 클래스는 일회성이다 보니, 투입되는 비용 대비 브랜드 홍보 효과가 크지 않은 것 같아. \n\n 어떤 추가 전략을 사용해야 할까?",
         x: width / 2,
         y: height/2,
-        size: 32,
+        size: 28,
         color: [255, 255, 255],
         align: "center"
       },
@@ -898,7 +894,7 @@ function setup() {
         content: "테일러링 서비스를 제공했더니, 본인이 원하는 스타일의 옷을 만들어 입을 수 있어 주민들의 만족도가 커! \n 특히 수제화의 인기가 높네. \n\n 그런데 브랜드에 대한 외부인의 인지도는 여전히 낮아. \n\n 어떤 추가 전략을 사용해야 할까?",
         x: width / 2,
         y: 350,
-        size: 32,
+        size: 28,
         color: [255, 255, 255],
         align: "center"
       },
@@ -906,7 +902,7 @@ function setup() {
         content: "재즈 공연을 운영하니, 입소문을 타서 친구나 연인과 오기 좋은 핫플로 유명해졌어! \n 정말 북적거리고 활기차다!",
         x: width / 2,
         y: 850,
-        size: 32,
+        size: 28,
         color: [255, 255, 255],
         align: "center"
       },
@@ -914,7 +910,7 @@ function setup() {
         content: "통장 출혈이 심하긴 했지만, 음악에 관심 있는 사람들이 많이 찾아왔어. \n\n 서울 힙스터들이 전부 모여 있으니, 정말 멋진 걸!",
         x: width / 2,
         y: 850,
-        size: 32,
+        size: 28,
         color: [255, 255, 255],
         align: "center"
       },
@@ -922,7 +918,7 @@ function setup() {
         content: "서적을 구하는 게 쉽지는 않았지만, 희귀 서적 소식을 듣고 다양한 사람들 이 모여들었어. \n\n 예술가와 평론가들이 모여 교류하면서, 이곳은 지역의 예술 프로젝트가 싹트는 공간이 되었어!",
         x: width / 2,
         y: 850,
-        size: 32,
+        size: 28,
         color: [255, 255, 255],
         align: "center"
       },
@@ -930,7 +926,7 @@ function setup() {
         content: "만화 매니아 층이 소문을 듣고 많이 찾아왔어! \n\n 사람들이 삼삼오오 만화를 읽으면서 대화를 나누니, 정말 북적거리고 활기차다!",
         x: width / 2,
         y: 850,
-        size: 32,
+        size: 28,
         color: [255, 255, 255],
         align: "center"
       },
@@ -938,7 +934,7 @@ function setup() {
         content: "작가 추천작을 구경하기 위해 서점을 찾는 사람들이 늘었어! 할인된 가격에 판매하니 구매도 크게 증가했는걸? \n\n 작가와 독자가 장기간 소통하는 특별한 장소가 탄생했어!",
         x: width / 2,
         y: 200,
-        size: 32,
+        size: 28,
         color: [255, 255, 255],
         align: "center"
       },
@@ -946,7 +942,7 @@ function setup() {
         content: "참여형 클래스에 더해 결과물 전시까지 운영하니, 자연스럽게 클래스 참여자 지인들의 추가 방문도 증가했어. \n\n 작가의 이야기에서 독자의 이야기로 나아가는 멋진 문학 공간이 탄생했어!",
         x: width / 2,
         y: 200,
-        size: 32,
+        size: 28,
         color: [255, 255, 255],
         align: "center"
       },
@@ -954,7 +950,7 @@ function setup() {
         content: "사람들이 북커버가 탐이 나서 책을 더 많이 구매하네. \n게다가 인근 공장과 협업하니, 지역 상생 효과까지 있잖아? \n\n 서점이 지역 공장과 독자들을 잇는 징검다리가 되었어!",
         x: width/2,
         y: 200,
-        size: 32,
+        size: 28,
         color: [255,255,255],
         align: "center"
       },
@@ -962,7 +958,7 @@ function setup() {
         content: "공들여 큐레이션을 했더니 매달 사람들이 구매를 위해 줄을 설 정도야! \n\n 책 내용을 되새길 수 있는 문구류를 판매하는 특별한 서점이 되었어!",
         x: width / 2,
         y: 200,
-        size: 32,
+        size: 28,
         color: [255, 255, 255],
         align: "center"
       },
@@ -970,7 +966,7 @@ function setup() {
         content: "본인이 만든 의류가 직접 출시된다는 사실에 많은 이들이 관심을 보였어. \n\n 덕분에 무명 브랜드에서 입점 지역 특성을 반영한 친환경 패션 브랜드로 성장했어!",
         x: width / 2,
         y: 850,
-        size: 32,
+        size: 28,
         color: [255, 255, 255],
         align: "center"
       },
@@ -978,7 +974,7 @@ function setup() {
         content: "본인이 만든 옷을 입은 모델들의 런웨이 소식에 매장이 폭발적인 인기를 끌었어. \n\n 19XX년 S/S 시즌 새로운 트렌드는 작업복이래!",
         x: width / 2,
         y: 850,
-        size: 32,
+        size: 28,
         color: [255, 255, 255],
         align: "center"
       },
@@ -986,7 +982,7 @@ function setup() {
         content: "부스에서 고객들에게 신체 치수 측정, 옷감 선정, 샘플 수제화 착용 등의 경험을 제공했더니, 큰 인기를 끌었어.",
         x: width / 2,
         y: 850,
-        size: 32,
+        size: 28,
         color: [255, 255, 255],
         align: "center"
       },
@@ -994,7 +990,7 @@ function setup() {
         content: "소문을 들은 외부인들의 매장 방문이 증가하니, 정말 북적거리고 활기차다!",
         x: width / 2,
         y: 850,
-        size: 32,
+        size: 28,
         color: [255, 255, 255],
         align: "center"
       },
@@ -1002,7 +998,7 @@ function setup() {
         content: "‘첫 면접용 정장’, ‘돌아가신 아버지의 셔츠 리폼’ 등 감동적인 사연을 바탕으로 옷을 제작했더니, \n 브랜드가 폭발적인 인기를 얻었어. \n\n 옷에 자신만의 특별한 추억을 담고자 하는 사람들로 매장이 문전성시를 이루고 있는 걸!",
         x: width / 2,
         y: 850,
-        size: 32,
+        size: 28,
         color: [255, 255, 255],
         align: "center"
       },
@@ -1010,7 +1006,7 @@ function setup() {
         content: "첫 번째 스테이지, 인프라 확충 미션을 훌륭하게 완수했어! \n\n 황량했던 과거와는 비교도 안 되게 멋진 공간이 되었어! \n\n\n 그럼 다음 스테이지로 넘어가 볼까?",
         x: width / 2,
         y: height/2,
-        size: 32,
+        size: 28,
         color: [255, 255, 255],
         align: "center"
       },
@@ -1037,7 +1033,7 @@ function setup() {
         content: "이곳은 뚝섬역 사거리, 폐공장 벽들이 줄지어 있는 곳이다.",
         x: width / 2,
         y: 850,
-        size: 32,
+        size: 28,
         color: [255, 255, 255],
         align: "center"
       },
@@ -1046,7 +1042,7 @@ function setup() {
         content: "한때 아이들의 낙서로 가득했지만,\n지금은 모두 지워져 회색 콘크리트 벽만 존재해\n더욱 더 골목길이 우중충해 보인다.",
         x: width / 2,
         y: 850,
-        size: 32,
+        size: 28,
         color: [255, 255, 255],
         align: "center"
       },
@@ -1055,7 +1051,7 @@ function setup() {
         content: "이런 벽들, 왠지 쓸쓸해 보여…\n새롭게 꾸밀 수는 없을까?",
         x: width / 2,
         y: 850,
-        size: 32,
+        size: 28,
         color: [255, 255, 255],
         align: "center"
       },
@@ -1064,7 +1060,7 @@ function setup() {
         content: "붓을 들어 골목길의 활기를 되찾아 보자!",
         x: width / 2,
         y: 850,
-        size: 32,
+        size: 28,
         color: [255, 255, 255],
         align: "center"
       },
@@ -1091,7 +1087,7 @@ function setup() {
         content: "이곳은 중랑천 남쪽의 녹지,\n정돈되지 않은 나무들만 무성하다.",
         x: width / 2,
         y: 850,
-        size: 32,
+        size: 28,
         color: [255, 255, 255],
         align: "center"
       },
@@ -1100,7 +1096,7 @@ function setup() {
         content: "이렇게 넓은 곳은 공원으로 쓰기 딱 좋을 텐데,\n아무도 오지 않는 것 같네.",
         x: width / 2,
         y: 850,
-        size: 32,
+        size: 28,
         color: [255, 255, 255],
         align: "center"
       },
@@ -1109,7 +1105,7 @@ function setup() {
         content: "너무 휑해서 그런 것 같아.\n여기 무언가를 놓을 수 있으려나?",
         x: width / 2,
         y: 850,
-        size: 32,
+        size: 28,
         color: [255, 255, 255],
         align: "center"
       },
@@ -1118,7 +1114,7 @@ function setup() {
         content: "일일 모델이 되어 포즈를 잡고,\n포즈 모양대로 조각품을 만들어 보자!",
         x: width / 2,
         y: 850,
-        size: 32,
+        size: 28,
         color: [255, 255, 255],
         align: "center"
       },
@@ -1127,7 +1123,7 @@ function setup() {
         content: "세 번째 스테이지, 조각품 만들기 미션을 훌륭하게 완수했어. \n\n 텅 비어 있었던 과거와 달리 조각들 덕분에 숲에 생기가 도네!",
         x: width / 2,
         y: height/2,
-        size: 32,
+        size: 28,
         color: [255, 255, 255],
         align: "center"
       },
@@ -1136,7 +1132,7 @@ function setup() {
         content: "이렇게 성수동 재생(Refurbish) 사업의 모든 단계가 마무리되었다. \n\n 낡은 공간을 새롭게 재해석하고, 빈 공간에 창의적인 숨결을 불어넣으면서 \n\n당신은 무엇을 느꼈는가?",
         x: width / 2,
         y: height/2,
-        size: 32,
+        size: 28,
         color: [255, 255, 255],
         align: "center"
       },
@@ -1145,7 +1141,7 @@ function setup() {
         content: "수도권 과밀화 및 지방소멸이 사회문제로 대두하고 있는 현재, \n\n 낙후된 공간에 대한 재평가와, 재생을 위한 창의적인 아이디어가 더욱 절실해졌다.",
         x: width / 2,
         y: height/2,
-        size: 32,
+        size: 28,
         color: [255, 255, 255],
         align: "center"
       },
@@ -1154,7 +1150,7 @@ function setup() {
         content: "성수동이 오늘의 모습을 갖추기까지 거쳤던 긴 여정을 체험하면서, \n\n 성수동뿐만 아니라 다양한 익명적인 낙후 공간이 가진 \n\n색다른 가능성을 상상해 보는 기회가 되었기를 바라며,",
         x: width / 2,
         y: height/2,
-        size: 32,
+        size: 28,
         color: [255, 255, 255],
         align: "center"
       },
@@ -1169,12 +1165,9 @@ function setup() {
       },
     } 
     setupSculptureFeature(); // 조각상 기능 초기화
-    // noLoop();
 }
 
 function draw() {
-  // background(255);  // ← 지우려면 clear() 대신 background를 권장
-  // resetMatrix();
 
   // 제목 인트로 음원
   if (
@@ -1667,7 +1660,6 @@ function draw() {
     && !forestMusicStarted
   ) {
     forestMusic.loop(); // 반복 재생
-    forestMusic.setVolume(0.6);
     forestMusicStarted = true;
   }
 
@@ -1701,9 +1693,9 @@ function draw() {
     drawSculpturePoseScreen();
 
 } else if (currentKey === 'screen16') {
-  // screen16은 결과물을 그립니다.
-  image(images[currentKey], width / 2, height / 2, width, height);
-  drawSculptureResultScreen();
+    // screen16은 결과물을 그립니다.
+    image(images[currentKey], width / 2, height / 2, width, height);
+    drawSculptureResultScreen();
 
 } else {
     // 그 외 모든 일반 화면은 원래의 비율 계산 로직을 사용해 그립니다.
@@ -1772,211 +1764,99 @@ function draw() {
   // Hint 문구 그리기 (선택된 screen에서만)
   if (hintScreens.includes(currentKey)) {
     fill(173, 216, 230); // 연파랑 (light blue)
-    textSize(30);
+    textSize(25);
     textAlign(CENTER, TOP);
-    text("Hint: 방 안에는 도구 2개가 숨겨져 있다. 물체들에 마우스를 올려보자.", width / 2, 60);
+    text("Hint: 방 안에 사용할 만한 도구는 없을까? 물체들에 마우스를 올려보자.", width / 2, 30);
   }
-  // // 선택지 아이콘 표시
-  // if (choices[currentKey]) {
-  //   for (let c of choices[currentKey]) {
-  //     let isHovered = (
-  //       mouseX >= c.x - c.w / 2 && mouseX <= c.x + c.w / 2 &&
-  //       mouseY >= c.y - c.h / 2 && mouseY <= c.y + c.h / 2
-  //     );
+  // 선택지 아이콘 표시
   
-  //     let iconToShow = isHovered ? c.hoverImg : c.img;
-  //     image(iconToShow, c.x, c.y, c.w, c.h);
+  if (choices[currentKey]) {
+    for (let c of choices[currentKey]) {
+      let isHovered = (
+        mouseX >= c.x - c.w / 2 && mouseX <= c.x + c.w / 2 &&
+        mouseY >= c.y - c.h / 2 && mouseY <= c.y + c.h / 2
+      );
   
-  //     // 🔍 마우스오버 시 텍스트 박스도 같이 표시
-  //     /*
-  //     if (isHovered) {
-  //       let paddingX = 5;
-  //       let paddingY = 10;
-  //       textSize(24);
-  //       textAlign(CENTER, CENTER);
+      let iconToShow = isHovered ? c.hoverImg : c.img;
+      image(iconToShow, c.x, c.y, c.w, c.h);
   
-  //       let labelWidth = textWidth(c.label);
-  //       let boxW = labelWidth + paddingX * 2;
-  //       let boxH = textAscent() + textDescent() + paddingY * 3.7;
+      // 🔍 마우스오버 시 텍스트 박스도 같이 표시
+      /*
+      if (isHovered) {
+        let paddingX = 5;
+        let paddingY = 10;
+        textSize(24);
+        textAlign(CENTER, CENTER);
   
-  //       // 📦 텍스트 박스 배경
-  //       rectMode(CENTER);
-  //       fill(0); // 검정 배경
-  //       noStroke();
-  //       rect(mouseX, mouseY - 60, boxW, boxH, 5);
+        let labelWidth = textWidth(c.label);
+        let boxW = labelWidth + paddingX * 2;
+        let boxH = textAscent() + textDescent() + paddingY * 3.7;
   
-  //       // 🎨 텍스트 색상
-  //       fill(197, 191, 159, 255); // RGBA 색상
-  //       text(c.label, mouseX, mouseY - 60);
-  //       */
-
-  //       if (isHovered && currentKey !== "screen1" && c.label) {
-  //         let paddingX = 5;
-  //         let paddingY = 10;
-  //         textSize(24);
-  //         textAlign(CENTER, CENTER);
-        
-  //         let labelWidth = textWidth(c.label);
-  //         let boxW = labelWidth + paddingX * 2;
-  //         let boxH = textAscent() + textDescent() + paddingY * 3.7;
-        
-  //         rectMode(CENTER);
-  //         fill(0, 150);
-  //         noStroke();
-  //         rect(mouseX, mouseY - 60, boxW, boxH, 5);
-        
-  //         fill(197, 191, 159, 255);
-  //         text(c.label, mouseX, mouseY - 60);
-  //     }
-  //   }
-  // }
-
-  // draw() 안에서, drawCurrentScreen()과 drawNavigationButtons() 사이에 넣기
-
-  // ─── 2) 선택지 아이콘만 절대 좌표계로 다시 그리기 ───
-  push();
-    resetMatrix();        // 메인 transform 날림
-    imageMode(CENTER);    // c.x,c.y가 중앙 기준
-
-    let elapsed = millis() - screenEnterTime;
-    let shouldTwinkle = (elapsed > 10000);  // 10초 이상 경과한 경우
-
-    if (choices[currentKey]) {
-      for (let c of choices[currentKey]) {
-        let isHovered = (
-          mouseX >= c.x - c.w/2 && mouseX <= c.x + c.w/2 &&
-          mouseY >= c.y - c.h/2 && mouseY <= c.y + c.h/2
-        );
-              // ─── 디버그 로그 ───
-        if (isHovered) {
-          console.log("★ hover 감지! ▶ hoverImg =", c.hoverImgPath);
-        }
-
-          // (2) 매 프레임 항상 찍히게
-        console.log(
-          `mouse=(${mouseX},${mouseY}) ── choice at (${c.x},${c.y},${c.w},${c.h}) ── hovered? ${isHovered}`
-        );
-
-        let iconToShow = isHovered ? c.hoverImg : c.img;
-        image(iconToShow, c.x, c.y, c.w, c.h);
-        
-            // ✨ shining effect 추가: screen1 제외 + hover 아닐 때
-        if (shouldTwinkle && !isHovered && currentKey !== "screen1" && currentKey !== "screen7") {
-        push();
-        translate(c.x, c.y);
-
-        let pulse = 0.95 + 0.05 * sin(millis() / 300);  // 크기 진동 (적게)
-        let glowAlpha = 30 + 20 * sin(millis() / 200);  // 알파값 낮게
-
+        // 📦 텍스트 박스 배경
+        rectMode(CENTER);
+        fill(0); // 검정 배경
         noStroke();
-        for (let i = 0; i < 2; i++) {
-          fill(255, 255, 180, glowAlpha / (i + 1));
-          ellipse(0, 0, c.w * (1.05 + i * 0.1) * pulse, c.h * (1.05 + i * 0.1) * pulse);
-        }
+        rect(mouseX, mouseY - 60, boxW, boxH, 5);
+  
+        // 🎨 텍스트 색상
+        fill(197, 191, 159, 255); // RGBA 색상
+        text(c.label, mouseX, mouseY - 60);
+        */
 
-        pop();
-      }
-        // 툴팁 텍스트도 그대로 여기 안에서 그리면 됩니다.
         if (isHovered && currentKey !== "screen1" && c.label) {
-          let paddingX = 5, paddingY = 10;
+          let paddingX = 5;
+          let paddingY = 10;
           textSize(24);
           textAlign(CENTER, CENTER);
+        
           let labelWidth = textWidth(c.label);
-          let boxW = labelWidth + paddingX*2;
-          let boxH = textAscent() + textDescent() + paddingY*3.7;
-
-          push();
-            rectMode(CENTER);
-            fill(0,150);
-            noStroke();
-            rect(mouseX, mouseY - 60, boxW, boxH, 5);
-            fill(197,191,159,255);
-            text(c.label, mouseX, mouseY - 60);
-          pop();
-        }
+          let boxW = labelWidth + paddingX * 2;
+          let boxH = textAscent() + textDescent() + paddingY * 3.7;
+        
+          rectMode(CENTER);
+          fill(0, 150);
+          noStroke();
+          rect(mouseX, mouseY - 60, boxW, boxH, 5);
+        
+          fill(197, 191, 159, 255);
+          text(c.label, mouseX, mouseY - 60);
       }
     }
-  pop();
+  }
 
+  if (currentKey === "screen11-2") {               // 완성된 벽화 표시
+    cursor()
+    background(0); // 화면 초기화
+    image(images["screen11-2"], width / 2, height / 2, width, height);
 
-  // if (currentKey === "screen11-2") {               // 완성된 벽화 표시
-  //   cursor()
-  //   background(0); // 화면 초기화
-  //   image(images["screen11-2"], width / 2, height / 2, width, height);
-
-  //   if (isFading) {
-  //     tint(255, fadeAmount);
-  //     image(muralImage, width / 2, height / 2, width, height);
-  //     fadeAmount += 3.5;
-  //     if (fadeAmount >= 255) {
-  //       fadeAmount = 255;
-  //       isFading = false;
-  //       isFadedIn = true;
-  //   }
-  //     tint(255); // 초기화
-  //     fill(255);
-  //     textAlign(CENTER);
-  //     textSize(28);
-  //     text("두 번째 스테이지의 첫 번째 미션,", width / 2, 850);
-  //   } else if (isFadedIn) {
-  //     image(muralImage, width / 2, height / 2, width, height);
-  //     image(images["screen11-3"], images["screen11-3"].width / 2 / 2, height - images["screen11-3"].height / 2 / 2, images["screen11-3"].width / 2, images["screen11-3"].height / 2);
-  //     fill(255);
-  //     textAlign(CENTER);
-  //     textSize(28);
-  //     text("벽화 그리기 미션을 훌륭하게 완수했어!\n어딘가 으스스했던 과거와 비교해 보니, 몰라보게 달라졌다!", width / 2, 850);
-  //   }
-  // }
-
-  if (currentKey === "screen11-2") {
-    cursor();
-    background(0);
-    image(images["screen11-2"], width/2, height/2, width, height);
-  
     if (isFading) {
       tint(255, fadeAmount);
-      image(muralImage, width/2, height/2, width, height);
-      
+      image(muralImage, width / 2, height / 2, width, height);
       fadeAmount += 3.5;
       if (fadeAmount >= 255) {
-        fadeAmount  = 255;
-        isFading    = false;
-        isFadedIn   = true;
-        noLoop();
-      }
-  
-      tint(255);
-      fill(255);
-      textAlign(CENTER);
-      textSize(32);
-      text("두 번째 스테이지의 첫 번째 미션,", width/2, 850);
-  
-      // return;  // draw() 나머지 로직 스킵
+        fadeAmount = 255;
+        isFading = false;
+        isFadedIn = true;
     }
-    
-    if (isFadedIn) {
-      // 페이드 완료 후에 보여 줄 레이아웃
-      image(muralImage, width/2, height/2, width, height);
-      image(images["screen11-3"], images["screen11-3"].width/4, height - images["screen11-3"].height/4,
-            images["screen11-3"].width/2, images["screen11-3"].height/2);
+      tint(255); // 초기화
       fill(255);
       textAlign(CENTER);
-      textSize(32);
-      text("벽화 그리기 미션을 훌륭하게 완수했어!\n어딘가 으스스했던 과거와 비교해 보니, 몰라보게 달라졌다!",
-           width/2, 850);
-      drawNavigationButtons();
-      return;
+      textSize(28);
+      text("두 번째 스테이지의 첫 번째 미션,", width / 2, 850);
+    } else if (isFadedIn) {
+      image(muralImage, width / 2, height / 2, width, height);
+      image(images["screen11-3"], images["screen11-3"].width / 2 / 2, height - images["screen11-3"].height / 2 / 2, images["screen11-3"].width / 2, images["screen11-3"].height / 2);
+      fill(255);
+      textAlign(CENTER);
+      textSize(28);
+      text("벽화 그리기 미션을 훌륭하게 완수했어!\n어딘가 으스스했던 과거와 비교해 보니, 몰라보게 달라졌다!", width / 2, 850);
     }
   }
 
-  if (currentKey === "screen21") {
-    image(images["screen21"], width/2, height/2, width, height);
-    image(muralImage, width/4, (height/4)*3, width/5, height/5);
-    textSize(100);
-    fill(255);
-    text("THE END", width-300, height/2);
-  }
-  
+
+  // textSize(30);
+  // text(`x-coordinate: ${mouseX}`, 100, 318);
+  // text(`y-coordinate: ${mouseY}`, 100, 390);
 
   if ( // 지도 부분 흰 글씨 안보여서 파란색으로 표시
     currentKey === "screen3"   ||
@@ -1991,83 +1871,77 @@ function draw() {
     fill(255);
   }
   
-  textSize(28);
+  textSize(20);
+  textAlign(RIGHT, TOP);
+  textStyle(BOLD);
+  text("Press SPACE to proceed", width - 30, 10);
   
   textAlign(LEFT, TOP);
-  
-  text("Press R to restart", 30,10);
+  text("Press BACKSPACE to go back", 30, 10);
 
-  console.log('drawNavigationButtons?');    
-  push();           // 변환 상태 저장
-    resetMatrix();  // 네비만 쓰는 좌표계로 리셋
-    drawNavigationButtons();
-  pop();
+  textAlign(LEFT, BOTTOM);
+  text("Press R to restart", 30,972);
+  
 }
 
-// sketch.js 파일에서 기존 keyPressed 함수를 지우고 아래 내용으로 완전히 교체해주세요.
 
-// function keyPressed() {
+function keyPressed() {
 
-    // /* ───────── 1) BACKSPACE : 언제 눌러도 먼저 처리 ───────── */
-    // if (keyCode === BACKSPACE) {
-    //     if (screenHistory.length > 0) {
-    //         currentKey = screenHistory.pop();
-    //         redraw();
-    //     }
-    //     return; // ← 더 내려가지 않고 종료
-    // }
+    /* ───────── 1) BACKSPACE : 언제 눌러도 먼저 처리 ───────── */
+    if (keyCode === BACKSPACE) {
+        if (screenHistory.length > 0) {
+            currentKey = screenHistory.pop();
+            redraw();
+        }
+        return; // ← 더 내려가지 않고 종료
+    }
 
+    /* ───────── 2) R 키로 처음으로 ───────── */
+    if (key === 'r' || key === 'R') {
+        currentKey = "screen1";
+        screenHistory = [];
+        redraw();
+        return;
+    }
 
-   
-    // /* ───────── 2) R 키로 처음으로 ───────── */
-    // if (key === 'r' || key === 'R') {
-    //     currentKey = "screen1";
-    //     screenHistory = [];
-    //     redraw();
-    //     return;
-    // }
+    /* ───────── 3) screen11-2 특수 처리 ───────── */
+    if (currentKey === "screen11-2") {
+        if (!isFading && !isFadedIn) {
+            fadeAmount = 0;
+            isFading = true;
+        } else if (isFadedIn) {
+            screenHistory.push(currentKey);
+            currentKey = "screen14";
+            redraw();
+        }
+        return; // ← 공통 키 처리로 내려가지 않음
+    }
 
-    // /* ───────── 3) screen11-2 특수 처리 ───────── */
-    // if (currentKey === "screen11-2") {
-    //     if (!isFading && !isFadedIn) {
-    //         fadeAmount = 0;
-    //         isFading = true;
-    //     } else if (isFadedIn) {
-    //         screenHistory.push(currentKey);
-    //         currentKey = "screen14";
-    //         redraw();
-    //     }
-    //     return; // ← 공통 키 처리로 내려가지 않음
-    // }
+    /* ───────── 4) 스페이스바 처리 ───────── */
+    if (key === ' ') {
+        // screen13과 screen1에서는 스페이스바 무시
+        if (currentKey === 'screen13' || currentKey === 'screen1') {
+            return;
+        }
 
+        // [변경] screen15-pose에서만 특별한 동작을 하도록 수정
+        if (currentKey === 'screen15-pose') {
+            screenHistory.push(currentKey);
+            currentKey = storyMap[currentKey];      // storyMap에 따라 'screen16'으로 전환
+            capturePoseAndGenerateSculpture();      // API 호출 시작
+            redraw();
+            return; // 여기서 종료해야 다른 로직을 타지 않습니다.
+        }
 
-    // /* ───────── 4) 스페이스바 처리 ───────── */
-    // if (key === ' ') {
-    //     // screen13과 screen1에서는 스페이스바 무시
-    //     if (currentKey === 'screen13' || currentKey === 'screen1') {
-    //         return;
-    //     }
-
-
-        // // [변경] screen15-pose에서만 특별한 동작을 하도록 수정
-        // if (currentKey === 'screen15-pose') {
-        //     screenHistory.push(currentKey);
-        //     currentKey = storyMap[currentKey];      // storyMap에 따라 'screen16'으로 전환
-        //     capturePoseAndGenerateSculpture();      // API 호출 시작
-        //     redraw();
-        //     return; // 여기서 종료해야 다른 로직을 타지 않습니다.
-        // }
-
-        // // [변경 없음] screen15-5를 포함한 나머지 모든 일반 화면은 이 로직을 따름
-        // let next = storyMap[currentKey];
-        // if (typeof next === 'string') {
-        //     screenHistory.push(currentKey);
-        //     currentKey = next;
-        //     redraw();
-        // }
-    
-
-
+        // [변경 없음] screen15-5를 포함한 나머지 모든 일반 화면은 이 로직을 따름
+        let next = storyMap[currentKey];
+        if (typeof next === 'string') {
+            screenHistory.push(currentKey);
+            currentKey = next;
+            redraw();
+        }
+    }
+}
   // // 텍스트 페이드인 효과 유
   // if (key === ' ') {
   //   let next = storyMap[currentKey];
@@ -2091,61 +1965,51 @@ function draw() {
 
 
 
-// function mousePressed() {
+function mousePressed() {
 
-//   // ─── 1) screen13 드로잉 처리 ───
-//   if (currentKey === "screen13") {
-//     let d = dist(mouseX, mouseY, handleX, sliderY + sliderH / 2);
-//     if (d < 18) draggingHandle = true;
-//     if (!draggingHandle &&
-//         mouseX > 0 && mouseX < muralCanvas.width &&
-//         mouseY > 0 && mouseY < muralCanvas.height) {
-//       selectedBrush.draw(mouseX, mouseY, mouseX, mouseY, 0);
-//       // 음악 재생
-//       if (!musicStarted &&
-//           selectedBrush.music &&
-//           musicAssets[selectedBrush.music]) {
-//         currentMusic = musicAssets[selectedBrush.music];
-//         let v = map(brushSize, 0.5, 6.0, 0.1, 1.0);
-//         currentMusic.setVolume(v);
-//         currentMusic.loop();
-//         musicStarted = true;
-//       }
-//     }
-//     // 그렸으면 여기서 리턴하면 네비 로직 안 탑니다
-//     return;
-//   }
+  if (currentKey === "screen13") {
+    let d = dist(mouseX, mouseY, handleX, sliderY + sliderH / 2);
+    if (d < 18) draggingHandle = true;
+    if (!draggingHandle && mouseX > 0 && mouseX < muralCanvas.width && mouseY > 0 && mouseY < muralCanvas.height) {
+      selectedBrush.draw(mouseX, mouseY, mouseX, mouseY, 0);
+      // 음악 재생
+      if (!musicStarted && selectedBrush.music && musicAssets[selectedBrush.music]) {
+        currentMusic = musicAssets[selectedBrush.music];
+        let v = map(brushSize, 0.5, 6.0, 0.1, 1.0);
+        currentMusic.setVolume(v);
+        currentMusic.loop();
+        musicStarted = true;
+      }
+    }
+    
+  }
 
-//   if (choices[currentKey]) {
-//     for (let c of choices[currentKey]) {
-//       if (mouseX >= c.x - c.w / 2 && mouseX <= c.x + c.w / 2 &&
-//           mouseY >= c.y - c.h / 2 && mouseY <= c.y + c.h / 2) {
-//         screenHistory.push(currentKey);
-//         currentKey = c.next;
-//         redraw();
-//         return;
-//       }
-//     }
-//   }
+  if (choices[currentKey]) {
+    for (let c of choices[currentKey]) {
+      if (mouseX >= c.x - c.w / 2 && mouseX <= c.x + c.w / 2 &&
+          mouseY >= c.y - c.h / 2 && mouseY <= c.y + c.h / 2) {
+        screenHistory.push(currentKey);
+        currentKey = c.next;
+        redraw();
+        return;
+      }
+    }
+  }
 
-//   let next = storyMap[currentKey];
+  let next = storyMap[currentKey];
 
-//   if (typeof next === 'object') {
-//     screenHistory.push(currentKey);
-//     if (mouseX < width / 3) {
-//       currentKey = next["A"];
-//     } else if (mouseX < 2 * width / 3) {
-//       currentKey = next["B"];
-//     } else {
-//       currentKey = next["C"];
-//     }
-//     redraw();
-//   }
+  if (typeof next === 'object') {
+    screenHistory.push(currentKey);
+    if (mouseX < width / 3) {
+      currentKey = next["A"];
+    } else if (mouseX < 2 * width / 3) {
+      currentKey = next["B"];
+    } else {
+      currentKey = next["C"];
+    }
+    redraw();
+  }
 
-// }
-function enterNewScreen(newKey) {
-  currentKey = newKey;
-  screenEnterTime = millis();  // 화면 진입 시각 기록
 }
 
 function mouseDragged(){
@@ -2261,30 +2125,14 @@ function createControlButtons() {
   completeButton.style('color', 'white');
   completeButton.style('font-size', '20px'); // 텍스트 크기도 키워서 가독성 향상
   completeButton.mousePressed(() => {
-    // 1) 음악 정지 & 캔버스 저장
+    // 음악 정지
     if (currentMusic && currentMusic.isPlaying()) {
       currentMusic.stop();
     }
     musicStarted = false;
     muralImage = muralCanvas.get();
-  
-    // 2) 화면 히스토리에 현재 추가 (뒤로가기용)
-    screenHistory.push(currentKey);
-  
-    // 3) 다음 화면으로 전환
     currentKey = "screen11-2";
-  
-    // 4) 벽화완성 버튼 & reset 버튼 숨기기
-    completeButton.hide();
-    resetButton.hide();
-  
-    // 5) 캔버스용 내비 버튼이 보이도록, 기본 커서 복원
-    cursor();     // noCursor()를 썼다면 반드시 이걸로 복원
-  
-    // 6) draw() 한 번 강제 호출
-    redraw();
   });
-  
 }
 
 function createColorButtons(startY) {
