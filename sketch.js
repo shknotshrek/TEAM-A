@@ -571,6 +571,9 @@ let fadeAmount = 0;      // 페이드 투명도
   
 
 function setup() {
+  // console.log(pixelDensity());
+  // pixelDensity(1);
+  // transparentCanvas.pixelDensity(1);
   createCanvas(1512, 982); // 혹은 windowWidth, windowHeight로 바꿔도 돼
   aiVisionCanvas = createGraphics(1512, 982); // <<< 숨겨진 캔버스 생성
   textFont(customFont);
@@ -878,7 +881,7 @@ function setup() {
       "screen7-2-2": {
         content: "예쁜 문구류를 구경하러 오는 주민과 외부인이 증가했어! \n\n 그런데 정작 책에 대한 관심은 오히려 떨어진 것 같네. \n 여기가 책방이에요, 문방구예요?”하고 묻는 분들도 계셨어. \n\n 어떻게 하면 책과 문구류 사이의 연결을 강화할 수 있을까?",
         x: width / 2,
-        y: 200,
+        y: 300,
         size: 32,
         color: [255, 255, 255],
         align: "center"

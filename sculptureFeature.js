@@ -211,7 +211,9 @@ function drawSculptureResultScreen() {
  */
 function removeBlackBackground(sourceImg) {
     // 1. 원본 이미지와 같은 크기의 '투명한 유리판'(새 캔버스)을 만듭니다.
+    console.log(sourceImg.width, sourceImg.height);
     const transparentCanvas = createGraphics(sourceImg.width, sourceImg.height);
+    transparentCanvas.pixelDensity(1);
     
     // 2. 원본 이미지의 모든 픽셀 정보를 불러옵니다.
     sourceImg.loadPixels();
