@@ -194,8 +194,7 @@ function keyPressed() {
   if (key === 'r' || key === 'R') {
     currentKey = 'screen1';
     screenHistory = [];
-
-    //initializeMuralCanvas();
+    initializeMuralCanvas();
     redraw();
   }
 
@@ -206,5 +205,5 @@ function keyPressed() {
     capturePoseAndGenerateSculpture();      // API 호출 시작
     redraw();
     return; // 여기서 종료해야 다른 로직을 타지 않습니다.
-  }
+}
 }
