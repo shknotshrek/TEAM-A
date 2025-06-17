@@ -194,7 +194,6 @@ function keyPressed() {
   if (key === 'r' || key === 'R') {
     currentKey = 'screen1';
     screenHistory = [];
-    initializeMuralCanvas();
     redraw();
   }
 
