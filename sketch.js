@@ -582,15 +582,6 @@ function setup() {
   textFont(customFont);
   imageMode(CENTER);
 
-  // 버튼 텍스트 크기를 위한 스타일 추가
-  let style = document.createElement('style');
-  style.textContent = `
-    .brush-button, .reset-button {
-      font-size: 18px !important;
-    }
-  `;
-  document.head.appendChild(style);
-
   muralCanvas = createGraphics(muralCanvasWidth, muralCanvasHeight);
 
   // 색상 배열은 setup에서 p5 color()로 초기화
@@ -2006,8 +1997,6 @@ function draw() {
   textSize(28);
   
   textAlign(LEFT, TOP);
-  
-  text("Press R to restart", 30,10);
 
   console.log('drawNavigationButtons?');    
   push();           // 변환 상태 저장
@@ -2226,7 +2215,6 @@ function createBrushButtons() {
   let startY = buttonMargin;
   for (let brush of brushes) {
     let btn = createButton(brush.name);
-    btn.addClass('brush-button'); // 클래스 추가
     btn.position(muralCanvas.width + buttonMargin, startY);
     btn.size(sidebarWidth - 2 * buttonMargin, buttonHeight);
     btn.mousePressed(() => {
@@ -2256,7 +2244,6 @@ function createControlButtons() {
   let startY = buttonMargin + (buttonHeight + buttonMargin) * BRUSH_COUNT;
 
   resetButton = createButton('다시 그리기 (Reset)');
-  resetButton.addClass('reset-button'); // 클래스 추가
   resetButton.position(muralCanvas.width + buttonMargin, startY);
   resetButton.size(sidebarWidth - 2 * buttonMargin, buttonHeight);
   resetButton.mousePressed(() => {
@@ -2460,7 +2447,7 @@ function drawMural() {
   noStroke();
   fill(255);
   textAlign(CENTER, CENTER);
-  textSize(16);
+  textSize(13);
 
   // 텍스트를 슬라이더 아래로 이동
   text('브러시 크기', sliderX + sliderW / 2, sliderY + 40);
