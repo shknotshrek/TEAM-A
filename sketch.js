@@ -225,6 +225,7 @@ let fadeAmount = 0;      // 페이드 투명도
     "screen11-1.png",
     "screen11-2.png",
     "screen11-3.png",
+    "screen11-4.png",
     "screen12.png",
     "screen13.png",
     "screen14.png",
@@ -503,6 +504,7 @@ let fadeAmount = 0;      // 페이드 투명도
   
 
   function preload() {
+
     nextImg = loadImage('visual assets/next.png');
     backImg = loadImage('visual assets/back.png');
 
@@ -566,6 +568,7 @@ let fadeAmount = 0;      // 페이드 투명도
     brushCursors['물감붓'] = loadImage('visual assets/screen13icon4.png');
     brushCursors['마커펜'] = loadImage('visual assets/screen13icon2.png');
     brushCursors['스프레이'] = loadImage('visual assets/screen13icon3.png');
+
 
   };
   
@@ -1966,8 +1969,7 @@ function draw() {
     if (isFadedIn) {
       // 페이드 완료 후에 보여 줄 레이아웃
       image(muralImage, width/2, height/2, width, height);
-      image(images["screen11-3"], images["screen11-3"].width/4, height - images["screen11-3"].height/4,
-            images["screen11-3"].width/2, images["screen11-3"].height/2);
+      image(images["screen11-4"], width/2, height/2, width, height);
       fill(255);
       textAlign(CENTER);
       textSize(32);
@@ -1980,7 +1982,8 @@ function draw() {
 
   if (currentKey === "screen21") {
     image(images["screen21"], width/2, height/2, width, height);
-    image(muralImage, width/4, (height/4)*3, width/5, height/5);
+    image(muralImage, width/4, (height/4)*3, width/4, height/4);
+    image(sculptureModule.generatedSculptureImg, width/2, (height/4)*3, sculptureModule.generatedSculptureImg.width/2.3, sculptureModule.generatedSculptureImg.height/2.3);
     textSize(100);
     fill(255);
     text("THE END", width-300, height/2);
