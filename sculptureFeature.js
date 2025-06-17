@@ -3,10 +3,12 @@
 // 조각상 기능 관련 모든 변수를 담는 객체
 const sculptureModule = {
     video: null,
+     webcamCanvas: null, // ◀◀◀ 이 줄을 추가하세요. (pixelCanvas는 삭제)
     poseNet: null,
     poses: [],
     isModelReady: false,
     isGenerating: false,
+    generationFailed: false, // ◀◀◀ 이 줄을 추가하세요.
     generatedSculptureImg: null,
     generatedSculptureText: ""
 };
@@ -15,18 +17,22 @@ const sculptureModule = {
  * 조각상 기능에 필요한 요소(웹캠, ml5 모델)를 초기 설정하는 함수.
  */
 function setupSculptureFeature() {
+     if (sculptureModule.video) {
+        sculptureModule.video.remove();
+    }
+      sculptureModule.webcamCanvas = createGraphics(700, 500); 
     sculptureModule.video = createCapture(VIDEO, () => {
         console.log("✅ Video capture ready.");
         sculptureModule.video.size(width, height);
         
-        sculptureModule.poseNet = ml5.poseNet(sculptureModule.video, () => {
-            console.log('✅ PoseNet Model Ready');
-            sculptureModule.isModelReady = true;
-        });
+        //sculptureModule.poseNet = ml5.poseNet(sculptureModule.video, () => {
+           // console.log('✅ PoseNet Model Ready');
+          //  sculptureModule.isModelReady = true;
+        //});
 
-        sculptureModule.poseNet.on('pose', (results) => {
-            sculptureModule.poses = results;
-        });
+        //sculptureModule.poseNet.on('pose', (results) => {
+          //  sculptureModule.poses = results;
+      //  });
     });
     
     sculptureModule.video.hide();
@@ -37,107 +43,41 @@ function setupSculptureFeature() {
  * screen15-pose에서 필요한 모든 그리기를 처리하는 함수.
  * (숨겨진 캔버스에 웹캠 영상을, 메인 캔버스에 스켈레톤을 그림)
  */
+
+
 function drawSculpturePoseScreen() {
-    // --- 1. 숨겨진 캔버스에 AI 제출용 영상 그리기 ---
-    if (sculptureModule.video.elt.readyState >= 2) {
-        aiVisionCanvas.push();
-        // 거울 모드로 좌우 반전하여 숨겨진 캔버스에 그리기
-        aiVisionCanvas.translate(width, 0);
-        aiVisionCanvas.scale(-1, 1);
-        aiVisionCanvas.image(sculptureModule.video, 0, 0, width, height);
-        aiVisionCanvas.pop();
-    }
+    // --- 1. 변수 설정 (나중에 크기/위치 조절하기 편하도록) ---
+    const camWidth = 700;
+    const camHeight = 500;
+    const camCanvas = sculptureModule.webcamCanvas; // 미니 캔버스
+    const camVideo = sculptureModule.video;     // 웹캠 영상
 
-    // --- 2. 메인 캔버스에 사용자가 볼 내용 그리기 ---
-    if (sculptureModule.isModelReady && sculptureModule.poses.length > 0) {
-        // 배경은 sketch.js에서 이미 그렸으므로, 스켈레톤만 그립니다.
-        drawPoseSkeleton();
-        fill(255, 255, 255, 200);
-        noStroke();
-        textAlign(CENTER, CENTER);
-        textSize(28);
-        text("포즈를 잡고, 스페이스 바를 눌러서 조각을 만들어 보자!", width / 2, height -100);
-    } else {
-        // 모델 로딩 중 텍스트
-        fill(255, 255, 255, 200);
-        noStroke();
-        textAlign(CENTER, CENTER);
-        textSize(24);
-        text("카메라와 모델을 준비 중입니다...", width / 2, height / 2);
-    }
-}
-
-/**
- * screen16에서 생성된 조각상 결과를 그리는 함수.
- */
-/**
- * screen16에서 생성된 조각상 결과를 그리는 함수.
- * (위치 조정 및 '박물관 명패' 스타일 적용)
- */
-/**
- * screen16에서 생성된 조각상 결과를 그리는 함수.
- * (텍스트 크기 및 위치 조정)
- */
-function drawSculptureResultScreen() {
-    // 생성 중일 때 로딩 메시지 표시는 기존과 동일
-    if (sculptureModule.isGenerating) {
-        fill(0, 0, 0, 150);
-        noStroke();
-        rectMode(CENTER);
-        rect(width/2, height - 100, 600, 50, 10);
-        
-        fill(255);
-        textAlign(CENTER, CENTER);
-        textSize(24);
-        text("당신의 포즈로 조각상을 만들고 있습니다...", width / 2, height - 100);
-    }
-
-    // 조각상 이미지 그리는 부분은 기존과 동일
-    if (sculptureModule.generatedSculptureImg) {
-        push();
-        imageMode(CENTER);
-        const imgHeight = 550;
-        const imgY = height / 2;
-        image(sculptureModule.generatedSculptureImg, width / 5, height*4/5, 450, imgHeight);
-        pop();
+    // --- 2. 보이지 않는 '미니 캔버스'에 웹캠 영상을 그리고 필터 적용 ---
+    camCanvas.push();
+    camCanvas.translate(camWidth, 0); // 좌우 반전을 위해 너비만큼 이동
+    camCanvas.scale(-1, 1);           // 좌우 반전
+    camCanvas.image(camVideo, 0, 0, camWidth, camHeight); // 미니 캔버스에 웹캠 그리기
+    camCanvas.pop();
     
-        // '박물관 명패' 스타일로 작품 제목 표시
-        if (sculptureModule.generatedSculptureText) {
-            // [변경] 텍스트 크기를 더 작게 설정
-            textSize(20); 
+    // Threshold 필터를 미니 캔버스에만 적용 (0.5는 흑/백의 기준점)
+    camCanvas.filter(THRESHOLD, 0.4);
 
-            // [변경] 명패 위치를 화면 맨 아래로 이동 (Press R to restart 위에 표시되도록)
-            const plaqueY = height - 45; 
+    // --- 3. 필터가 적용된 '미니 캔버스'를 메인 화면에 그리기 ---
+    // image() 함수로 원하는 위치에 미니 캔버스를 통째로 그립니다.
+    image(camCanvas, width / 2, height / 2 + 80);
 
-            const textW = textWidth(sculptureModule.generatedSculptureText);
-            const plaqueW = textW + 40; // 패딩을 살짝 줄임
-            const plaqueH = 35;       // 높이를 줄임
-
-            // 명패 배경 그리기
-            fill(0, 0, 0, 180);
-            noStroke();
-            rectMode(CENTER);
-            rect(width / 2, plaqueY, plaqueW, plaqueH, 5);
-
-            // 작품 제목 텍스트 그리기
-            fill(255);
-            textAlign(CENTER, CENTER);
-            textStyle(BOLD);
-            text(sculptureModule.generatedSculptureText, width / 2, plaqueY);
-            textStyle(NORMAL);
-        }
-    }
+    // --- 4. 안내 텍스트 그리기 (기존과 동일) ---
+    fill(255);
+    noStroke();
+    textAlign(CENTER, CENTER);
+    textSize(28);
+    text("포즈를 잡고, 스페이스 바를 눌러서 조각을 만들어 보자!", width / 2, height - 100);
 }
-/**
- * 포즈를 캡처하고, image-to-image 생성을 위해 Gemini API 요청을 시작합니다.
- */
- /**
- * 포즈를 캡처하고, image-to-image 생성을 위해 Gemini API 요청을 시작합니다.
- * (프롬프트 수정: 투명 배경 + 짧은 제목 요청)
- */
+
 async function capturePoseAndGenerateSculpture() {
     console.log("📸 포즈 캡처 및 Image-to-Image 생성 시작!");
     sculptureModule.isGenerating = true;
+    sculptureModule.generationFailed = false; // ◀ 1. 새로운 시도를 하므로 실패 상태를 초기화합니다.
     
     // [변경] 메인 캔버스 대신 '숨겨진 캔버스'의 이미지를 캡처합니다.
     const capturedImageDataURL = aiVisionCanvas.get().canvas.toDataURL("image/png");
@@ -207,61 +147,62 @@ async function capturePoseAndGenerateSculpture() {
 
     } catch (error) {
         console.error("❌ Gemini API 호출 실패:", error);
-        sculptureModule.generatedSculptureText = "이미지 생성에 실패했습니다. 콘솔을 확인해주세요.";
+        sculptureModule.generatedSculptureText = "이미지 생성에 실패했습니다. Back버튼을 누르고 다시 시도해주세요.";
+        sculptureModule.generationFailed = true; 
     } finally {
         sculptureModule.isGenerating = false;
     }
 }
 
-// 감지된 포즈의 골격을 그리는 헬퍼 함수
-function drawPoseSkeleton() {
-    push(); // 새로운 그리기 스타일을 적용하기 위해 push()로 시작
 
-    // --- 네온 글로우(빛 번짐) 효과 설정 ---
-    const neonColor = color(0, 255, 255); // 밝은 청록색 (Cyan)
-    drawingContext.shadowBlur = 15;      // 빛 번짐의 정도
-    drawingContext.shadowColor = neonColor; // 빛 번짐의 색상
+/**
+ * screen16에서 생성된 조각상 결과를 그리는 함수.
+ */
+/**
+ * screen16에서 생성된 조각상 결과를 그리는 함수.
+ * (위치 조정 및 '박물관 명패' 스타일 적용)
+ */
+/**
+ * screen16에서 생성된 조각상 결과를 그리는 함수.
+ * (텍스트 크기 및 위치 조정)
+ */
+// sculptureFeature.js 파일에서 이 함수를 찾아 아래 내용으로 교체해주세요.
 
-    // --- 뼈대(선) 그리기 ---
-    stroke(neonColor);
-    strokeWeight(6); // 선 굵기를 굵게
+// sculptureFeature.js 파일에서 이 함수를 찾아 아래 내용으로 교체해주세요.
 
-    for (let i = 0; i < sculptureModule.poses.length; i++) {
-        let skeleton = sculptureModule.poses[i].skeleton;
-        for (let j = 0; j < skeleton.length; j++) {
-            let partA = skeleton[j][0].position;
-            let partB = skeleton[j][1].position;
-            
-            // 거울 모드에 맞게 x좌표를 반전
-            let flippedX1 = width - partA.x;
-            let flippedX2 = width - partB.x;
+function drawSculptureResultScreen() {
+    if (sculptureModule.isGenerating) {
+        // 1. 생성 중일 때 -> "생성 중..." 메시지 표시
+        fill(0, 0, 0, 150);
+        rectMode(CENTER);
+        rect(width/2, height - 100, 600, 50, 10);
+        fill(255);
+        textAlign(CENTER, CENTER);
+        textSize(24);
+        text("당신의 포즈로 조각상을 만들고 있습니다...", width / 2, height - 100);
 
-            line(flippedX1, partA.y, flippedX2, partB.y);
+    } else if (sculptureModule.generationFailed) {
+        // 2. 생성이 끝났는데 '실패' 상태일 때 -> 실패 메시지 표시
+        fill(255, 100, 100);
+        textAlign(CENTER, CENTER);
+        textSize(28);
+        text("조각상 생성에 실패했습니다. BACK를 눌러 돌아가서 다시 시도해주세요.", width / 2, height / 2+200);
+
+    } else if (sculptureModule.generatedSculptureImg) {
+        // 3. 생성이 끝났고, 실패하지도 않았고, 이미지가 있을 때 -> 성공 결과 표시
+        push();
+        imageMode(CENTER);
+        const imgHeight = 550;
+        image(sculptureModule.generatedSculptureImg, width / 5, height* 4/5, 450, imgHeight);
+        pop();
+    
+        if (sculptureModule.generatedSculptureText) {
+            // ... (제목 표시하는 기존 코드) ...
         }
     }
-
-    // --- 관절(점) 그리기 ---
-    noStroke(); // 점에는 테두리가 없도록
-    for (let i = 0; i < sculptureModule.poses.length; i++) {
-        let keypoints = sculptureModule.poses[i].pose.keypoints;
-        for (let j = 0; j < keypoints.length; j++) {
-            let keypoint = keypoints[j];
-            if (keypoint.score > 0.3) { // 인식 점수가 0.3 이상인 점만 표시
-                let flippedX = width - keypoint.position.x;
-                
-                // 1. 바깥쪽의 퍼지는 빛 효과 (반투명)
-                fill(0, 255, 255, 100);
-                ellipse(flippedX, keypoint.position.y, 24, 24);
-
-                // 2. 안쪽의 선명한 점 (불투명)
-                fill(neonColor);
-                ellipse(flippedX, keypoint.position.y, 10, 10);
-            }
-        }
-    }
-
-    pop(); // 다른 곳에 영향을 주지 않도록 스타일 초기화
 }
+// 감지된 포즈의 골격을 그리는 헬퍼 함수 이제 필요없어서 지움
+
 
 /**
  * p5.Image 객체를 입력받아, 검은색에 가까운 픽셀을 투명하게 만드는 함수
@@ -270,7 +211,9 @@ function drawPoseSkeleton() {
  */
 function removeBlackBackground(sourceImg) {
     // 1. 원본 이미지와 같은 크기의 '투명한 유리판'(새 캔버스)을 만듭니다.
+    console.log(sourceImg.width, sourceImg.height);
     const transparentCanvas = createGraphics(sourceImg.width, sourceImg.height);
+    transparentCanvas.pixelDensity(1);
     
     // 2. 원본 이미지의 모든 픽셀 정보를 불러옵니다.
     sourceImg.loadPixels();
@@ -302,4 +245,11 @@ function removeBlackBackground(sourceImg) {
     // 7. 픽셀 변경 작업을 완료하고, 배경이 제거된 새 캔버스를 반환합니다.
     transparentCanvas.updatePixels();
     return transparentCanvas;
+}
+
+function resetSculptureData() {
+  sculptureModule.generatedSculptureImg = null;
+  sculptureModule.generatedSculptureText = "";
+  sculptureModule.generationFailed = false; // API 호출 실패 상태도 함께 초기화합니다.
+  console.log("이전 조각상 데이터가 초기화되었습니다.");
 }
