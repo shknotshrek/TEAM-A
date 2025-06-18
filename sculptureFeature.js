@@ -81,9 +81,14 @@ async function capturePoseAndGenerateSculpture() {
     
     // [변경] 메인 캔버스 대신 '숨겨진 캔버스'의 이미지를 캡처합니다.
     const capturedImageDataURL = aiVisionCanvas.get().canvas.toDataURL("image/png");
-    const base64WithoutPrefix = capturedImageDataURL.replace(/^data:image\/png;base64,/, "");
+    const base64WithoutPrefix = capturedImageDataURL.replace(/^data:image\/png;base64,/, ""); 
 
-    const MODEL_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-preview-image-generation:generateContent?key=${window.GEMINI_API_KEY}`;
+    const randomIndex = Math.floor(Math.random() * window.GEMINI_API_KEYS.length);
+    const selectedApiKey = window.GEMINI_API_KEYS[randomIndex];
+    console.log(`(테스트용) API 키 인덱스 ${randomIndex}번을 사용합니다.`); // 어떤 키가 사용되었는지 확인용
+
+
+    const MODEL_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-preview-image-generation:generateContent?key=${selectedApiKey}`;
     
     const finalPrompt = `Generate a realistic sculpture that accurately captures the user's body pose, using materials like stone or bronze. The sculpture should be rendered against a solid black background. For the text response, you must start with a title in the format "Title: [The Title Here]", and then you can add a short description on the next line.`;
 
