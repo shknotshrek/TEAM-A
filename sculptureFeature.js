@@ -193,7 +193,7 @@ function drawSculptureResultScreen() {
         push();
         imageMode(CENTER);
         const imgHeight = 550;
-        image(sculptureModule.generatedSculptureImg, width / 5, height* 4/5, 450, imgHeight);
+        image(sculptureModule.generatedSculptureImg, width / 5, height* 3/4, 450, imgHeight);
         pop();
     
         if (sculptureModule.generatedSculptureText) {
