@@ -186,14 +186,14 @@ function drawSculptureResultScreen() {
         fill(255, 100, 100);
         textAlign(CENTER, CENTER);
         textSize(28);
-        text("조각상 생성에 실패했습니다.BACKSPACE를 눌러 돌아가서 다시 시도해주세요.", width / 2, height / 2+200);
+        text("조각상 생성에 실패했습니다. BACK를 눌러 돌아가서 다시 시도해주세요.", width / 2, height / 2+200);
 
     } else if (sculptureModule.generatedSculptureImg) {
         // 3. 생성이 끝났고, 실패하지도 않았고, 이미지가 있을 때 -> 성공 결과 표시
         push();
         imageMode(CENTER);
         const imgHeight = 550;
-        image(sculptureModule.generatedSculptureImg, width / 2, height / 2, 450, imgHeight);
+        image(sculptureModule.generatedSculptureImg, width / 5, height* 3/4, 450, imgHeight);
         pop();
     
         if (sculptureModule.generatedSculptureText) {
@@ -211,7 +211,9 @@ function drawSculptureResultScreen() {
  */
 function removeBlackBackground(sourceImg) {
     // 1. 원본 이미지와 같은 크기의 '투명한 유리판'(새 캔버스)을 만듭니다.
+    console.log(sourceImg.width, sourceImg.height);
     const transparentCanvas = createGraphics(sourceImg.width, sourceImg.height);
+    transparentCanvas.pixelDensity(1);
     
     // 2. 원본 이미지의 모든 픽셀 정보를 불러옵니다.
     sourceImg.loadPixels();

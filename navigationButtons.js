@@ -21,7 +21,7 @@ function drawNavigationButtons() {
     const backPos = { x: NAV_PADDING, y: height - BTN_SIZE - NAV_PADDING };
     const nextPos = { x: width  - BTN_SIZE - NAV_PADDING, y: backPos.y };
 
-    if (screenHistory.length > 0) {
+    if (screenHistory.length > 0 && currentKey !== 'screen11-2') {
       image(backImg, backPos.x, backPos.y, BTN_SIZE, BTN_SIZE);
     }
     if (hasNextScreen()) {
@@ -67,23 +67,44 @@ function mousePressed() {
     return;
   }
   
+  // if (choices[currentKey]) {
+  //   for (let c of choices[currentKey]) {
+  //     if (mouseX >= c.x - c.w / 2 && mouseX <= c.x + c.w / 2 &&
+  //         mouseY >= c.y - c.h / 2 && mouseY <= c.y + c.h / 2) {
+  //       // screenHistory.push(currentKey);
+  //       // currentKey = c.next;
+  //       // redraw();
+  //       // return;
+  //       screenHistory.push(currentKey);
+  //       currentKey = c.next;
+  //       enterNewScreen(c.next);
+  //       if (c.next === 'screen15-pose') {
+  //         loop();
+  //       }
+  //       redraw();
+  //       return;
+  //     }
+  //   }
+  // }
+
   if (choices[currentKey]) {
+    // 아이콘 중 하나라도 클릭됐는지 검사
     for (let c of choices[currentKey]) {
-      if (mouseX >= c.x - c.w / 2 && mouseX <= c.x + c.w / 2 &&
-          mouseY >= c.y - c.h / 2 && mouseY <= c.y + c.h / 2) {
-        // screenHistory.push(currentKey);
-        // currentKey = c.next;
-        // redraw();
-        // return;
+      if (
+        mouseX >= c.x - c.w/2 && mouseX <= c.x + c.w/2 &&
+        mouseY >= c.y - c.h/2 && mouseY <= c.y + c.h/2
+      ) {
+        // 클릭된 아이콘 처리
         screenHistory.push(currentKey);
         currentKey = c.next;
-        if (c.next === 'screen15-pose') {
-          loop();
-        }
+        enterNewScreen(c.next);
+        if (c.next === 'screen15-pose') loop();
         redraw();
-        return;
+        return; // 아이콘 클릭 시에만 여기서 종료
       }
     }
+    // ※ 아이콘 클릭이 아닌 다른 영역 클릭 시에는 아무 동작도 하지 않도록 바로 종료
+    return;
   }
 
   let next = storyMap[currentKey];
@@ -110,22 +131,29 @@ function mousePressed() {
                 && mouseY >= nextPos.y && mouseY <= nextPos.y + BTN_SIZE;
 
   // — 2) screen11-2 Special case: Next 버튼 클릭 시에만 —
-  if (currentKey === 'screen11-2' && overNext) {
-    // 첫 클릭 → 페이드 시작
-    if (!isFading && !isFadedIn) {
-      fadeAmount = 0;
-      isFading   = true;
-      // loop();   // 페이드 애니메이션을 위해 draw()를 다시 돌려 줍니다
-      return;     // 여기서 빠져나와야 Back/Next 일반 처리 안 탄다
-    }
-    // 두 번째 클릭(페이드 완료 시) → 다음 화면으로
-    if (isFadedIn) {
-      screenHistory.push(currentKey);
-      currentKey = storyMap[currentKey] || 'screen14';
-      // redraw();
-      return;
-    }
+  // mousePressed() 내부에 이미 있음
+if (currentKey === 'screen11-2' && overNext) {
+  console.log("✔ screen11-2 NEXT 클릭됨", isFadedIn, isFading);
+  
+  // 1) 첫 클릭이면 페이드 시작
+  if (!isFading && !isFadedIn) {
+    fadeAmount = 0;
+    isFading = true;
+    loop();
+    return;  // 🔒 반드시 여기서 종료!
   }
+
+  // 2) 페이드 완료 후 클릭 → 다음 화면
+  if (isFadedIn) {
+    screenHistory.push(currentKey);
+    currentKey = 'screen14';   // ✅ 여기서 확정
+    isFadedIn = false;         // 다음 흐름 위해 리셋
+    redraw();
+    return;  // 🔒 다시 한 번 확실하게 종료!
+  }
+
+  return; // ✅ 그 외 상황도 여기서 반드시 차단
+}
 
   // — 3) Back 버튼 처리(기존 로직) —
   const overBack = screenHistory.length > 0
@@ -163,11 +191,11 @@ function mousePressed() {
 
 // Optionally keep R‑for‑reset if you still want a dev shortcut
 function keyPressed() {
-  if (key === 'r' || key === 'R') {
-    currentKey = 'screen1';
-    screenHistory = [];
-    redraw();
-  }
+  // if (key === 'r' || key === 'R') {
+  //   currentKey = 'screen1';
+  //   screenHistory = [];
+  //   redraw();
+  // }
 
   // [변경] screen15-pose에서만 특별한 동작을 하도록 수정
   if (currentKey==='screen15-pose' && keyCode===32) {
