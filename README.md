@@ -1,8 +1,14 @@
 //각자 별도의 api_config.js파일을 추가해서 아래와 같이 만들기 
 
 
-const GEMINI_API_KEY = "your api key"; // 여기에 실제 Gemini API Key 삽입
-window.GEMINI_API_KEY = GEMINI_API_KEY;  
+const GEMINI_API_KEYS = [
+"첫번째 apikey",
+"두번째 api key",
+"세번째 api key",
+"네번째  api key",
+"다섯번째 api key",
+]
+window.GEMINI_API_KEYS = GEMINI_API_KEYS;
 
 
 
@@ -61,4 +67,5 @@ sketch에서 mousePressed나 keyPressed를 지운 이유는 여러 파일에서 
 r을 눌러서 초기화하는 내용도 마찬가지로 navigationButtons 안에 있습니다.
 참고로, p5에서는 js파일을 따로 분리해 만들더라도 sketch.js에서 정상적으로 호출되기만 하면
 전역변수를 sketch.js와 전부 공유하므로,
+
 navigationButtons 내부에서 별도 선언 없이 sketch에만 있는 변수 사용 가능하십니다.
