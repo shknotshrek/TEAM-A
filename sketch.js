@@ -578,7 +578,7 @@ function setup() {
   // pixelDensity(1);
   // transparentCanvas.pixelDensity(1);
   createCanvas(1512, 982); // 혹은 windowWidth, windowHeight로 바꿔도 돼
-  aiVisionCanvas = createGraphics(1512, 982); // <<< 숨겨진 캔버스 생성
+  aiVisionCanvas = createGraphics(700, 500); // <<< 숨겨진 캔버스 생성
   textFont(customFont);
   imageMode(CENTER);
 

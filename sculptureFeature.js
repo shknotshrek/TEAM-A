@@ -184,7 +184,7 @@ function drawSculptureResultScreen() {
         fill(255);
         textAlign(CENTER, CENTER);
         textSize(24);
-        text("당신의 포즈로 조각상을 만들고 있습니다...", width / 2, height - 100);
+        text("당신의 포즈로 조각상을 만들고 있습니다.기다려주세요...", width / 2, height - 100);
 
     } else if (sculptureModule.generationFailed) {
         // 2. 생성이 끝났는데 '실패' 상태일 때 -> 실패 메시지 표시
