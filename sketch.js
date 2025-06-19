@@ -1842,7 +1842,7 @@ function draw() {
     imageMode(CENTER);    // c.x,c.y가 중앙 기준
 
     let elapsed = millis() - screenEnterTime;
-    let shouldTwinkle = (elapsed > 10000);  // 10초 이상 경과한 경우
+    let shouldTwinkle = (elapsed > 12000);  // 10초 이상 경과한 경우
 
     if (choices[currentKey]) {
       for (let c of choices[currentKey]) {

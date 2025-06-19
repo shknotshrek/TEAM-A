@@ -72,6 +72,8 @@ function drawSculpturePoseScreen() {
     textAlign(CENTER, CENTER);
     textSize(28);
     text("포즈를 잡고, 스페이스 바를 눌러서 조각을 만들어 보자!", width / 2, height - 100);
+    textSize(21);
+    text("(조각을 만드는 GEMINI API가 바쁠 수 있어요. 조각상 생성 실패 시, 차분히 다시 시도해 주세요!)", width/2, height-50);
 }
 
 async function capturePoseAndGenerateSculpture() {
